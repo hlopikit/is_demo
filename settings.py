@@ -13,18 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
-APP_SETTINGS = LocalSettingsClass(
-    portal_domain='',
-    app_domain='is_demo.it-solution.ru',
-    app_name='post_currency',
-    salt='df897hynj4b34u804b5n45bkl4b',
-    secret_key='sfjbh40989034nk4j4389tfj',
-    application_bitrix_client_id='',
-    application_bitrix_client_secret='',
-    application_index_path='/',
-    bitrix_events_plan=[]
-)
+APP_SETTINGS = None
 
 ADMINS = (
     ('img', 'img@it-solution.ru'),
@@ -162,3 +151,17 @@ except ImportError:
     from warnings import warn
 
     warn('create local_settings.py')
+
+if not APP_SETTINGS:
+    from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
+    APP_SETTINGS = LocalSettingsClass(
+        # portal_domain='',
+        app_domain='is_demo.it-solution.ru',
+        app_name='post_currency',
+        salt='df897hynj4b34u804b5n45bkl4b',
+        secret_key='sfjbh40989034nk4j4389tfj',
+        # application_bitrix_client_id='',
+        # application_bitrix_client_secret='',
+        application_index_path='/',
+        bitrix_events_plan=[]
+    )
