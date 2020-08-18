@@ -1,0 +1,3 @@
+[submodule "integration_utils"]
+	path = integration_utils
+	url = https://github.com/hlopikit/integration_utils
