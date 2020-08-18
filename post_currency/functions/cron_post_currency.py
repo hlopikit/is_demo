@@ -26,19 +26,24 @@ def cron_post_currency():
         response_date = cb_response.find_all('valcurs')[0].attrs['date']
         formatted_response_date = response_date[0:2] + '/' + response_date[3:5] + '/' + response_date[6:10]
 
+        message = ''
+
         if formatted_response_date != cb_check_time:
-            message = 'Нет курсов валют на эту дату'
-        else:
-            needed_currencies = ['USD','EUR']
-            message = ''
+            message += 'Нет курсов валют на завтра.\nПоказаны курсы валют на сегодня.\n\n'
+            response_date = 'сегодня'
 
-            currencies = cb_response.find_all("valute")
-            for currency in currencies:
-                if currency.charcode.text in needed_currencies:
-                    message += currency.nominal.text + ' ' + currency.find('name').text + ' = ' + currency.value.text + ' руб.\n'
+        needed_currencies = ['USD','EUR']
+        currency_message = ''
 
-            if not message:
-                message = 'Ни одна из необходимых валют не доступна'
+        currencies = cb_response.find_all("valute")
+        for currency in currencies:
+            if currency.charcode.text in needed_currencies:
+                currency_message += currency.nominal.text + ' ' + currency.find('name').text + ' = ' + currency.value.text + ' руб.\n'
+
+        if not currency_message:
+            currency_message = 'Ни одна из необходимых валют не доступна'
+
+        message += currency_message
     else:
         message = 'Ошибка получения данных от cbr.ru'
 
