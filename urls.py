@@ -19,10 +19,13 @@ from django.urls import path, include
 from post_currency.views import *
 from django.conf.urls.static import static
 
+from start.views.start import start
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', index),
+    path('', start),
+    path('tasks/', include('tasks.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

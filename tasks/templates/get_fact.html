@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.js"></script>
+</head>
+<body>
+{#<form action="." method="get">#}
+{#    <input type="number" name="user_id" value=""><input type="submit">#}
+{#</form>#}
+{#<h2>Работы пользователя с id={{ user_id }}</h2>#}
+<script>
+    window.result =
+    {{ result|safe }}
+    var gridOptions = {
+        defaultColDef: {
+            //editable: true,
+            floatingFilter: true,
+            resizable: true,
+            sortable: true,
+            filter: true,
+        },
+        columnDefs: [
+            {headerName: "Дата", field: "date", rowGroup: true, hide: true},
+            {headerName: "Проект", field: "project_name", rowGroup: true, hide: true},
+            {headerName: "id задачи", field: "task_id"},
+            {headerName: "задача", field: "task_name", editable: true},
+
+            {headerName: "Время", field: "time", type: 'numberValue'},
+            {headerName: "Сотрудник", field: "user_name", rowGroup: true},
+            {#{headerName: "Model", field: "model"},#}
+            {#{headerName: "Price", field: "price"}#}
+        ],
+        rowData: window.result,
+        columnTypes: {numberValue: {aggFunc: 'sum'}},
+        sideBar: true,
+        //groupMultiAutoColumn: true,
+        rowGroupPanelShow: 'always',
+
+    };
+
+
+    // setup the grid after the page has finished loading
+    document.addEventListener('DOMContentLoaded', function () {
+        var gridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(gridDiv, gridOptions);
+    });
+</script>
+<div id="myGrid" style="height: 600px; width:100%;" class="ag-theme-alpine"></div>
+
+<div class="table-responsive">
+    <table class="table">
+        {% for date, r in dates.items %}
+            <tr>
+                <td colspan="3"><b>{{ date }} = {{ r.sum }}</b></td>
+            </tr>
+            {% for r in r.records %}
+                <tr>
+                    <td>{{ r.task_id }}</td>
+                    <td>{{ r.task_name }}</td>
+                    <td>{{ r.project_id }}</td>
+                    <td>{{ r.project_name }}</td>
+                    <td>{{ r.date }}</td>
+                    <td>{{ r.description }}</td>
+                    <td>{{ r.time }}</td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
