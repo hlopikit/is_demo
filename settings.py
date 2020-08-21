@@ -165,5 +165,4 @@ if not APP_SETTINGS:
         # application_bitrix_client_id='',
         # application_bitrix_client_secret='',
         application_index_path='/',
-        bitrix_events_plan=[]
     )

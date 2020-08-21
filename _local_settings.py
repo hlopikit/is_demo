@@ -15,7 +15,6 @@ APP_SETTINGS = LocalSettingsClass(
     application_bitrix_client_id='local.5f3e7d07b03783.01669857',
     application_bitrix_client_secret='VjIgCTk8PccYnJ4I25hJb1vdoVfncvQh4gmeZEHXZPE3rm5eGc',
     application_index_path='/',
-    bitrix_events_plan=[]
 )
 
 
