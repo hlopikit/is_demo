@@ -26,6 +26,7 @@ urlpatterns = [
 
     path('', start),
     path('tasks/', include('tasks.urls')),
+    path('ones/', include('ones_fresh_unf_with_b24.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'integration_utils.its_utils.app_gitpull',
     'start',
     'tasks',
+    'ones_fresh_unf_with_b24',
 ]
 
 MIDDLEWARE = [

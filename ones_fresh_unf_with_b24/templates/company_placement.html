@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h2>В Б24 ({{ company.TITLE }}) <-> в 1С  <span id="found_partner"></span></h2>
+{% if not guid %}
+    <div class="no_guid" style="color: red; font-weight: bold">
+        Связь с компанией в 1С НЕ УСТАНОВЛЕНА !
+    </div>
+{% endif %}
+
+{% if guid %}
+    <iframe style="width: 100%; height: 1000px" id="iframe"
+            src="{{ unf_base_url }}#e1cib/data/Справочник.Контрагенты?ref={{ guid }}"></iframe>
+{% else %}
+    <iframe style="width: 100%; height: 1000px"
+            src="{{ unf_base_url }}#e1cib/list/Справочник.Контрагенты"></iframe>
+{% endif %}
+
+
+</body>
+
+</html>
