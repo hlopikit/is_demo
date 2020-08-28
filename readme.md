@@ -5,9 +5,13 @@ https://t.me/bitrix24apps
 
 
 Запуск 
+
 git clone https://github.com/hlopikit/is_demo.git
+
 git submodule init
+
 git submodule update
+
 
 
 Подготовка окружения для пустого windows
