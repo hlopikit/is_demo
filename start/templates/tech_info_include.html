@@ -1,0 +1,19 @@
+<code>
+
+        <h2>Информация для разработчика</h2>
+
+        APP_SETTINGS<br/><br/>
+        Приложение для портала: {{ app_settings.portal_domain }}</code><br/>
+        Ищем приложеие здесь : {{ app_settings.portal_domain }}/devops/list/<br/>
+        client_id: {{ app_settings.application_bitrix_client_id }}<br/>
+        client_secret: {{ app_settings.application_bitrix_client_secret }}<br/>
+
+
+        path: {{ request.path }}<br/><br/>
+        method: {{ request.method }}<br/><br/>
+        GET: {{ request.GET }}<br/><br/>
+        POST: {{ request.POST }}<br/><br/>
+        COOKIES: {{ request.COOKIES }}<br/><br/>
+        headers: {{ request.headers }}<br/><br/>
+
+    </code>
