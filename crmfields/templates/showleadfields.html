@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>СЕЙЧАС МЫ БУДЕМ ПОКАЗВАТЬ ПОЛЯ</title>
+</head>
+<body>
+<code>
+        <h1>СЕЙЧАС МЫ БУДЕМ ПОКАЗВАТЬ ПОЛЯ</h1>
+        <table>
+            <thead>
+                <td>
+                    ID
+                </td>
+                <td>
+                    title
+                </td>
+                <td>
+                    type
+                </td>
+                <td>
+                    isRequired
+                </td>
+                <td>
+                    isReadOnly
+                </td>
+                <td>
+                    isImmutable
+                </td>
+                <td>
+                    isMultiple
+                </td>
+                <td>
+                    isDynamic
+                </td>
+            </thead>
+            {% for k, v in res.items %}
+            <tr>
+                <td>
+                    {{ k }}
+                </td>
+                <td>
+                    {{ v.title }}
+                </td>
+                <td>
+                    {{ v.type }}
+                </td>
+                <td>
+                    {{ v.isRequired }}
+                </td>
+                <td>
+                    {{ v.isReadOnly }}
+                </td>
+                <td>
+                    {{ v.isImmutable }}
+                </td>
+                <td>
+                    {{ v.isMultiple }}
+                </td>
+                <td>
+                    {{ v.isDynamic }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+</code>
+</body>
+</html>

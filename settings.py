@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'start',
     'tasks',
     'ones_fresh_unf_with_b24',
+    'crmfields',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +147,10 @@ STATICFILES_FINDERS = (
 
 from integration_utils.its_utils.mute_logger import MuteLogger
 ilogger = MuteLogger()
+
+
+
+
 
 # local settings
 try:
