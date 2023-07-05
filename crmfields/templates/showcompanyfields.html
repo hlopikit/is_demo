@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "css/style.css" %}" />
+  <title>ПОЛЯ КОМПАНИЙ</title>
+</head>
+<body>
+<code>
+        <div class="header">
+             <h1>Анализ текстовых полей сущности "Компании"</h1>
+            <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+        </div>
+        <h3>Количество полей: {{ quantity_fields }}</h3>
+        <table>
+            <thead>
+                <td>
+                    ID
+                </td>
+                <td>
+                    title
+                </td>
+                <td>
+                    type
+                </td>
+                <td>
+                    isRequired
+                </td>
+                <td>
+                    isReadOnly
+                </td>
+                <td>
+                    isImmutable
+                </td>
+                <td>
+                    isMultiple
+                </td>
+                <td>
+                    isDynamic
+                </td>
+            </thead>
+            {% for k, v in res.items %}
+                <tr>
+                    <td>
+                        {{ k }}
+                    </td>
+                <td>
+                    {% if v.filterLabel == None %}
+                        <div>{{  v.title }}</div>
+                    {% else %}
+                        <div>{{  v.filterLabel }}</div>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ v.type }}
+                </td>
+                <td>
+                    {{ v.isRequired }}
+                </td>
+                <td>
+                    {{ v.isReadOnly }}
+                </td>
+                <td>
+                    {{ v.isImmutable }}
+                </td>
+                <td>
+                    {{ v.isMultiple }}
+                </td>
+                <td>
+                    {{ v.isDynamic }}
+                </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+</code>
+</body>
+</html>
