@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Анализ текстовых полей сущности "Контакты"</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <div class="header">
+    <h1>Анализ текстовых полей сущности "Контакты"</h1>
+    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+  </div>
+  <h2>Всего полей контактов: {{ len_res }}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Тип</th>
+        <th>Обязательное</th>
+        <th>Только для чтения</th>
+        <th>Неизменяемое</th>
+        <th>Множественное</th>
+        <th>Динамическое</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k, v in res.items %}
+      <tr>
+        <td>{{ k }}</td>
+        <td>{% if v.filterLabel %}{{ v.filterLabel }}{% else %}{{ v.title }}{% endif %}</td>
+        <td>{{ v.type }}</td>
+        <td>{{ v.isRequired }}</td>
+        <td>{{ v.isReadOnly }}</td>
+        <td>{{ v.isImmutable }}</td>
+        <td>{{ v.isMultiple }}</td>
+        <td>{{ v.isDynamic }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
