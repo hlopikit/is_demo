@@ -172,3 +172,5 @@ if not APP_SETTINGS:
         # application_bitrix_client_secret='',
         application_index_path='/',
     )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
