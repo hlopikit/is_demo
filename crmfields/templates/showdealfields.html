@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Поля для сущности "Сделка"</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<code>
+         <div class="header">
+        <h1>Поля для сущности "Сделка"</h1>
+        <h2>Всего найдено {{ total_value }} полей включая пользовательские поля</h2>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+         </div>
+        <table>
+            <thead>
+                <td>
+                    ID
+                </td>
+                <td>
+                    title
+                </td>
+                <td>
+                    type
+                </td>
+                <td>
+                    isRequired
+                </td>
+                <td>
+                    isReadOnly
+                </td>
+                <td>
+                    isImmutable
+                </td>
+                <td>
+                    isMultiple
+                </td>
+                <td>
+                    isDynamic
+                </td>
+            </thead>
+            {% for k, v in res.items %}
+            <tr>
+                <td>
+                    {{ k }}
+                </td>
+                <td>
+                    {% if v.filterLabel == None %}
+                    {{ v.title }}
+                    {% else %}
+                    {{v.filterLabel}}
+                    {% endif %}
+
+                </td>
+                <td>
+                    {{ v.type }}
+                </td>
+                <td>
+                    {{ v.isRequired }}
+                </td>
+                <td>
+                    {{ v.isReadOnly }}
+                </td>
+                <td>
+                    {{ v.isImmutable }}
+                </td>
+                <td>
+                    {{ v.isMultiple }}
+                </td>
+                <td>
+                    {{ v.isDynamic }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+</code>
+</body>
+</html>

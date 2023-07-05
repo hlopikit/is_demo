@@ -137,13 +137,27 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ENTRY_FILE_UPLOADING_FOLDER = os.path.join(MEDIA_ROOT, 'uploaded_entrie_files')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'is_demo',  # Or path to database file if using sqlite3.
+#         'USER': 'postgres',  # Not used with sqlite3.
+#         'PASSWORD': '123456',  # Not used with sqlite3.
+#         'HOST': 'localhost',
+#     },
+# }
+
 
 from integration_utils.its_utils.mute_logger import MuteLogger
 ilogger = MuteLogger()
@@ -172,3 +186,5 @@ if not APP_SETTINGS:
         # application_bitrix_client_secret='',
         application_index_path='/',
     )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
