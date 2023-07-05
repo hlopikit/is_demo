@@ -7,3 +7,4 @@ from django.conf import settings
 def start(request):
     app_settings = settings.APP_SETTINGS
     return render(request, 'start_page.html', locals())
+#test
