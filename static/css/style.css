@@ -1,0 +1,38 @@
+table {
+      border-collapse: collapse;
+      width: 100%;
+}
+
+thead, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+}
+
+thead{
+      background-color: #f2f2f2;
+}
+
+h1, h2 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+}
+
+.header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+}
+
+.header h1 {
+      margin: 0;
+}
+
+.header button {
+      width: 100px;
+      height: 30px;
+      margin-right: 20px;
+      margin-left: 10px;
+      border-radius: 4px;
+
+}

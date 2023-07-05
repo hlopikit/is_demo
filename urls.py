@@ -24,7 +24,7 @@ from start.views.start import start
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', start),
+    path('', start, name='start'),
     path('tasks/', include('tasks.urls')),
     path('ones/', include('ones_fresh_unf_with_b24.urls')),
     path('crmfields/', include('crmfields.urls')),

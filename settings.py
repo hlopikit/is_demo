@@ -33,7 +33,7 @@ PROJECT_PATH = os.path.dirname(__file__).replace('\\','/')
 SECRET_KEY = 'UxWXNk8hFEJYUkstPtBdtNgvqKfOFbME'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -137,8 +137,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ENTRY_FILE_UPLOADING_FOLDER = os.path.join(MEDIA_ROOT, 'uploaded_entrie_files')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -154,21 +156,23 @@ ilogger = MuteLogger()
 
 # local settings
 try:
-    from local_settings import *
+    from _local_settings import *
 except ImportError:
     from warnings import warn
 
     warn('create local_settings.py')
 
-if not APP_SETTINGS:
-    from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
-    APP_SETTINGS = LocalSettingsClass(
-        # portal_domain='',
-        app_domain='is_demo.it-solution.ru',
-        app_name='post_currency',
-        salt='df897hynj4b34u804b5n45bkl4b',
-        secret_key='sfjbh40989034nk4j4389tfj',
-        # application_bitrix_client_id='',
-        # application_bitrix_client_secret='',
-        application_index_path='/',
-    )
+# if not APP_SETTINGS:
+#     from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
+#     APP_SETTINGS = LocalSettingsClass(
+#         # portal_domain='',
+#         app_domain='is_demo.it-solution.ru',
+#         app_name='post_currency',
+#         salt='df897hynj4b34u804b5n45bkl4b',
+#         secret_key='sfjbh40989034nk4j4389tfj',
+#         # application_bitrix_client_id='',
+#         # application_bitrix_client_secret='',
+#         application_index_path='/',
+#     )
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
