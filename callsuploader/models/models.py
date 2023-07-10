@@ -53,7 +53,7 @@ class CallInfo(models.Model):
             "CALL_ID": self.call_id,
             "USER_ID": self.user_id,
             "DURATION": self.duration,
-            "RECORD_URL": f'{settings.APP_SETTINGS.app_domain}/media/{self.record_url}',
+            "RECORD_URL": f'https://{settings.APP_SETTINGS.app_domain}/media/{self.record_url}',
             "ADD_TO_CHAT": self.add_to_chat,
         })
 
