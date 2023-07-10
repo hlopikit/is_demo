@@ -8,4 +8,3 @@ def show_deal_fields(request):
     res = but.call_api_method("crm.deal.fields")['result']
     total_value = len(res)
     return render(request, 'showdealfields.html', locals())
-

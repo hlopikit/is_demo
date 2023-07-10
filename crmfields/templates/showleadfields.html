@@ -1,69 +1,45 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>СЕЙЧАС МЫ БУДЕМ ПОКАЗВАТЬ ПОЛЯ</title>
+  <title>Анализ текстовых полей сущности "Лиды"</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-<code>
-        <h1>СЕЙЧАС МЫ БУДЕМ ПОКАЗВАТЬ ПОЛЯ</h1>
-        <table>
-            <thead>
-                <td>
-                    ID
-                </td>
-                <td>
-                    title
-                </td>
-                <td>
-                    type
-                </td>
-                <td>
-                    isRequired
-                </td>
-                <td>
-                    isReadOnly
-                </td>
-                <td>
-                    isImmutable
-                </td>
-                <td>
-                    isMultiple
-                </td>
-                <td>
-                    isDynamic
-                </td>
-            </thead>
-            {% for k, v in res.items %}
-            <tr>
-                <td>
-                    {{ k }}
-                </td>
-                <td>
-                    {{ v.title }}
-                </td>
-                <td>
-                    {{ v.type }}
-                </td>
-                <td>
-                    {{ v.isRequired }}
-                </td>
-                <td>
-                    {{ v.isReadOnly }}
-                </td>
-                <td>
-                    {{ v.isImmutable }}
-                </td>
-                <td>
-                    {{ v.isMultiple }}
-                </td>
-                <td>
-                    {{ v.isDynamic }}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-
-</code>
+  <div class="header">
+    <h1>Анализ текстовых полей сущности "Лиды"</h1>
+    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+  </div>
+  <h2>Всего полей контактов: {{ len_res }}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Тип</th>
+        <th>Обязательное</th>
+        <th>Только для чтения</th>
+        <th>Неизменяемое</th>
+        <th>Множественное</th>
+        <th>Динамическое</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k, v in res.items %}
+      <tr>
+        <td>{{ k }}</td>
+        <td>{{ v.title }}</td>
+        <td>{{ v.type }}</td>
+        <td>{{ v.isRequired }}</td>
+        <td>{{ v.isReadOnly }}</td>
+        <td>{{ v.isImmutable }}</td>
+        <td>{{ v.isMultiple }}</td>
+        <td>{{ v.isDynamic }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </body>
 </html>

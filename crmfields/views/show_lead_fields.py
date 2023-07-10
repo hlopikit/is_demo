@@ -10,11 +10,11 @@ from integration_utils.its_utils.app_get_params import get_params_from_sources
 
 from django.conf import settings
 
-
 @main_auth(on_cookies=True)
 def show_lead_fields(request):
     but = request.bitrix_user_token
     res = but.call_api_method("crm.lead.fields")['result']
+    len_res = len(res)
     return render(request, 'showleadfields.html', locals())
 
     # lines used in other view
