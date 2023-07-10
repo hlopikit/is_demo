@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'tasks',
     'ones_fresh_unf_with_b24',
     'crmfields',
+    'callsuploader'
 ]
 
 MIDDLEWARE = [
@@ -121,7 +122,7 @@ from integration_utils.its_utils.mute_logger import MuteLogger
 ilogger = MuteLogger()
 
 
-
+BASE_DOMAIN
 
 
 # local settings

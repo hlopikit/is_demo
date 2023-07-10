@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Загрузка звонка (.mp3) на портал Битрикс24</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    .h122 {
+      margin: 220px;
+    }
+
+    .form122 {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+    }
+
+    .form-group122 {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input122[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      }
+
+      function goBack() {
+        window.history.back();
+      }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1 class="h122">Загрузка звонка (.mp3) на портал Битрикс24</h1>
+    <button onclick="goBack()">Назад</button>
+  </div>
+
+  <form class="form122" action="{% url 'register_call' %}" method="POST" enctype="multipart/form-data">
+      <h2>Регистрация звонка</h2>
+    {% csrf_token %}
+    <div class="form-group122">
+      {{ form.as_p }}
+    </div>
+    <p><input class="input122" type="submit" value="Сохранить звонок"></p>
+  </form>
+  <script src="//api.bitrix24.com/api/v1/"></script>
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
