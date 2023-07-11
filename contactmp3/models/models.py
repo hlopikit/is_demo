@@ -1,7 +1,7 @@
-from django.conf import settings
 from django.db import models
+from mutagen.mp3 import MP3
 
-
+from local_settings import NGROK_URL
 
 
 class NumberChoicesType(models.IntegerChoices):
@@ -35,7 +35,6 @@ class CallInfo(models.Model):
                 f'Время: {selfs.call_date}')
 
     def telephony_externalcall_register(self, but):
-        from mutagen.mp3 import MP3
         res = but.call_api_method("telephony.externalcall.register", {
             "USER_PHONE_INNER": self.user_phone,
             "USER_ID": self.user_id,
@@ -53,7 +52,7 @@ class CallInfo(models.Model):
             "CALL_ID": self.call_id,
             "USER_ID": self.user_id,
             "DURATION": self.duration,
-            "RECORD_URL": f'https://{settings.APP_SETTINGS.app_domain}/media/{self.record_url}',
+            "RECORD_URL": f'{NGROK_URL}/media/{self.record_url}',
             "ADD_TO_CHAT": self.add_to_chat,
         })
 

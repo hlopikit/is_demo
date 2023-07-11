@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'tasks',
     'ones_fresh_unf_with_b24',
     'crmfields',
-    'callsuploader'
+    'contactmp3',
+    'duplicatefinder',
 ]
 
 MIDDLEWARE = [
@@ -110,17 +111,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ENTRY_FILE_UPLOADING_FOLDER = os.path.join(MEDIA_ROOT, 'uploaded_entrie_files')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+
 from integration_utils.its_utils.mute_logger import MuteLogger
 ilogger = MuteLogger()
-
 
 
 # local settings
@@ -134,14 +138,14 @@ except ImportError:
 if not APP_SETTINGS:
     from integration_utils.bitrix24.local_settings_class import LocalSettingsClass
     APP_SETTINGS = LocalSettingsClass(
-        # portal_domain='',
+        portal_domain='',
         app_domain='is_demo.it-solution.ru',
         app_name='post_currency',
         salt='df897hynj4b34u804b5n45bkl4b',
         secret_key='sfjbh40989034nk4j4389tfj',
-        # application_bitrix_client_id='',
-        # application_bitrix_client_secret='',
+        application_bitrix_client_id='',
+        application_bitrix_client_secret='',
         application_index_path='/',
     )
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
