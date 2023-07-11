@@ -28,8 +28,9 @@ def search_manager(request):
             if int(res[0]['UF_HEAD']) != 0 and int(res[0]['UF_HEAD']) != int(user_id_dict[name]):
                 manager_dict[name].append(int(res[0]['UF_HEAD']))
             else:
-            #####РЕАЛИЗОВАТЬ ПОИСК РУКОВОДИТЕЛЯ В ВЫШЕСТОЯЩИХ КОМПАНИЯХ
-        ######С ПОМОЩЬЮ РЕКУРСИВНОГО ПОИСКА!!!!!!!!!!!
+                pass
+               ####РЕАЛИЗОВАТЬ ПОИСК РУКОВОДИТЕЛЯ В ВЫШЕСТОЯЩИХ КОМПАНИЯХ
+            ######С ПОМОЩЬЮ РЕКУРСИВНОГО ПОИСКА!!!!!!!!!!!
     print(manager_dict)
 
     return render(request, 'searchmanager.html', locals())
