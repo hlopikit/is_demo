@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'crmfields',
     'contactmp3',
     'duplicatefinder',
+    'usermanager',
 ]
 
 MIDDLEWARE = [

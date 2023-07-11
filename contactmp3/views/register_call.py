@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 from ..forms import CallInfoForm
-from ..models import CallInfo
 
 
 @main_auth(on_cookies=True)
