@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from pprint import pprint
+
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 from .utils import find_manager
 
@@ -9,58 +9,65 @@ def search_manager(request):
     but = request.bitrix_user_token
 
     # Создаём структуры данных для хранения значений
-    users = but.call_list_method('user.get')
-    user_departments = dict()
-    user_id_dict = dict()
-    id_user_lst = list()
+    user_dict = dict()
+    department_info = dict()
     manager_dict = dict()
-    first_and_last_name_manager = list()
 
-    # Получаем пользователей (имя, фамилию, ID, ID их подразделения)
+    users = but.call_list_method('user.get')
     for user in users:
-        user_departments[f'{user["NAME"]} {user["LAST_NAME"]}'] = \
-            user["UF_DEPARTMENT"]
-        manager_dict[f'{user["NAME"]} {user["LAST_NAME"]}'] = []
-        user_id_dict[f'{user["NAME"]} {user["LAST_NAME"]}'] = int(user["ID"])
-        id_user_lst.append(user["ID"])
+        user_dict[user['ID']] = {
+            'NAME': user['NAME'],
+            'LAST_NAME': user['LAST_NAME'],
+            'UF_DEPARTMENT': user['UF_DEPARTMENT']
+        }
+        manager_dict[f'{user["ID"]}'] = []
+
+    c = 0
 
     res_department = but.call_list_method('department.get')
-    print(res_department)
+    for department in res_department:
+        if 'PARENT' not in department:
+            department_info[department['ID']] = {
+                'UF_HEAD': department['UF_HEAD']
+            }
+        elif 'UF_HEAD' not in department:
+            department_info[department['ID']] = {
+                'PARENT': department['PARENT']
+            }
+        else:
+            department_info[department['ID']] = {
+                'UF_HEAD': department['UF_HEAD'],
+                'PARENT': department['PARENT']
+            }
+
     # Получаем ID начальников пользователей, которые были найдены ранее
-    for name, department in user_departments.items():
-        for dp in department:
+    for user_id, value in user_dict.items():
+        for dp in value['UF_DEPARTMENT']:
             for i in res_department:
-                if i['ID'] == dp:
+                if int(i['ID']) == dp:
                     res = i
-            print(dp)
-            res = but.call_api_method('department.get', {"ID": dp})['result']
-            print(res)
-            if 'UF_HEAD' in res[0]:
-                if int(res[0]['UF_HEAD']) != 0 and int(res[0]['UF_HEAD']) != \
-                        int(user_id_dict[name]):
-                    manager_dict[name].append(int(res[0]['UF_HEAD']))
-                else:
-                    manager_dict[name].append(find_manager(
-                        but, res, int(user_id_dict[name])))
-            else:
-                manager_dict[name].append(find_manager(
-                    but, res, int(user_id_dict[name])))
+                    if 'UF_HEAD' in res:
+                        if int(res['UF_HEAD']) != 0 and int(res['UF_HEAD']) != \
+                                int(user_id):
+                            manager_dict[user_id].append(int(res['UF_HEAD']))
+                        else:
+                            manager_dict[user_id].append(find_manager(
+                                but, [res], int(user_id), res_department))
+                            c += 1
+                    else:
+                        manager_dict[user_id].append(find_manager(
+                            but, [res], int(user_id), res_department))
+                        c += 1
 
     for user, manager in manager_dict.items():
         manager_sorted = sorted(manager, key=lambda x: isinstance(x, int),
                                 reverse=True)
         manager_dict[user] = manager_sorted[0]
 
-    # Получаем имя и фамилию начальников
-    for manager in manager_dict.values():
-        res = but.call_api_method('user.get', {"ID": manager})['result'][0]
-        first_and_last_name_manager.append(f'{res["NAME"]} {res["LAST_NAME"]}')
-
-    final_list = [id_user_lst, list(manager_dict.keys()),
-                  list(manager_dict.values()), first_and_last_name_manager]
+    final_list = [list(manager_dict.keys()), [f'{user_dict[i]["NAME"]} {user_dict[i]["LAST_NAME"]}' for i in manager_dict.keys()],
+                  list(manager_dict.values()), [f'{user_dict[str(i)]["NAME"]} {user_dict[str(i)]["LAST_NAME"]}' for i in list(manager_dict.values())]]
     final_list = list(zip(*final_list))
 
     return render(request, 'searchmanager.html', context={
         'final_list': final_list,
-        'len_user': len(id_user_lst)
     })

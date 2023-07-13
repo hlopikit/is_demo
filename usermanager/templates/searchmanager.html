@@ -12,7 +12,6 @@
     <h1>Поиск начальника каждого пользователя портала</h1>
     <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
   </div>
-  <h2>Всего полей контактов: {{ len_res }}</h2>
     <table>
       <thead>
         <tr>
@@ -26,7 +25,7 @@
         {% for i in final_list %}
         <tr>
           <td>{{ i.0 }}</td>
-          <td>{{ i.1 }}</td>
+          <td><a href="https://pavelkovvv.bitrix24.ru/company/personal/user/{{ i.0 }}/" target="_blank">{{ i.1 }}</a> </td>
           <td>{{ i.2 }}</td>
           <td>{{ i.3 }}</td>
         </tr>
