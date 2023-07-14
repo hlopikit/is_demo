@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'tasks',
     'ones_fresh_unf_with_b24',
     'crmfields',
-    'callsuploader'
+    'callsuploader',
+    'duplicatefinder',
 ]
 
 MIDDLEWARE = [
@@ -112,6 +113,9 @@ ENTRY_FILE_UPLOADING_FOLDER = os.path.join(MEDIA_ROOT, 'uploaded_entrie_files')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
