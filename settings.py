@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'tasks',
     'ones_fresh_unf_with_b24',
     'crmfields',
-    'callsuploader'
+    'callsuploader',
+    'usermanager',
 ]
 
 MIDDLEWARE = [
