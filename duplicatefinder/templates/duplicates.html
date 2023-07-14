@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="header">
+        <h1>Найдены следующие дубликаты товаров на портале:</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+
+  <div>
+
+    <table>
+      <tr>
+        <th>Товар</th>
+        <th>Количество дубликатов</th>
+      </tr>
+      {% for v, k in res.items %}
+      <tr>
+        <td>{{ v }}</td>
+        <td>{{ k }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</body>
+</html>

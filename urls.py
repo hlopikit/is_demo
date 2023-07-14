@@ -28,7 +28,8 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
     path('ones/', include('ones_fresh_unf_with_b24.urls')),
     path('crmfields/', include('crmfields.urls')),
-    path('callsuploader/', include('callsuploader.urls')),
-
+    path('contactmp3/', include('contactmp3.urls')),
+    path('duplicatefinder/', include('duplicatefinder.urls')),
+    path('urlmanager/', include('usermanager.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
