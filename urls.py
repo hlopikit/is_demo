@@ -30,7 +30,7 @@ urlpatterns = [
     path('crmfields/', include('crmfields.urls')),
     path('callsuploader/', include('callsuploader.urls')),
     path('duplicatefinder/', include('duplicatefinder.urls')),
-
     path('urlmanager/', include('usermanager.urls')),
+    path('selectuser/', include('selectuser.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

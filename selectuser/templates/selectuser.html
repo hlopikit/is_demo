@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Получение информации о сотруднике портала</title>
+    <link rel="stylesheet" href="{% static 'css/selectuser.css' %}">
+</head>
+<body>
+  <div class="header">
+    <h1>Получение информации о сотруднике портала</h1>
+    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+  </div>
+<p class="text">Выберите сотрудника: <button class="select_user" name="user" type="submit" id="select_User">Выбор сотрудника</button></p>
+<form class="get_info" action="{% url 'select_user' %}" method="post">
+    <button disabled name="user" type="submit" id="infoButton">Получить информацию</button>
+</form>
+{% if table == True %}
+    <table>
+      <thead>
+        <tr>
+          <th>Поле</th>
+          <th>Информация</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for k, v in res.items %}
+        <tr>
+          {% if k == 'NAME' %}
+              <td>Имя</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'LAST_NAME' %}
+              <td>Фамилия</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'SECOND_NAME' %}
+              <td>Отчество</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'EMAIL' %}
+              <td>Почта</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'DATE_REGISTER' %}
+              <td>Дата регистрации на портале</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'PERSONAL_BIRTHDAY' %}
+              {% if v != '' %}
+                <td>Дата рождения</td>
+                <td>{{ v }}</td>
+              {% endif %}
+          {% endif %}
+          {% if k == 'PERSONAL_PHOTO' %}
+              <td>Фото профиля</td>
+              <td><img src="{{ v }}"></td>
+          {% endif %}
+          {% if k == 'PERSONAL_MOBILE' %}
+              <td>Номер мобильного телефона</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'PERSONAL_CITY' %}
+              <td>Город</td>
+              <td>{{ v }}</td>
+          {% endif %}
+          {% if k == 'WORK_POSITION' %}
+              <td>Должность в компании</td>
+              <td>{{ v }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endif %} 
+</body>
+<script src="//api.bitrix24.com/api/v1/"></script>
+<script src="/static/js/selectuser.js"></script>
+</html>

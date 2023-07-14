@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'callsuploader',
     'duplicatefinder',
     'usermanager',
+    'selectuser',
 ]
 
 MIDDLEWARE = [
