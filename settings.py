@@ -120,9 +120,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'selectuser/static'),
-# ]
+STATICFILES_DIRS = [
+     os.path.join(BASE_DIR, 'staticfiles'),
+]
 
 
 from integration_utils.its_utils.mute_logger import MuteLogger
