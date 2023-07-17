@@ -32,5 +32,7 @@ urlpatterns = [
     path('duplicatefinder/', include('duplicatefinder.urls')),
     path('urlmanager/', include('usermanager.urls')),
     path('selectuser/', include('selectuser.urls')),
+    path('company_on_map/', include('company_on_map.urls')),
+    path('robot/', include('robot_currency.urls', 'bitrix_robot_currency'))
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

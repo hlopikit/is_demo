@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'duplicatefinder',
     'usermanager',
     'selectuser',
+    'company_on_map',
+    'robot_currency'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +154,5 @@ if not APP_SETTINGS:
     )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DOMAIN = None

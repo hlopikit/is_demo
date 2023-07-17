@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+        <link rel="stylesheet" href="{% static "css/style.css" %}" />
+      <title>ПОЛЯ КОМПАНИЙ</title>
+        <style>
+            .c-button-submit {
+          min-width: 100px;
+          font-family: inherit;
+          appearance: none;
+          border: 0;
+          border-radius: 5px;
+          background: gray;
+          color: #fff;
+          padding: 8px 16px;
+          font-size: 1rem;
+          cursor: pointer;
+            margin: 5px;
+        }
+
+        .c-button-submit:hover {
+          background: grey;
+        }
+
+        .c-button-submit:focus {
+          outline: none;
+          box-shadow: 0 0 0 4px #cbd6ee;
+        }
+        .table {
+            width: 500px;
+        }
+        .oneTd {
+            min-width: 100px;
+        }
+        .twoTd {
+            min-width: 300px;
+        }
+        .text {
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        </style>
+    </head>
+    <body>
+        <code>
+                <div class="header">
+                     <h1>Выбор сотрудника</h1>
+                    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+                </div>
+                <div>
+                    <form action="{% url 'bitrix_robot_currency:install_robot' %}" method="POST">
+                        <button class="c-button">Установить</button>
+                    </form>
+
+                    <form action="{% url 'bitrix_robot_currency:uninstall_robot' %}" method="POST">
+                        <button class="c-button">Удалить</button>
+                    </form>
+                </div>
+        </code>
+    </body>
+    <script src="/static/js/select_user.js"></script>
+    <script src="//api.bitrix24.com/api/v1/"></script>
+</html>
