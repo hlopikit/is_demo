@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'selectuser',
     'company_on_map',
     'employeegrid',
-    'robot_currency'
+    'robot_currency',
     'allcompbizproc',
 ]
 
