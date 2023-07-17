@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'usermanager',
     'selectuser',
     'company_on_map',
+    'employeegrid',
+
 ]
 
 MIDDLEWARE = [

@@ -33,5 +33,6 @@ urlpatterns = [
     path('urlmanager/', include('usermanager.urls')),
     path('selectuser/', include('selectuser.urls')),
     path('company_on_map/', include('company_on_map.urls')),
+    path('employeegrid/', include('employeegrid.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

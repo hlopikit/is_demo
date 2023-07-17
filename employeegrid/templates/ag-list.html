@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.js"></script>
+</head>
+<body>
+
+<script>
+
+    window.result = {{ json_user_list|safe }}
+    var gridOptions = {
+        defaultColDef: {
+            //editable: true,
+            floatingFilter: true,
+            resizable: true,
+            sortable: true,
+            filter: true,
+        },
+        columnDefs: [
+            {headerName: "Сотрудник", field: "FULL_NAME", rowGroup: false, resizable: true, autoHeight: true,},
+            {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
+            {headerName: "Подразделение", field: "DEPARTMENTS", rowGroup: false, resizable: true, autoHeight: true, cellStyle: { 'white-space': 'pre' }},
+            {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
+            {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
+        ],
+        rowData: window.result,
+        columnTypes: {numberValue: {aggFunc: 'sum'}},
+        sideBar: true,
+        //groupMultiAutoColumn: true,
+        rowGroupPanelShow: 'always',
+        onGridReady: function(params) {
+            params.columnApi.autoSizeAllColumns();
+        }
+
+    };
+
+
+    // setup the grid after the page has finished loading
+    document.addEventListener('DOMContentLoaded', function () {
+        var gridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(gridDiv, gridOptions);
+
+    });
+</script>
+<button style="margin-bottom: 5px" onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+<div id="myGrid" style="height: 100vh; width: 100vw;" class="ag-theme-alpine"></div>
+
+
+{#<div class="table-responsive">#}
+{#    <table class="table">#}
+{#        {% for user in json_user_list %}#}
+{#                <tr>#}
+{#                    <td>#}
+{#                        {{ user.FULL_NAME }}#}
+{#                    </td>#}
+{#                    <td>#}
+{#                        {{ user.SUPERVISORS|join:'' }}#}
+{#                    </td>#}
+{##}
+{#                </tr>#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#</div>#}
+</body>
+</html>
