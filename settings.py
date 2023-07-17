@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'company_on_map',
     'employeegrid',
     'robot_currency'
+    'allcompbizproc',
 ]
 
 MIDDLEWARE = [
