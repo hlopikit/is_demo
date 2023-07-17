@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'usermanager',
     'selectuser',
     'company_on_map',
-    'company_on_map',
+    'employeegrid',
     'robot_currency'
 ]
 
@@ -155,5 +155,3 @@ if not APP_SETTINGS:
     )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DOMAIN = None

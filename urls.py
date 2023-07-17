@@ -34,5 +34,6 @@ urlpatterns = [
     path('selectuser/', include('selectuser.urls')),
     path('company_on_map/', include('company_on_map.urls')),
     path('robot/', include('robot_currency.urls', 'bitrix_robot_currency'))
+    path('employeegrid/', include('employeegrid.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
