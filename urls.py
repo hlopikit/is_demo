@@ -35,5 +35,6 @@ urlpatterns = [
     path('company_on_map/', include('company_on_map.urls')),
     path('robot/', include('robot_currency.urls', 'bitrix_robot_currency'))
     path('employeegrid/', include('employeegrid.urls')),
+    path('product_list_in_excel/', include('product_list_excel.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
