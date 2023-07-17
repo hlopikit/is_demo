@@ -47,7 +47,7 @@ def search_manager(request):
                 if int(i['ID']) == dp:
                     res = i
                     if 'UF_HEAD' in res:
-                        if int(res['UF_HEAD']) != 0 and int(res['UF_HEAD']) != \
+                        if int(res['UF_HEAD']) != 0 and int(res['UF_HEAD']) !=\
                                 int(user_id):
                             manager_dict[user_id].append(int(res['UF_HEAD']))
                         else:
@@ -64,8 +64,15 @@ def search_manager(request):
                                 reverse=True)
         manager_dict[user] = manager_sorted[0]
 
-    final_list = [list(manager_dict.keys()), [f'{user_dict[i]["NAME"]} {user_dict[i]["LAST_NAME"]}' for i in manager_dict.keys()],
-                  list(manager_dict.values()), [f'{user_dict[str(i)]["NAME"]} {user_dict[str(i)]["LAST_NAME"]}' for i in list(manager_dict.values())]]
+    final_list = [list(manager_dict.keys()),
+                  [f'{user_dict[i]["NAME"]} {user_dict[i]["LAST_NAME"]}'
+                   for i in manager_dict.keys()],
+                  list(manager_dict.values()),
+                  [f'{user_dict[str(i)]["NAME"]} '
+                   f'{user_dict[str(i)]["LAST_NAME"]}'
+                   if i != 'Непосредственного начальника не найдено' else
+                   'Непосредственного начальника не найдено'
+                   for i in manager_dict.values()]]
     final_list = list(zip(*final_list))
 
     return render(request, 'searchmanager.html', context={
