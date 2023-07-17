@@ -6,7 +6,8 @@ class BPForm(forms.ModelForm):
     class Meta:
         model = BizprocModel
         fields = []
-    BP = forms.ModelChoiceField(
+
+    bp = forms.ModelChoiceField(
         queryset=BizprocModel.objects.all(),
         to_field_name='process_id',
         required=True,

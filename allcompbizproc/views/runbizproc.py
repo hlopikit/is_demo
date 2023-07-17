@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from allcompbizproc.forms.selectBP import BPForm
+from allcompbizproc.forms.select_bp import BPForm
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 
 from allcompbizproc.models.bizprocmodel import BizprocModel
@@ -15,7 +15,7 @@ def run_bizproc(request):
     if request.method == 'POST':
         form = BPForm(request.POST)
         if form.is_valid():
-            cur_bp = form.cleaned_data['BP']
+            cur_bp = form.cleaned_data['bp']
         for company in companies_id:
             cur_bp.run_cur_bizproc(but, company['ID'])
     return render(request, 'allcompbizproc.html', context={'form': form})
