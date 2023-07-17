@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>КАРТА КОМПАНИЙ</title>
+    </head>
+    <body>
+        <code>
+            <div class="header">
+                     <h1>Карта компаний</h1>
+                    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+            </div>
+            <div id="map" style="width: 600px; height: 400px"></div>
+
+        </code>
+    </body>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=0bec9964-3c18-4c20-a49d-4843593e1110&lang=ru_RU" type="text/javascript"></script>
+    <script src="/static/js/map1.js"></script>
+    <script src="//api.bitrix24.com/api/v1/"></script>
+</html>

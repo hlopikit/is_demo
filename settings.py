@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'duplicatefinder',
     'usermanager',
     'selectuser',
+    'company_on_map',
 ]
 
 MIDDLEWARE = [
