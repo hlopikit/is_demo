@@ -1,4 +1,0 @@
-django
-django-mptt
-mutagen
-django-prettyjson
