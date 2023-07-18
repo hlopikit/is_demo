@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'usermanager',
     'selectuser',
     'company_on_map',
+    'product_list_excel',
 ]
 
 MIDDLEWARE = [
