@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'employeegrid',
     'robot_currency',
     'allcompbizproc',
+    'import_company_google'
 ]
 
 MIDDLEWARE = [
