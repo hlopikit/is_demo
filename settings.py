@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'employeegrid',
     'robot_currency',
     'allcompbizproc',
+    'product_list_excel',
 ]
 
 MIDDLEWARE = [

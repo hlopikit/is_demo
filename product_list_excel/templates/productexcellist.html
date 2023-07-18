@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #333;
+            padding: 10px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Добавлен отступ между хедером и формой */
+        }
+
+        .header button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .form122 {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form122 h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .form122 p {
+            text-align: center;
+        }
+
+        .input122 {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Выгрузить список товаров в excel-файл (.xlsx)</h2>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+    <form class="form122" action="{% url 'product_in_excel' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><input class="input122" type="submit" value="Скачать .xlsx файл"></p>
+    </form>
+</body>
+</html>
