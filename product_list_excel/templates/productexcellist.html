@@ -59,6 +59,7 @@
     </style>
 </head>
 <body>
+    {% include "top_menu.html" %}
     <div class="header">
         <h2>Выгрузить список товаров в excel-файл (.xlsx)</h2>
         <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>

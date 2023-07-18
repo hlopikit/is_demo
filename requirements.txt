@@ -3,3 +3,4 @@ django-mptt
 mutagen
 django-prettyjson
 psycopg2-binary
+openpyxl
