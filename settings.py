@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'robot_currency',
     'allcompbizproc',
     'product_list_excel',
+    'import_company_google'
 ]
 
 MIDDLEWARE = [
