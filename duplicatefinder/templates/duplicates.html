@@ -20,10 +20,10 @@
         <th>Товар</th>
         <th>Количество дубликатов</th>
       </tr>
-      {% for v, k in res.items %}
+      {% for name, count in res.items %}
       <tr>
-        <td>{{ v }}</td>
-        <td>{{ k }}</td>
+        <td>{{ name }}</td>
+        <td>{{ count }}</td>
       </tr>
       {% endfor %}
     </table>
