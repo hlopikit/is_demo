@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+  <title>{% block title %}Название приложения{% endblock title%}</title>
+  {% block styles %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+        <div class="header">
+            <h1>Название приложения</h1>
+            <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+        </div>
+    {% endblock header %}
+
+    {% block content %}
+    {% endblock content %}
+</body>
+{% block scripts %}
+{% endblock scripts %}
+</html>

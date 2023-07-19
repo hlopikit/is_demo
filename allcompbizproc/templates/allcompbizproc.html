@@ -1,8 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{% extends "base_app.html" %}
+
+{% block title %}
+    Запуск бизнес процесса по всем компаниям
+{% endblock %}
+
+{% block styles %}
     <style>
         /* Стили для обертки формы */
         .form-wrapper {
@@ -48,18 +50,20 @@
             background-color: #45a049;
         }
     </style>
-</head>
-<body>
-<button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
-{#<form action="" method="post">#}
-{#    <input type="submit" value="Запустить выбранный БП">#}
-{#</form>#}
- <div class="form-wrapper">
-<form action="{% url 'run' %}" method="post" class="form">
-    <h2>Запуск бизнес процесса по всем компаниям</h2>
-    {{ form.as_p }}
-    <input type="submit" value="Запустить выбранный БП">
-</form>
- </div>
-</body>
-</html>
+{% endblock %}
+
+{% block header %}
+    <div class="header">
+        <h1>Запуск бизнес процесса по всем компаниям</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="form-wrapper">
+        <form action="{% url 'run' %}" method="post" class="form">
+            {{ form.as_p }}
+            <input type="submit" value="Запустить выбранный БП">
+        </form>
+    </div>
+{% endblock %}

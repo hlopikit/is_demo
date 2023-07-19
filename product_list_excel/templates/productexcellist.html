@@ -1,8 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{% extends "base_app.html" %}
+
+{% block title %}
+    Выгрузить список товаров в excel-файл (.xlsx)
+{% endblock %}
+
+{% block styles %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,16 +59,18 @@
             border-radius: 5px;
         }
     </style>
-</head>
-<body>
-    {% include "top_menu.html" %}
+{% endblock %}
+
+{% block header %}
     <div class="header">
         <h2>Выгрузить список товаров в excel-файл (.xlsx)</h2>
         <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
     </div>
+{% endblock %}
+
+{% block content %}
     <form class="form122" action="{% url 'product_in_excel' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <p><input class="input122" type="submit" value="Скачать .xlsx файл"></p>
     </form>
-</body>
-</html>
+{% endblock %}

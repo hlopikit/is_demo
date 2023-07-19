@@ -1,12 +1,11 @@
-{% load static %}
+{% extends "base_app.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Загрузка звонка (.mp3) на портал Битрикс24</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <style>
+{% block title %}
+    Загрузка звонка (.mp3) на портал Битрикс24
+{% endblock %}
+
+{% block styles %}
+    <style>
     .h122 {
       margin: 220px;
     }
@@ -41,26 +40,31 @@
         window.history.back();
       }
   </style>
-</head>
-<body>
-  <div class="header">
-    <h1 class="h122">Загрузка звонка (.mp3) на портал Битрикс24</h1>
-    <button onclick="goBack()">Назад</button>
-  </div>
+{% endblock %}
 
-  <form class="form122" action="{% url 'register_call' %}" method="POST" enctype="multipart/form-data">
-      <h2>Регистрация звонка</h2>
-    {% csrf_token %}
-    <div class="form-group122">
-      {{ form.as_p }}
+{% block header %}
+    <div class="header">
+        <h1 class="h122">Загрузка звонка (.mp3) на портал Битрикс24</h1>
+        <button onclick="goBack()">Назад</button>
     </div>
-    <p><input class="input122" type="submit" value="Сохранить звонок"></p>
-  </form>
-  <script src="//api.bitrix24.com/api/v1/"></script>
-  <script>
-    function goBack() {
-      window.history.back();
-    }
-  </script>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <form class="form122" action="{% url 'register_call' %}" method="POST" enctype="multipart/form-data">
+        <h2>Регистрация звонка</h2>
+        {% csrf_token %}
+        <div class="form-group122">
+            {{ form.as_p }}
+        </div>
+        <p><input class="input122" type="submit" value="Сохранить звонок"></p>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="//api.bitrix24.com/api/v1/"></script>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+{% endblock %}

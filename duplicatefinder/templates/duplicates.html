@@ -1,32 +1,29 @@
-{% load static %}
+{% extends "base_app.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+{% block title %}
+    Найдены следующие дубликаты товаров на портале
+{% endblock %}
+
+{% block header %}
     <div class="header">
         <h1>Найдены следующие дубликаты товаров на портале:</h1>
         <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
     </div>
+{% endblock %}
 
-  <div>
-
-    <table>
-      <tr>
-        <th>Товар</th>
-        <th>Количество дубликатов</th>
-      </tr>
-      {% for name, count in res.items %}
-      <tr>
-        <td>{{ name }}</td>
-        <td>{{ count }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-</body>
-</html>
+{% block content %}
+    <div>
+        <table>
+          <tr>
+            <th>Товар</th>
+            <th>Количество дубликатов</th>
+          </tr>
+          {% for name, count in res.items %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>{{ count }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+    </div>
+{% endblock %}

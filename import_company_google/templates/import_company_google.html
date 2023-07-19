@@ -1,29 +1,19 @@
-{% load static %}
+{% extends "base_app.html" %}
 
-<!DOCTYPE html>
+{% block title %}
+    Импорт компаний из Google Таблицы
+{% endblock %}
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static "css/style.css" %}" />
-  <title>ПОЛЯ КОМПАНИЙ</title>
-</head>
-<body>
-<code>
-        <div class="header">
-             <h1>Импорт компаний из Google Таблицы</h1>
-            <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
-        </div>
-        <div class="notif">
-            {{ result }}
-        </div>
-        <form action="{% url 'import_company_google'%}" method="post">
-            <p class="text">Добавьте ссылку на google таблицы: <input type="text" name="link"></p>
-            <button class="c-button" type="submit">Получить</button>
-        </form>
+{% block header %}
+    <div class="header">
+        <h1>Импорт компаний из Google Таблицы</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
 
-<script src="//api.bitrix24.com/api/v1/"></script>
-</code>
-</body>
-
-</html>
+{% block content %}
+    <form action="{% url 'import_company_google'%}" method="post">
+        <p class="text">Добавьте ссылку на google таблицы: <input type="text" name="link"></p>
+        <button class="c-button" type="submit">Получить</button>
+    </form>
+{% endblock %}

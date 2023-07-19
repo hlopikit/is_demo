@@ -1,18 +1,18 @@
-{% load static %}
+{% extends "base_app.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Анализ текстовых полей сущности "Лиды"</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-  <div class="header">
-    <h1>Анализ текстовых полей сущности "Лиды"</h1>
-    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
-  </div>
-  <h2>Всего полей контактов: {{ len_res }}</h2>
+{% block title %}
+    Анализ текстовых полей сущности "Лиды"
+{% endblock %}
+
+{% block header %}
+    <div class="header">
+        <h1>Анализ текстовых полей сущности "Лиды"</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h2>Всего полей контактов: {{ len_res }}</h2>
   <table>
     <thead>
       <tr>
@@ -41,5 +41,4 @@
       {% endfor %}
     </tbody>
   </table>
-</body>
-</html>
+{% endblock %}

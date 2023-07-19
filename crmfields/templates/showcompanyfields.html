@@ -1,45 +1,44 @@
-{% load static %}
+{% extends "base_app.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="{% static "css/styles.css" %}" />
-  <title>ПОЛЯ КОМПАНИЙ</title>
-</head>
-<body>
-  <div class="header">
-    <h1>Анализ текстовых полей сущности "Компании"</h1>
-    <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
-  </div>
-  <h3>Количество полей: {{ quantity_fields }}</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Название</th>
-        <th>Тип</th>
-        <th>Обязательное</th>
-        <th>Только для чтения</th>
-        <th>Неизменяемое</th>
-        <th>Множественное</th>
-        <th>Динамическое</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for k, v in res.items %}
-      <tr>
-        <td>{{ k }}</td>
-        <td>{% if v.filterLabel == None %}<div>{{ v.title }}</div>{% else %}<div>{{ v.filterLabel }}</div>{% endif %}</td>
-        <td>{{ v.type }}</td>
-        <td>{{ v.isRequired }}</td>
-        <td>{{ v.isReadOnly }}</td>
-        <td>{{ v.isImmutable }}</td>
-        <td>{{ v.isMultiple }}</td>
-        <td>{{ v.isDynamic }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</body>
-</html>
+{% block title %}
+    Анализ текстовых полей сущности "Компании"
+{% endblock %}
+
+{% block header %}
+    <div class="header">
+        <h1>Анализ текстовых полей сущности "Компании"</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <h3>Количество полей: {{ quantity_fields }}</h3>
+    <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Обязательное</th>
+            <th>Только для чтения</th>
+            <th>Неизменяемое</th>
+            <th>Множественное</th>
+            <th>Динамическое</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for k, v in res.items %}
+          <tr>
+            <td>{{ k }}</td>
+            <td>{% if v.filterLabel == None %}<div>{{ v.title }}</div>{% else %}<div>{{ v.filterLabel }}</div>{% endif %}</td>
+            <td>{{ v.type }}</td>
+            <td>{{ v.isRequired }}</td>
+            <td>{{ v.isReadOnly }}</td>
+            <td>{{ v.isImmutable }}</td>
+            <td>{{ v.isMultiple }}</td>
+            <td>{{ v.isDynamic }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
