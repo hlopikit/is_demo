@@ -39,3 +39,39 @@ h1 {
     width: 85px;
     height: 30px;
 }
+.c-button {
+    min-width: 100px;
+    font-family: inherit;
+    appearance: none;
+    border: 0;
+    border-radius: 5px;
+    background: #4676d7;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.c-button:hover {
+    background: #1d49aa;
+}
+
+.c-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px #cbd6ee;
+}
+.field {
+    margin: 5px;
+}
+
+.text {
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.notif {
+    font-family: "Bauhaus 93";
+    margin: 5px;
+    color: darkgreen;
+}

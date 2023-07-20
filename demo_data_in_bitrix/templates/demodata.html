@@ -1,0 +1,21 @@
+{% extends "base_app.html" %}
+
+{% block title %}
+    Импорт демоданных из xlsx
+{% endblock %}
+
+{% block header %}
+    <div class="header">
+        <h1>Импорт демоданных из xlsx</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'excel'%}" method="post">
+        <h3>Добавить или ссылку на файл, или добавьте свой файл</h3>
+        <p class="text">Добавьте ссылку на скачивание xlsx: <input type="text" name="link"></p>
+        <p class="text">Добавить файл xlsx: <input id="input_file" type="file" name="file"></p>
+        <button class="c-button" type="submit">Отправить</button>
+    </form>
+{% endblock %}
