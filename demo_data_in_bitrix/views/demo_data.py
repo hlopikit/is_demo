@@ -24,6 +24,7 @@ def excel(request):
                 filename = f'media/{filename}'
             sheet_names = get_sheet_names(filename)
             for sheet_name in sheet_names:
+                but = request.bitrix_user_token
                 data = excel_to_dict(filename, sheet_name)
                 but.call_api_method("crm.item.batchImport", {"entityTypeId": str(OBJECT_CRM[sheet_name]),
                                                              "data": data})
