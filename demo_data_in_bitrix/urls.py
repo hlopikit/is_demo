@@ -6,4 +6,4 @@ from .views.demo_data import excel
 
 urlpatterns = [
                   path('excel/', excel, name='excel'),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ]
