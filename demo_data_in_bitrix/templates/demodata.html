@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'excel'%}" method="post">
+    <form action="{% url 'excel'%}" method="post" enctype="multipart/form-data">
         <h3>Добавить или ссылку на файл, или добавьте свой файл</h3>
         <p class="text">Добавьте ссылку на скачивание xlsx: <input type="text" name="link"></p>
         <p class="text">Добавить файл xlsx: <input id="input_file" type="file" name="file"></p>
