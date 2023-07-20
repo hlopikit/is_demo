@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'robot_currency',
     'allcompbizproc',
     'product_list_excel',
-    'import_company_google'
+    'import_company_google',
+    'demo_data_in_bitrix',
+
 ]
 
 MIDDLEWARE = [

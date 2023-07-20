@@ -37,6 +37,7 @@ urlpatterns = [
     path('employeegrid/', include('employeegrid.urls')),
     path('product_list_in_excel/', include('product_list_excel.urls')),
     path('allcompbizproc/', include('allcompbizproc.urls')),
-    path('import_company_google/',include('import_company_google.urls'))
+    path('import_company_google/',include('import_company_google.urls')),
+    path('demo_data_in_bitrix/', include('demo_data_in_bitrix.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
