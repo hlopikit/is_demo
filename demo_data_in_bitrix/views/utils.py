@@ -1,4 +1,7 @@
+import time
+
 from openpyxl import load_workbook
+import pandas as pd
 
 OBJECT_CRM = {"Лиды": 1,
               "Сделки": 2,
@@ -7,6 +10,67 @@ OBJECT_CRM = {"Лиды": 1,
               "Коммерческие предложения": 7,
               "Новые счета": 31}
 
+def add_origin_prefix(data, prefix):
+    """
+    В файле ексель(гугл) док мы делаем связку менжду страницами по полю ORIGIN_ID, т.к при импорте в Б24 мы получим новые ID сущностей.
+    Эта функая помогает делать уникальные ORIGIN_ID для единовремнного импорта демоданных
+    для всех записей добавляет префикс (Мы его возьмем как текущее время с микросекундами)
+    у все хаписей "10" стенет "1690205018.084936_10"
+    :param data:
+    :param prefix:
+    :return:
+    """
+    for d in data:
+        # Добавляем префикс для ORIGIN_ID
+        if d.get('ORIGIN_ID'):
+            d['ORIGIN_ID'] = "{}_{}".format(prefix, d.get('ORIGIN_ID'))
+    return data
+
+def make_links_from_origin(data, excel_field, b24_field, source_map, prefix):
+    # Принимает список из листов экселя
+    # заменяет excel_field=COMPANY_ORIGIN_ID на b24_field=COMPANY_ID учитывая предыдущую замену при импорте демоданных
+    # для создания правльной адресации на только что созданные сущности
+    for d in data:
+        # Добавляем префикс для ORIGIN_ID
+        if d.get(excel_field):
+            d[b24_field] = source_map["{}_{}".format(prefix, d.get(excel_field))]['ID']
+    return data
+
+def import_data_from_xls(filename, but):
+    # Принимает токен и excel файл с несколькоми страницами и загружает их в Битрикс24
+    #sheet_names = get_sheet_names(filename)
+    excel_file = pd.ExcelFile(filename)
+    # для всего пакета загрузки будет одинаковый префикс у ORIGIN_ID
+    load_origin_id_prefix = time.time()
+
+    if "Загружаем компании": #Всегда True
+        company_data = excel_file.parse('Компании').to_dict("records")
+        company_data = add_origin_prefix(company_data, load_origin_id_prefix)
+        but.call_api_method("crm.item.batchImport", {"entityTypeId": '4', "data": company_data})
+        companies = but.call_list_method('crm.company.list', {
+            "SELECT": ["ORIGIN_ID", "ID"],
+            "FILTER": {"%ORIGIN_ID": "{}_".format(load_origin_id_prefix)}})
+        # Используем прием конвертации в адресный dict https://it-solution.kdb24.ru/article/218199/
+        # после этого легко найдем companies_origin_id_dict['1690182208.5614886_7']['ID']
+        companies_origin_id_dict = {item['ORIGIN_ID']: item for item in companies}
+        for d in company_data:
+            # https://dev.1c-bitrix.ru/rest_help/crm/requisite/methods/crm_address_add.php
+            but.call_api_method("crm.address.add", {"fields": {
+                "TYPE_ID": "1",  # Фактический адрес?
+                "ENTITY_TYPE_ID": "4",  # 4 - для Компаний
+                "ENTITY_ID": companies_origin_id_dict[d['ORIGIN_ID']]['ID'],
+                "CITY": d["ADDRESS_CITY"],
+                "ADDRESS_1": d["ADDRESS"],
+            }})
+
+    if "Загружаем контакты":
+        contacts_data = excel_file.parse('Контакты').to_dict("records")
+        contacts_data = add_origin_prefix(contacts_data, load_origin_id_prefix)
+        contacts_data = make_links_from_origin(contacts_data, 'COMPANY_ORIGIN_ID', 'COMPANY_ID', companies_origin_id_dict, load_origin_id_prefix)
+        but.call_api_method("crm.item.batchImport", {"entityTypeId": '3', "data": contacts_data})
+
+
+    return
 
 def excel_to_dict(file_path, sheet_name):
     workbook = load_workbook(filename=file_path)

@@ -12,14 +12,11 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'excel'%}" method="post" class="import-form" enctype="multipart/form-data">
-        <h3>Добавить или ссылку на файл, или добавьте свой файл</h3>
-        <p class="text">Добавьте ссылку на скачивание xlsx: <input type="text" name="link"></p>
-        <p class="text">Добавить файл xlsx:</p>
-        <div class="file-input-wrapper">
-            <input id="input_file" type="file" name="file">
-            <label for="input_file" class="c-button">Выбрать файл</label>
-        </div>
+    <form action="{% url 'load_from_googledocs'%}" method="post" class="import-form" enctype="multipart/form-data">
+{#        <h3>Добавить или ссылку на файл, или добавьте свой файл</h3>#}
+        <p class="text">Добавьте ссылку на google таблицы: <input type="text" name="link"></p>
+        <span>Пример google таблицы https://docs.google.com/spreadsheets/d/1ZuKXEK0hwJyxFwGxoi77G0PaOh4Qg4SDZBNkHDws2iU/edit#gid=1891471437</span>
+
         <button class="c-button" type="submit">Отправить</button>
     </form>
 {% endblock %}
