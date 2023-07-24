@@ -1,0 +1,20 @@
+{% extends "base_app.html" %}
+
+{% block title %}
+    Приложение "Лучший звонок менеджера за день"
+{% endblock %}
+
+
+{% block header %}
+    <div class="header">
+        <h1>Приложение "Лучший звонок менеджера за день"</h1>
+        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'register_call' %}" method="POST" enctype="multipart/form-data">
+        <p>Кнопка №1</p>
+        <p>Кнопка №2</p>
+    </form>
+{% endblock %}

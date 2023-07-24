@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'import_company_google',
     'demo_data_in_bitrix',
 
+    'import_company_google',
+    'best_call_manager'
 ]
 
 MIDDLEWARE = [
