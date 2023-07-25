@@ -4,3 +4,9 @@ mutagen
 django-prettyjson
 psycopg2-binary
 openpyxl
+grpcio
+google
+googleapis-common-protos
+google-api
+pydub
+ffmpeg

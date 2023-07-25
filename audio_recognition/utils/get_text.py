@@ -8,7 +8,7 @@ from audio_recognition.utils.mp3_to_wav import wav_maker
 from audio_recognition.utils.build_n_get import build_request, recognition_response
 
 # Нужные ключи мы получили тут - https://software.tinkoff.ru/account/voicekit/keys/ и положили их в local_settings
-from _local_settings import ENDPOINT, API_KEY, SECRET_KEY
+from django.conf import settings
 
 
 def get_text():
@@ -17,8 +17,8 @@ def get_text():
        вспомогательную функцию recognition_response
     """
     wav_maker()
-    stub = stt_pb2_grpc.SpeechToTextStub(grpc.secure_channel(ENDPOINT, grpc.ssl_channel_credentials()))
-    metadata = authorization_metadata(API_KEY, SECRET_KEY, "tinkoff.cloud.stt")
+    stub = stt_pb2_grpc.SpeechToTextStub(grpc.secure_channel(settings.ENDPOINT, grpc.ssl_channel_credentials()))
+    metadata = authorization_metadata(settings.API_KEY, settings.SECRET_KEY, "tinkoff.cloud.stt")
     """Метод "Recognize" работает по принципу "загружаем аудио целиком -
        получаем ответ", полезен для распознавания аудиофайлов,
        остальные методы можно посмотреть тут - https://software.tinkoff.ru/docs/voicekit/stttutorial/
