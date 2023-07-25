@@ -1,0 +1,79 @@
+{% extends "base_app.html" %}
+{% load static %}
+{% block styles %}
+<style>
+        /* Стили для обертки формы */
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px;
+        }
+
+        /* Стили для формы */
+        .form {
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для заголовка формы */
+        .form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Стили для полей ввода */
+        .form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+        }
+
+        /* Стили для кнопки */
+        .form input {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Стили для кнопки при наведении */
+        .form input:hover {
+            background-color: #45a049;
+        }
+
+
+    </style>
+{% endblock %}
+{% block header %}
+    <div class="header">
+<h1>Распознавание голоса в аудио файле</h1>
+<button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+{% block content %}
+<h3>Наверняка вы заметили, что при загрузке звонка его содержимое разбирается на текст во вкладке детализации звонков</h3>
+    <h3>И так, если вы разработчик, и вам интересно как мы работаем с API Тинькова для того что бы разобрать аудио:</h3>
+    <ol>
+    <li>Откройте IDE и перейдите в папку utils приложения audio_recognition</li>
+    <li>Прочитайте документацию (все действия расписаны в самих файлах) + ReadMe в папке utils</li>
+    <li>Протестируйте работу приложения</li>
+    </ol>
+
+<div class="form-wrapper">
+    <form action="{% url 'show_info' %}" method="post" class="form">
+    <audio controls>
+        <source src="{% static 'audio/file_for_test.mp3' %}"  type="audio/mp3">
+    </audio>
+        <br>
+    <input type="submit" value="Распознать текст">
+    <p>{{ recognized_text }}</p>
+    </form>
+</div>
+
+{% endblock %}

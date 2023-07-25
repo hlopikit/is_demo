@@ -48,8 +48,11 @@ def import_data_from_xls(filename, but):
         company_data = add_origin_prefix(company_data, load_origin_id_prefix)
         methods = []
         for company in company_data:
+            # Создаем массив методов которые нам нужно выполнить в Битрикс24
+            # делаем просто 1 вызов = 1 компания
             methods.append(
                 ('crm.item.batchImport', {"entityTypeId": '4', "data": [company]}))
+        # Теперь когда мы набрали список методов, то можно их выполнить с помощью batch_api_call
         but.batch_api_call(methods)
 
         companies = but.call_list_method('crm.company.list', {
