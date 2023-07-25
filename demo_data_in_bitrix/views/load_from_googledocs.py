@@ -5,9 +5,8 @@ import requests
 from django.conf import settings
 from django.shortcuts import render
 
-from demo_data_in_bitrix.views.utils import excel_to_dict, get_sheet_names, OBJECT_CRM, import_data_from_xls
+from demo_data_in_bitrix.utils.utils import import_data_from_xls
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
-from django.core.files.storage import FileSystemStorage
 
 from integration_utils.its_utils.app_get_params import get_params_from_sources
 from integration_utils.its_utils.app_get_params.decorators import expect_param

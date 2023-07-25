@@ -46,7 +46,12 @@ def import_data_from_xls(filename, but):
     if "Загружаем компании": #Всегда True
         company_data = excel_file.parse('Компании').to_dict("records")
         company_data = add_origin_prefix(company_data, load_origin_id_prefix)
-        but.call_api_method("crm.item.batchImport", {"entityTypeId": '4', "data": company_data})
+        methods = []
+        for company in company_data:
+            methods.append(
+                ('crm.item.batchImport', {"entityTypeId": '4', "data": [company]}))
+        but.batch_api_call(methods)
+
         companies = but.call_list_method('crm.company.list', {
             "SELECT": ["ORIGIN_ID", "ID"],
             "FILTER": {"%ORIGIN_ID": "{}_".format(load_origin_id_prefix)}})
