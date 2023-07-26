@@ -39,6 +39,7 @@ urlpatterns = [
     path('allcompbizproc/', include('allcompbizproc.urls')),
     path('import_company_google/', include('import_company_google.urls')),
     path('demo_data_in_bitrix/', include('demo_data_in_bitrix.urls')),
+    path('sample_tg_bot/', include('sample_tg_bot.urls')),
     path('audio_recognition/', include('audio_recognition.urls')),
     path('best_call_manager/', include('best_call_manager.urls')),
 
