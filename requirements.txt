@@ -10,3 +10,5 @@ googleapis-common-protos
 google-api
 pydub
 ffmpeg
+requests
+django-prettyjson
