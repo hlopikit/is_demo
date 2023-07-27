@@ -4,17 +4,122 @@
     Приложение "Лучший звонок менеджера за день"
 {% endblock %}
 
+{% block styles %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #007bff;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px; /* Увеличение размера кнопок */
+            margin: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Добавление тени */
+            border-radius: 20px; /* Закругление углов кнопок */
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Изменение шрифта */
+            font-size: 16px; /* Изменение размера шрифта */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .salam {
+            background-color: darkred;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .info-text {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            margin-top: 40px; /* увеличим верхний отступ */
+            margin-bottom: 20px; /* добавим нижний отступ */
+            text-align: center;
+        }
+
+    </style>
+{% endblock %}
 
 {% block header %}
     <div class="header">
         <h1>Приложение "Лучший звонок менеджера за день"</h1>
-        <button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+        <button class="salam" onclick="document.location='{% url 'reload_start'%}'">Назад</button>
     </div>
 {% endblock %}
 
 {% block content %}
-    <form action="{% url 'register_call' %}" method="POST" enctype="multipart/form-data">
-        <p>Кнопка №1</p>
-        <p>Кнопка №2</p>
-    </form>
+    <div class="content">
+        <form id="form-find-finish" action="{% url 'find_finish_task' %}" method="POST" enctype="multipart/form-data">
+            <p><button id="btn-find-finish">Загрузить задачи</button></p>
+        </form>
+        <form id="form-start-find" action="{% url 'start_find_all_call' %}" method="POST" enctype="multipart/form-data">
+            <p><button id="btn-start-find">Создать задачи</button></p>
+        </form>
+    </div>
+    <div class="info-text">
+        Для начала вам нужно поставить сотрудникам задачу для выбора своего лучшего звонка, для этого нажмите на кнопку "Создать задачи".<br>
+        Для того чтобы приложение собрало все лучшие звонки и создало пост с ними в группу нажмите кнопку "Загрузить задачи".
+    </div>
+    <script>
+        function showMessage(message) {
+            const overlay = document.createElement("div");
+            overlay.className = "overlay";
+            document.body.appendChild(overlay);
+
+            const popup = document.createElement("div");
+            popup.className = "popup";
+            popup.textContent = message;
+            document.body.appendChild(popup);
+
+            setTimeout(function () {
+                document.body.removeChild(overlay);
+                document.body.removeChild(popup);
+            }, 5000); // 5000 миллисекунд = 5 секунд
+        }
+
+        document.getElementById("btn-find-finish").addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById("form-find-finish").submit();
+            showMessage("Ваши задачи успешно загружены!");
+        });
+
+        document.getElementById("btn-start-find").addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById("form-start-find").submit();
+            showMessage("Задачи успешно созданы!");
+        });
+    </script>
 {% endblock %}

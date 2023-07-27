@@ -1,61 +1,62 @@
-from prettytable import PrettyTable
 from django.shortcuts import render
 
+from best_call_manager.utils.now_date import now_date
+from best_call_manager.utils.setting_goals import setting_goals
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
-from .utils import filter_yesterday_day, parse_date, call_type
-from usermanager.views.utils import search_manager_intermediate
 
 
 @main_auth(on_cookies=True)
 def start_find_all_call(request):
+    """Позволяет получить все звонки, найти среди них подходящие по условию,
+    и поставить пользователям задачу на выбор лучшего звонка за каждый день
+    когда они были совершены, также пользователям в комментарии к задаче
+    отправляется таблица с удобочитаемыми данными, чтобы пользователь смог
+    проанализировать информацию и сделать выбор."""
 
     but = request.bitrix_user_token
-    res = but.call_list_method('voximplant.statistic.get')
-    filter_res = filter_yesterday_day(res)
-    manager_dict, user_dict = search_manager_intermediate(but)
-    manager_calls = dict()
 
-    for res in filter_res:
-        if res['PORTAL_USER_ID'] in manager_calls.keys():
-            manager_calls[res['PORTAL_USER_ID']].append(res)
-        else:
-            manager_calls[res['PORTAL_USER_ID']] = [res]
+    if request.method == 'POST':
+        try:
+            resp = but.call_api_method('app.option.get')
+            time = now_date()
+            options = resp['result']['DATE_FROM_APP_BEST_CALL_MANAGER']
 
-    for manager, calls in manager_calls.items():
-        counter = 1
+            if options == time:
+                pass
+            else:
+                res = but.call_list_method('voximplant.statistic.get',
+                                           {"FILTER": {
+                                               ">CALL_START_DATE":
+                                                   f"{options}",
+                                           }})
 
-        table = PrettyTable()
-        table.field_names = ["№", "ID звонка", "Номер телефона",
-                             "Дата и время звонка", "Длительность звонка",
-                             "Тип звонка"]
+                task_id_list = setting_goals(but, res)
+                get_tasks = but.call_list_method('app.option.get',
+                                                 {"option": 'tasks'})
+                if get_tasks:
+                    get_tasks += task_id_list
+                else:
+                    get_tasks = task_id_list
 
-        for call in calls:
-            table.add_row([f'{counter}', call['ID'],
-                           call['PHONE_NUMBER'],
-                           parse_date(call['CALL_START_DATE']),
-                           f"{call['CALL_DURATION']} секунд",
-                           call_type(call['CALL_TYPE'])])
-            counter += 1
-
-        if (manager_dict[manager] !=
-                'Непосредственного начальника не найдено'):
-            but.call_api_method('tasks.task.add', {'fields': {
-                "TITLE": 'Лучший звонок за день',
-                "CREATED_BY": manager_dict[manager],
-                "RESPONSIBLE_ID": manager,
-                "DESCRIPTION": f"[FONT=monospace]{table}[/FONT]"
-                               f"\n\n\nВ качестве результата этой задачи "
-                               f"напишите, пожалуйста, ID звонка.",
-                "TASK_CONTROL": 'N'
+                but.call_api_method('app.option.set', {
+                    "options": {'DATE_FROM_APP_BEST_CALL_MANAGER': time,
+                                'tasks': get_tasks}})
+        except:
+            time = now_date()
+            res = but.call_list_method('voximplant.statistic.get', {"FILTER": {
+                "<CALL_START_DATE": f"{time}",
             }})
-        else:
-            but.call_api_method('tasks.task.add', {'fields': {
-                "TITLE": 'Лучший звонок за день',
-                "CREATED_BY": int(manager),
-                "RESPONSIBLE_ID": manager,
-                "DESCRIPTION": f"[FONT=monospace]{table}[/FONT]"
-                               f"\n\n\nВ качестве результата этой задачи "
-                               f"напишите, пожалуйста, ID звонка.",
-            }})
+
+            task_id_list = setting_goals(but, res)
+            get_tasks = but.call_list_method('app.option.get',
+                                             {"option": 'tasks'})
+            if get_tasks:
+                get_tasks += task_id_list
+            else:
+                get_tasks = task_id_list
+
+            but.call_api_method('app.option.set', {
+                "options": {'DATE_FROM_APP_BEST_CALL_MANAGER': time,
+                            'tasks': get_tasks}})
 
     return render(request, 'best_call_manager_temp.html', locals())
