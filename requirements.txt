@@ -10,14 +10,11 @@ googleapis-common-protos
 google-api
 pydub
 ffmpeg
-python-telegram-bot~=13.15
 python-dateutil
-httpx
 requests
 beautifulsoup4
 pytz
 prettytable
-certifi
 six
 pandas
-requests
+openai
