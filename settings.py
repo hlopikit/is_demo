@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'product_list_excel',
     'import_company_google',
     'demo_data_in_bitrix',
+    "sample_tg_bot",
+    'audio_recognition',
+    'calls_to_telegram',
     'best_call_manager'
 ]
 
