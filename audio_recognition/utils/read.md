@@ -29,3 +29,24 @@
     2) Обязательно перезагружаем (закрыть -> открыть) консоль и прописываем функцию ```get_text()```,
        все нужные нам модули должны автоматически подгрузиться
         ![img_3.png](img_3.png)
+   3) 
+#### Использование OpenAi для распознавания голоса:
+Тут все гораздо проще - получаем ключ (https://platform.openai.com/account/api-keys) => импортируем библиотеку => делаем запрос => достаем ответ
+
+```python
+# Нужные импорты
+import openai
+
+from django.conf import settings
+from settings import BASE_DIR
+import os
+
+# Ключ с openai API
+openai.api_key = 'your-api-key'
+
+
+def open_ai_get_text():
+    audio_file = open(str(os.path.join(BASE_DIR, 'audio_recognition', 'samples', 'file_for_test.mp3')), "rb")
+    transcript = openai.Audio.transcribe("whisper-1", audio_file)
+    return transcript.text
+```

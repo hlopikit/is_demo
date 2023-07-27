@@ -10,3 +10,5 @@ googleapis-common-protos
 google-api
 pydub
 ffmpeg
+python-telegram-bot
+openai
