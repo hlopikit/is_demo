@@ -81,8 +81,8 @@ class CallInfo(models.Model):
         ne_path = os.path.join(settings.BASE_DIR, "media", self.inner_media_path, self.filename).replace(r"\\", "/")
         AudioSegment.from_mp3(f'{ne_path}.mp3').export(f'{ne_path}.wav', format="wav")
 
-        stub = stt_pb2_grpc.SpeechToTextStub(grpc.secure_channel(settings.ENDPOINT, grpc.ssl_channel_credentials()))
-        metadata = authorization_metadata(settings.API_KEY, settings.SECRET_KEY, "tinkoff.cloud.stt")
+        stub = stt_pb2_grpc.SpeechToTextStub(grpc.secure_channel(settings.TINKOFF_ENDPOINT, grpc.ssl_channel_credentials()))
+        metadata = authorization_metadata(settings.TINKOFF_API_KEY, settings.TINKOFF_SECRET_KEY, "tinkoff.cloud.stt")
         response = stub.Recognize(self.build_request(), metadata=metadata)
 
         self.messages = response

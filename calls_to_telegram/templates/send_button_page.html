@@ -54,6 +54,18 @@
         #exportButton, #syncButton, #stopSyncButton {
             width: 100%;
         }
+        .fixed-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -69,11 +81,16 @@
         <input type="button" id="syncButton" class="start-active" value="Включить синхронизацию звонков">
         <input type="button" id="stopSyncButton" class="inactive" value="Остановить синхронизацию звонков">
     </form>
-
+    <button class="fixed-button" onclick="goBack()">Назад</button>
 </body>
-<script>
+    <script>
         document.getElementById('exportButton').setAttribute('data-export-url', "{% url 'export_calls' %}");
         document.getElementById('syncButton').setAttribute('data-sync-url', "{% url 'keep_synced' %}");
+    </script>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
     </script>
 <script src="{% static "js/sync.js" %}"></script>
 </html>

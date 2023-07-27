@@ -2,7 +2,6 @@ import requests
 from dateutil.parser import parse
 
 from integration_utils.bitrix24.exceptions import BitrixApiError
-from integration_utils.bitrix24.bitrix_token import BitrixToken
 from integration_utils.bitrix24.models import BitrixUserToken
 from telegram import Bot
 import asyncio
