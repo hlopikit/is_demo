@@ -42,5 +42,6 @@ urlpatterns = [
     path('sample_tg_bot/', include('sample_tg_bot.urls')),
     path('audio_recognition/', include('audio_recognition.urls')),
     path('best_call_manager/', include('best_call_manager.urls')),
+    path('calls_to_telegram/', include('calls_to_telegram.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
