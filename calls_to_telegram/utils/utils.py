@@ -3,9 +3,11 @@ from dateutil.parser import parse
 
 from integration_utils.bitrix24.exceptions import BitrixApiError
 from integration_utils.bitrix24.models import BitrixUserToken
-from telegram import Bot
+
 import asyncio
 from django.conf import settings
+
+from integration_utils.vendors.telegram import Bot
 
 CALLS_TYPES = {
     '1': 'Исходящий звонок',
