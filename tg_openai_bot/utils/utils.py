@@ -12,11 +12,13 @@ VALID_BOT_COMMANDS = ["gpt", "help"]
 
 def gpt_handler(update, context):
     # Создаем или получаем историю диалога пользователя из контекста
-    context.user_data.setdefault("dialog_history", [])
-    messages = context.user_data["dialog_history"]
+    messages = context.user_data.setdefault("dialog_history", [])
 
     # Получаем ввод пользователя и добавляем его в историю диалога
     user_input = " ".join(context.args)
+    if not user_input:
+        update.message.reply_text("Введите корректный запрос")
+        return
     messages.append({"role": "user", "content": user_input})
 
     # Генерируем ответ с помощью GPT-3.5
