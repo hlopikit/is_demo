@@ -1,13 +1,12 @@
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 model = "gpt-3.5-turbo"
 
-text = "Tell me about best lib for machine learning in Python"
 messages = []
 
 while True:
-    content = input()
+    content = input('Текст: ')
     messages.append({"role": "user", "content": content})
     completion = openai.ChatCompletion.create(
         model=model,
