@@ -12,4 +12,3 @@ class ExampleBot(AbstractBot):
 
     def on_start_command(self, message, t_user, t_chat, param):
         self.send_message(t_chat.telegram_id, "Команда start принята")
-

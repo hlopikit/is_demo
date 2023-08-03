@@ -9,7 +9,7 @@ from telegram.bot import Bot
 from telegram.error import BadRequest, TimedOut, Unauthorized, RetryAfter
 from telegram.error import ChatMigrated
 
-from its_utils.app_telegram_bot.common import get_command_from_message, escape_disallowed_tags
+from intagration_utils_candidate.app_telegram_bot.common import get_command_from_message, escape_disallowed_tags
 from settings import ilogger
 
 
