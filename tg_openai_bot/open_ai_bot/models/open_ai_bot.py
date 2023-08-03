@@ -15,3 +15,6 @@ class OpenAiBot(AbstractBot):
         self.send_message(t_chat.telegram_id, "Команда start принята")
 
 
+    # def on_gpt_command(self, t_chat):
+    #
+    #     self.send_message(t_chat.telegram_id, context.text)
