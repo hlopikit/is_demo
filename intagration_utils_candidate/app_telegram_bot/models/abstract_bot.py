@@ -2,14 +2,15 @@
 from typing import List
 from io import BytesIO
 
-import telegram
+
 from django.contrib import admin
 from django.db import models
-from telegram.bot import Bot
-from telegram.error import BadRequest, TimedOut, Unauthorized, RetryAfter
-from telegram.error import ChatMigrated
+
 
 from intagration_utils_candidate.app_telegram_bot.common import get_command_from_message, escape_disallowed_tags
+from integration_utils.vendors import telegram
+from integration_utils.vendors.telegram import Bot
+from integration_utils.vendors.telegram.error import TimedOut, BadRequest, Unauthorized, RetryAfter, ChatMigrated
 from settings import ilogger
 
 
@@ -103,7 +104,7 @@ class AbstractBot(models.Model):
 
             request = None
             if self.TELEGRAM_API_PROXY:
-                from telegram.utils.request import Request
+                from integration_utils.vendors.telegram.utils.request import Request
                 request = Request(proxy_url=self.TELEGRAM_API_PROXY)
 
             self._client = Bot(self.auth_token, base_url=self.TELEGRAM_API_BASE_URL, request=request)
@@ -159,7 +160,6 @@ class AbstractBot(models.Model):
         try:
             updates = self.get_updates()
             if updates:
-                pass
                 ilogger.debug('telegram_updates', '{}'.format(updates), log_to_cron=True)
         except TimedOut:
             ilogger.warning('handle_updates_timed_out', '{} handle_updates_timed_out'.format(self), log_to_cron=True)
