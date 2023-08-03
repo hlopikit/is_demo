@@ -1,6 +1,8 @@
 from django.db import models
 
-from its_utils.app_admin.json_admin import JsonAdmin
+
+# TODO find and import file
+# from its_utils.app_admin.json_admin import JsonAdmin
 
 
 class AbstractChatParticipant(models.Model):
@@ -14,9 +16,10 @@ class AbstractChatParticipant(models.Model):
         verbose_name = 'Участник чата'
         verbose_name_plural = 'Участники чатов'
 
-    class Admin(JsonAdmin):
-        list_display = 'chat', 'user',
-        list_display_links = list_display
+    # TODO uncomment after JsonAdmin implement
+    # class Admin(JsonAdmin):
+    #     list_display = 'chat', 'user',
+    #     list_display_links = list_display
 
     def __str__(self):
         return '{}@{}'.format(self.user.username or "user{}".format(self.user.telegram_id), self.chat.telegram_id)

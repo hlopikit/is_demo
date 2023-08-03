@@ -1,6 +1,7 @@
 import re
 
-from its_utils.app_regexp.constants import REGEXP_DOMAIN
+# TODO find and import REGEXP_DOMAIN
+# from its_utils.app_regexp.constants import REGEXP_DOMAIN
 
 REGEX_PHONE = '\+?\d ?\(?\d\d\d\)? ?\d\d\d ?-?\d\d ?-?\d\d'
 REGEX_EMAIL = "([A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)"
