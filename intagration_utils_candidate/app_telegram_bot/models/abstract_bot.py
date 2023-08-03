@@ -25,8 +25,8 @@ class AbstractBot(models.Model):
     MESSAGE_CLASS = None
 
     TELEGRAM_API_BASE_URL = 'https://api.telegram.org/bot'
-    #Если хотим через наш сервак то переопределить
-    #TELEGRAM_API_BASE_URL = 'https://telegram-client.it-solution.ru/tapi/bot'
+    # Если хотим через наш сервак то переопределить
+    # TELEGRAM_API_BASE_URL = 'https://telegram-client.it-solution.ru/tapi/bot'
 
     TELEGRAM_API_PROXY = None
 
@@ -38,7 +38,8 @@ class AbstractBot(models.Model):
 
     GET_UPDATES_TIMEOUT = 5
     ALLOWED_UPDATES = [
-        'message', 'inline_query', 'chosen_inline_result', 'callback_query', 'shipping_query', 'pre_checkout_query', 'chat_join_request'
+        'message', 'inline_query', 'chosen_inline_result', 'callback_query', 'shipping_query', 'pre_checkout_query',
+        'chat_join_request'
     ]
 
     username = models.CharField(max_length=100, default='')
@@ -163,7 +164,8 @@ class AbstractBot(models.Model):
             ilogger.warning('handle_updates_timed_out', '{} handle_updates_timed_out'.format(self), log_to_cron=True)
             return 0, 0, 0
         except telegram.error.Conflict as e:
-            ilogger.warning('handle_updates_conflict', '{} use deleteWebhook to delete the webhook first'.format(self), log_to_cron=True)
+            ilogger.warning('handle_updates_conflict', '{} use deleteWebhook to delete the webhook first'.format(self),
+                            log_to_cron=True)
             if fail_silently:
                 return 0, 0, 0
             raise e
@@ -172,7 +174,6 @@ class AbstractBot(models.Model):
             if fail_silently:
                 return 0, 0, 0
             raise e
-
 
         handled_updates = []
         commands_handled = commands_failed = 0
@@ -374,7 +375,7 @@ class AbstractBot(models.Model):
         pass
 
     def send(self, send_type, chat_id, text, pinned=False, parse_mode=None, reply_markup=None, reply_to_message_id=None,
-            disable_notification=False, fail_silently=False, api_kwargs=None):
+             disable_notification=False, fail_silently=False, api_kwargs=None):
 
         assert send_type == 'message', "Другие типы не готовы"
 
@@ -409,27 +410,30 @@ class AbstractBot(models.Model):
             if e.message.startswith("Can't parse entities") and parse_mode != 'Markdown':
                 # Рекурсивно вызовем
                 return self.send(send_type=send_type,
-                             chat_id=chat_id,
-                             text=text,
-                             pinned=pinned,
-                             parse_mode='Markdown',
-                             reply_markup=reply_markup,
-                             reply_to_message_id=reply_to_message_id,
-                             disable_notification=disable_notification,
-                             fail_silently=False,
-                             api_kwargs=api_kwargs)
+                                 chat_id=chat_id,
+                                 text=text,
+                                 pinned=pinned,
+                                 parse_mode='Markdown',
+                                 reply_markup=reply_markup,
+                                 reply_to_message_id=reply_to_message_id,
+                                 disable_notification=disable_notification,
+                                 fail_silently=False,
+                                 api_kwargs=api_kwargs)
             else:
                 if e.message == 'Chat not found':
                     ilogger.warning(
-                        'telegram_bad_request', 'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
+                        'telegram_bad_request',
+                        'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
                     )
                 else:
                     ilogger.error(
-                        'telegram_bad_request', 'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
+                        'telegram_bad_request',
+                        'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
                     )
         except Unauthorized as e:
             if e.message == 'Forbidden: bot was kicked from the group chat':
-                ilogger.warning('bot_was_kicked', 'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e))
+                ilogger.warning('bot_was_kicked',
+                                'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e))
             else:
                 ilogger.warning('telegram_bot_uauthorized',
                                 'failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e))
@@ -452,7 +456,8 @@ class AbstractBot(models.Model):
                              fail_silently=False,
                              api_kwargs=api_kwargs)
         except Exception as exc:
-            error_log_message = 'telegram_bot_error=> failed to send message (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, exc)
+            error_log_message = 'telegram_bot_error=> failed to send message (chat_id=%s, bot_id=%s): %s' % (
+            chat_id, self.id, exc)
             if self.CHECK_SAFE_ERROR_FUNC is not None and self.CHECK_SAFE_ERROR_FUNC(exc):
                 ilogger.warning(error_log_message)
             else:
@@ -478,8 +483,6 @@ class AbstractBot(models.Model):
                          disable_notification=disable_notification,
                          fail_silently=fail_silently,
                          api_kwargs=api_kwargs)
-
-
 
     def send_photo(
             self, chat_id, photo, filename=None, caption='', pinned=False, parse_mode=None, reply_markup=None,
@@ -515,7 +518,8 @@ class AbstractBot(models.Model):
                         {
                             'file_id': photo_size['file_id'] if hasattr(photo_size, 'file_id') else '',
                             'file_size': photo_size['file_size'] if hasattr(photo_size, 'file_size') else '',
-                            'file_unique_id': photo_size['file_unique_id'] if hasattr(photo_size, 'file_unique_id') else '',
+                            'file_unique_id': photo_size['file_unique_id'] if hasattr(photo_size,
+                                                                                      'file_unique_id') else '',
                             'height': photo_size['height'] if hasattr(photo_size, 'height') else '',
                             'width': photo_size['width'] if hasattr(photo_size, 'width') else ''
                         } for photo_size in res.effective_attachment
@@ -541,7 +545,8 @@ class AbstractBot(models.Model):
                                        disable_notification=disable_notification)
             else:
                 ilogger.error(
-                    'telegram_bad_request',  'failed to send photo (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
+                    'telegram_bad_request',
+                    'failed to send photo (chat_id=%s, bot_id=%s): %s' % (chat_id, self.id, e.message)
                 )
         except ChatMigrated as exc:
             ilogger.warning('telegram_bot_ChatMigrated', 'chat migrated {} => {}'.format(chat_id, exc.new_chat_id))
@@ -588,19 +593,29 @@ class AbstractBot(models.Model):
                 effective_attachment_thumb = {}
                 if hasattr(res.effective_attachment, 'thumb') and res.effective_attachment['thumb']:
                     effective_attachment_thumb = {
-                        'file_id': res.effective_attachment['thumb']['file_id'] if hasattr(res.effective_attachment['thumb'], 'file_id') else '',
-                        'file_size': res.effective_attachment['thumb']['file_size'] if hasattr(res.effective_attachment['thumb'], 'file_size') else '',
-                        'file_unique_id': res.effective_attachment['thumb']['file_unique_id'] if hasattr(res.effective_attachment['thumb'], 'file_unique_id') else '',
-                        'height': res.effective_attachment['thumb']['height'] if hasattr(res.effective_attachment['thumb'], 'height') else '',
-                        'width': res.effective_attachment['thumb']['width'] if hasattr(res.effective_attachment['thumb'], 'width') else ''
+                        'file_id': res.effective_attachment['thumb']['file_id'] if hasattr(
+                            res.effective_attachment['thumb'], 'file_id') else '',
+                        'file_size': res.effective_attachment['thumb']['file_size'] if hasattr(
+                            res.effective_attachment['thumb'], 'file_size') else '',
+                        'file_unique_id': res.effective_attachment['thumb']['file_unique_id'] if hasattr(
+                            res.effective_attachment['thumb'], 'file_unique_id') else '',
+                        'height': res.effective_attachment['thumb']['height'] if hasattr(
+                            res.effective_attachment['thumb'], 'height') else '',
+                        'width': res.effective_attachment['thumb']['width'] if hasattr(
+                            res.effective_attachment['thumb'], 'width') else ''
                     }
                 effective_attachment = {
                     'document': {
-                        'file_id': res.effective_attachment['file_id'] if hasattr(res.effective_attachment, 'file_id') else '',
-                        'file_name': res.effective_attachment['file_name'] if hasattr(res.effective_attachment, 'file_name') else '',
-                        'file_size': res.effective_attachment['file_size'] if hasattr(res.effective_attachment, 'file_size') else '',
-                        'file_unique_id': res.effective_attachment['file_unique_id'] if hasattr(res.effective_attachment, 'file_unique_id') else '',
-                        'mime_type': res.effective_attachment['mime_type'] if hasattr(res.effective_attachment, 'mime_type') else '',
+                        'file_id': res.effective_attachment['file_id'] if hasattr(res.effective_attachment,
+                                                                                  'file_id') else '',
+                        'file_name': res.effective_attachment['file_name'] if hasattr(res.effective_attachment,
+                                                                                      'file_name') else '',
+                        'file_size': res.effective_attachment['file_size'] if hasattr(res.effective_attachment,
+                                                                                      'file_size') else '',
+                        'file_unique_id': res.effective_attachment['file_unique_id'] if hasattr(
+                            res.effective_attachment, 'file_unique_id') else '',
+                        'mime_type': res.effective_attachment['mime_type'] if hasattr(res.effective_attachment,
+                                                                                      'mime_type') else '',
                         'thumb': effective_attachment_thumb
                     }
                 }
@@ -716,7 +731,7 @@ class AbstractBot(models.Model):
                                        parse_mode='Markdown',
                                        reply_markup=reply_markup,
                                        reply_to_message_id=reply_to_message_id,
-                                       disable_notification=disable_notification,)
+                                       disable_notification=disable_notification, )
             else:
                 ilogger.error(
                     'telegram_bad_request',
