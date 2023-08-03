@@ -50,9 +50,7 @@ INSTALLED_APPS = [
     'calls_to_telegram',
     'best_call_manager',
     'tg_openai_bot',
-    'best_call_manager',
     'deal_for_powerbi',
-    'best_call_manager',
     'autocomplete_crm_tasks'
 ]
 
