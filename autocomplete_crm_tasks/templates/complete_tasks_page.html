@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static "css/complete_task_style.css" %}" />
+</head>
+<body>
+    <form id="completeForm">
+        {% csrf_token %}
+
+        <div class="input-group">
+            <input type="text" class="default_number_input" name="interval_value" id="interval_value" value="0" required>
+            <select name="interval_unit" id="interval_unit" required>
+                <option value="minutes">минут</option>
+                <option value="minutes">часов</option>
+                <option value="days">дней</option>
+                <option value="weeks">недель</option>
+                <option value="years">лет</option>
+            </select>
+        </div>
+
+        <div id="checkboxColumn">
+            <label><input type="checkbox" name="activity_type" value="1">Встреча</label><br>
+            <label><input type="checkbox" name="activity_type" value="2">Звонок</label><br>
+            <label><input type="checkbox" name="activity_type" value="3">Задача</label><br>
+            <label><input type="checkbox" name="activity_type" value="4">Письмо</label><br>
+            <label><input type="checkbox" name="activity_type" value="5">Действие</label><br>
+            <label><input type="checkbox" name="activity_type" value="6">Пользовательское действие</label><br>
+        </div>
+        <input type="button" id="completeButton" class="start-active" value="Закрыть все дела однократно">
+        <input type="button" id="syncButton" class="start-active" value="Включить автозавершение дел">
+        <input type="button" id="stopSyncButton" class="inactive" value="Остановить синхронизацию звонков">
+    </form>
+    <button class="fixed-button" onclick="goBack()">Назад</button>
+</body>
+    <script>
+        document.getElementById('completeButton').setAttribute('complete-tasks-url', "{% url 'complete_tasks' %}");
+        document.getElementById('syncButton').setAttribute('set-flag-url', "{% url 'set_flag' %}");
+    </script>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+<script src="{% static "js/age_input_logic.js" %}"></script>
+</html>

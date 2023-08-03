@@ -43,6 +43,7 @@ urlpatterns = [
     path('audio_recognition/', include('audio_recognition.urls')),
     path('best_call_manager/', include('best_call_manager.urls')),
     path('calls_to_telegram/', include('calls_to_telegram.urls')),
-    path('deal_for_PowerBI/', include('deal_for_PowerBI.urls')),
+    path('deal_for_powerbi/', include('deal_for_powerbi.urls')),
+    path('autocomplete_crm_tasks/', include('autocomplete_crm_tasks.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
