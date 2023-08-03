@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+}
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="button"] {
+    padding: 8px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+input[type="checkbox"] {
+    margin: 5px;
+}
+
+select {
+    font-size: 16px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f8f8f8;
+    color: #333;
+    width: 100px;
+}
+
+/* Style for the select option elements */
+select option {
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+.start-active {
+    background-color: #3bbfab;
+}
+.stop-active {
+    background-color: #d16088;
+}
+.inactive {
+    background-color: #c9b7ab;
+}
+#completeButton, #syncButton, #stopSyncButton {
+    width: 100%;
+}
+.fixed-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.input-group {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.default_text_input {
+    width: 95%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.default_number_input {
+    width: 10%;
+    padding: 8px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
