@@ -159,6 +159,7 @@ class AbstractBot(models.Model):
         try:
             updates = self.get_updates()
             if updates:
+                pass
                 ilogger.debug('telegram_updates', '{}'.format(updates), log_to_cron=True)
         except TimedOut:
             ilogger.warning('handle_updates_timed_out', '{} handle_updates_timed_out'.format(self), log_to_cron=True)
@@ -457,7 +458,7 @@ class AbstractBot(models.Model):
                              api_kwargs=api_kwargs)
         except Exception as exc:
             error_log_message = 'telegram_bot_error=> failed to send message (chat_id=%s, bot_id=%s): %s' % (
-            chat_id, self.id, exc)
+                chat_id, self.id, exc)
             if self.CHECK_SAFE_ERROR_FUNC is not None and self.CHECK_SAFE_ERROR_FUNC(exc):
                 ilogger.warning(error_log_message)
             else:
