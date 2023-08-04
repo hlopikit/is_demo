@@ -50,15 +50,4 @@ class OpenAiBot(AbstractBot):
     def on_message(self, message, t_user, t_chat):
         if message.text.startswith('/'):
             command = message.text.split()[0]
-            self.send_message(t_chat.telegram_id, f"{command} is not found")
-            # Проверяем, является ли сообщение командой
-            # command = message.text.split(' ')[0]
-            # if command == '/start':
-            #     self.on_start_command(message, t_user, t_chat, param=None)
-            # elif command == '/gpt':
-            #     self.on_gpt_command(message, t_user, t_chat, param=message.text[len(command) + 1:])
-            # elif command == '/help':
-            #     self.on_help_command(message, t_user, t_chat, param=None)
-            # else:
-            #     # Если команда не распознана, можно отправить ответ с сообщением об ошибке
-            #     self.send_message(t_chat.telegram_id, "Неизвестная команда. Для списка доступных команд введите /help")
+            self.send_message(t_chat.telegram_id, f"Команды {command} не существует")
