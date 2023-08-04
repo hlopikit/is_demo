@@ -43,5 +43,10 @@ urlpatterns = [
     path('audio_recognition/', include('audio_recognition.urls')),
     path('best_call_manager/', include('best_call_manager.urls')),
     path('calls_to_telegram/', include('calls_to_telegram.urls')),
+    path(
+        'move_tasks_deadline_js',
+        include('move_tasks_deadline_js.urls', namespace='move_tasks_deadline_js')
+    ),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "sample_tg_bot",
     'audio_recognition',
     'calls_to_telegram',
-    'best_call_manager'
+    'best_call_manager',
+    'move_tasks_deadline_js'
 ]
 
 MIDDLEWARE = [
