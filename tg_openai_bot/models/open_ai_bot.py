@@ -18,14 +18,15 @@ class OpenAiBot(AbstractBot):
     CHAT_CLASS = OpenAiUserChat
     MESSAGE_CLASS = OpenAiUserMessage
     CONTEXT = []
+    VALID_COMMAND = ['/start', '/gpt']
 
     def on_start_command(self, message, t_user, t_chat, param):
-        self.send_message(t_chat.telegram_id, "Команда start принята")
-
-    # def on_message(self, message, t_user, t_chat):
-    #     self.send_message(t_chat.telegram_id, f"Вы прислали {message}")
+        self.send_message(t_chat.telegram_id, "Команда start принята, чтобы спросить бота, напишите /gpt")
 
     def on_gpt_command(self, message, t_user, t_chat, param):
+        if not param:
+            self.send_message(t_chat.telegram_id, 'Введите запрос')
+            return
         OpenAiBot.CONTEXT.append({'role': 'user', 'content': param})
         completion = openai.ChatCompletion.create(
             model=MODEL,
@@ -34,3 +35,9 @@ class OpenAiBot(AbstractBot):
         response_content = completion.choices[0].message.content
         self.send_message(t_chat.telegram_id, response_content)
         OpenAiBot.CONTEXT.append({'role': 'assistant', 'content': response_content})
+
+    def on_help_command(self, message, t_user, t_chat, param):
+        self.send_message(t_chat.telegram_id, "На данный момент доступны следующие команды:\n"
+                                              "/start - проверка бота\n"
+                                              "/gpt - задать вопрос")
+
