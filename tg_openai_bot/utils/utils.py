@@ -1,3 +1,5 @@
+# Stand Alone Бот
+
 import openai
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from django.conf import settings
