@@ -1,0 +1,93 @@
+{% extends "base_app.html" %}
+{% load static %}
+{% block styles %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+        input[type="button"], input[type="button"]{
+            padding: 8px 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .start-active {
+            background-color: #3bbfab;
+            padding: 7px;
+            width: 100%;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .container {
+          display: flex; /* Устанавливаем flex-контейнер */
+          justify-content: space-between; /* Размещаем элементы по краям контейнера */
+        }
+
+        .suc_message{
+            display: none;
+            color: green;
+            text-align: center;
+        }
+
+    </style>
+{% endblock %}
+{% block header %}
+    <div class="header">
+<h1>ТГ бот на базе OpenAi</h1>
+<button onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="container"></div>
+    <form id="abstractBotForm" method="post" action="{% url 'start_page_for_open_ai' %}">
+        {% csrf_token %}
+        <p>Запуск Бота на базе AbstractBot</p>
+        <p>Создать в админке → Пригласить в чат</p>
+        <input type="submit" id="abstractBotButton" class="start-active" value="Запустить">
+    </form>
+    <form id="standaloneBotForm" method="post" action="{% url 'start_page_for_open_ai_stand_alone' %}">
+        {% csrf_token %}
+        <p>Запуск StandAlone Бота</p>
+        <p>Пригласить в чат → заполнить форму ниже</p>
+        <label for="bot_token">Bot Token</label>
+        <input type="text" name="bot_token" id="bot_token" required>
+        <br>
+        <label for="chat_id">Chat ID</label>
+        <input type="text" name="chat_id" id="chat_id" required>
+        <input type="submit" id="standaloneBotButton" class="start-active" value="Запустить">
+    </form>
+    <div id="successMessage" class="suc_message">Бот успешно активирован!</div>
+    <script src="{% static "js/js.js" %}"></script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from its_utils.app_telegram_bot.models.abstract_user import AbstractUser
+from intagration_utils_candidate.app_telegram_bot.models.abstract_user import AbstractUser
 
 
 class ExampleUser(AbstractUser):

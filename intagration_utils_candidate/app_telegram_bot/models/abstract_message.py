@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils import timezone
 
-from its_utils.app_admin.json_admin import JsonAdmin
-from its_utils.functions.compatibility import get_json_field
+# TODO find and import files
+# from its_utils.app_admin.json_admin import JsonAdmin
+# from its_utils.functions.compatibility import get_json_field
 
-JSONField = get_json_field()
+# JSONField = get_json_field()
 
 
 def voice_upload_path(instance, filename):
@@ -20,7 +21,7 @@ class AbstractMessage(models.Model):
     voice = models.FileField(upload_to=voice_upload_path, null=True, blank=True)
 
     caption = models.TextField(default='', null=True)
-    effective_attachment = JSONField(blank=True, null=True)
+    # effective_attachment = JSONField(blank=True, null=True)
 
     def __str__(self):
         return '#{}: {} => chat {} ({})'.format(self.telegram_id, self.author, self.chat.telegram_id, self.date)
@@ -30,9 +31,10 @@ class AbstractMessage(models.Model):
         verbose_name = 'Сообщение'
         verbose_name_plural = 'Сообщения'
 
-    class Admin(JsonAdmin):
-        list_display = 'chat', 'author', 'text'
-        list_display_links = list_display
+    # TODO implement JsonAdmin
+    # class Admin(JsonAdmin):
+    #     list_display = 'chat', 'author', 'text'
+    #     list_display_links = list_display
 
     def append_text(self, text):
         text = "{}\n{}".format(self.text, text)

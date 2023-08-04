@@ -45,25 +45,11 @@
         new agGrid.Grid(gridDiv, gridOptions);
 
     });
+
 </script>
+
 <button style="margin-bottom: 5px" onclick="document.location='{% url 'reload_start'%}'">Назад</button>
 <div id="myGrid" style="height: 100vh; width: 100vw;" class="ag-theme-alpine"></div>
 
-
-{#<div class="table-responsive">#}
-{#    <table class="table">#}
-{#        {% for user in json_user_list %}#}
-{#                <tr>#}
-{#                    <td>#}
-{#                        {{ user.FULL_NAME }}#}
-{#                    </td>#}
-{#                    <td>#}
-{#                        {{ user.SUPERVISORS|join:'' }}#}
-{#                    </td>#}
-{##}
-{#                </tr>#}
-{#        {% endfor %}#}
-{#    </table>#}
-{#</div>#}
 </body>
 </html>

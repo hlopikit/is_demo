@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'audio_recognition',
     'calls_to_telegram',
     'best_call_manager',
+    'tg_openai_bot',
+    'deal_for_powerbi',
+    'autocomplete_crm_tasks',
     'move_tasks_deadline_js'
 ]
 

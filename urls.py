@@ -43,6 +43,9 @@ urlpatterns = [
     path('audio_recognition/', include('audio_recognition.urls')),
     path('best_call_manager/', include('best_call_manager.urls')),
     path('calls_to_telegram/', include('calls_to_telegram.urls')),
+    path('tg_open_ai/', include('tg_openai_bot.urls')),
+    path('deal_for_powerbi/', include('deal_for_powerbi.urls')),
+    path('autocomplete_crm_tasks/', include('autocomplete_crm_tasks.urls')),
     path(
         'move_tasks_deadline_js',
         include('move_tasks_deadline_js.urls', namespace='move_tasks_deadline_js')

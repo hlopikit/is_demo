@@ -29,6 +29,6 @@ def load_from_googledocs(request, link):
     filename = os.path.join(settings.BASE_DIR, 'temp.xlsx')
     with open(filename, "wb") as f:
         f.write(res.content)
-    import_data_from_xls(filename, but)
+    object_count = import_data_from_xls(filename, but)
 
     return render(request, 'demodata.html', locals())

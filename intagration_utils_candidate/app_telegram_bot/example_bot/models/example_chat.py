@@ -1,6 +1,6 @@
 from django.db import models
 
-from its_utils.app_telegram_bot.models.abstract_chat import AbstractChat
+from intagration_utils_candidate.app_telegram_bot.models.abstract_chat import AbstractChat
 
 
 class ExampleChat(AbstractChat):
