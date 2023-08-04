@@ -48,6 +48,9 @@ class OpenAiBot(AbstractBot):
 
     # Проверка на существующую команду
     def on_message(self, message, t_user, t_chat):
-        if message.text.startswith('/'):
+        text = message.text
+        if text.startswith('/'):
             command = message.text.split()[0]
             self.send_message(t_chat.telegram_id, f"Команды {command} не существует")
+        elif text:
+            self.send_message(t_chat.telegram_id, "Ничего не произошло")
