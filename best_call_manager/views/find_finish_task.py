@@ -27,7 +27,7 @@ def find_finish_task(request):
                 "OPENED": "Y"})['result']
 
         all_tasks = but.call_list_method('tasks.task.list', {
-            "filter": {"TITLE": "Лучший звонок за день"},
+            "filter": {"TITLE": "Оценить свой лучший звонок за"},
             "select": ["ID", "TITLE", "STATUS", "RESPONSIBLE_ID",
                        "CREATED_DATE"]})['tasks']
 
