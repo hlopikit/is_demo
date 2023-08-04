@@ -14,6 +14,6 @@ def run_bot_thread():
 @main_auth(on_cookies=True)
 def start_page_open_ai(request):
     if request.method == 'POST':
-        foo_loop = threading.Thread(target=run_bot_thread(), daemon=True)
+        foo_loop = threading.Thread(target=run_bot_thread, daemon=True)
         foo_loop.start()
     return render(request, 'open_ai_start.html')
