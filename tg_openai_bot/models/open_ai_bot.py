@@ -17,6 +17,7 @@ class OpenAiBot(AbstractBot):
     USER_CLASS = OpenAiUser
     CHAT_CLASS = OpenAiUserChat
     MESSAGE_CLASS = OpenAiUserMessage
+    CONTEXT = []
 
     def on_start_command(self, message, t_user, t_chat, param):
         self.send_message(t_chat.telegram_id, "Команда start принята")
@@ -25,12 +26,11 @@ class OpenAiBot(AbstractBot):
     #     self.send_message(t_chat.telegram_id, f"Вы прислали {message}")
 
     def on_gpt_command(self, message, t_user, t_chat, param):
-        messages = message['text'][4:]
+        OpenAiBot.CONTEXT.append({'role': 'user', 'content': param})
         completion = openai.ChatCompletion.create(
             model=MODEL,
-            messages=[
-                {'role': 'user', 'content': messages}
-            ]
+            messages=OpenAiBot.CONTEXT
         )
         response_content = completion.choices[0].message.content
         self.send_message(t_chat.telegram_id, response_content)
+        OpenAiBot.CONTEXT.append({'role': 'assistant', 'content': response_content})
