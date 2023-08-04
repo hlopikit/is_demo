@@ -5,6 +5,7 @@ from tg_openai_bot.models import OpenAiUser, OpenAiUserChat, OpenAiUserMessage
 
 # Импорт библиотеки OpenAI
 import openai
+
 openai.api_key = settings.OPEN_AI_API_KEY
 
 MODEL = "gpt-3.5-turbo"
@@ -46,16 +47,18 @@ class OpenAiBot(AbstractBot):
                                               "/gpt - задать вопрос")
 
     # Проверка на существующую команду
-    def check_command(self, message, t_user, t_chat):
+    def on_message(self, message, t_user, t_chat):
         if message.text.startswith('/'):
+            command = message.text.split()[0]
+            self.send_message(t_chat.telegram_id, f"{command} is not found")
             # Проверяем, является ли сообщение командой
-            command = message.text.split(' ')[0]
-            if command == '/start':
-                self.on_start_command(message, t_user, t_chat, param=None)
-            elif command == '/gpt':
-                self.on_gpt_command(message, t_user, t_chat, param=message.text[len(command) + 1:])
-            elif command == '/help':
-                self.on_help_command(message, t_user, t_chat, param=None)
-            else:
-                # Если команда не распознана, можно отправить ответ с сообщением об ошибке
-                self.send_message(t_chat.telegram_id, "Неизвестная команда. Для списка доступных команд введите /help")
+            # command = message.text.split(' ')[0]
+            # if command == '/start':
+            #     self.on_start_command(message, t_user, t_chat, param=None)
+            # elif command == '/gpt':
+            #     self.on_gpt_command(message, t_user, t_chat, param=message.text[len(command) + 1:])
+            # elif command == '/help':
+            #     self.on_help_command(message, t_user, t_chat, param=None)
+            # else:
+            #     # Если команда не распознана, можно отправить ответ с сообщением об ошибке
+            #     self.send_message(t_chat.telegram_id, "Неизвестная команда. Для списка доступных команд введите /help")
