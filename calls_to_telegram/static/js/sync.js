@@ -1,3 +1,7 @@
+const exportButton = document.getElementById('exportButton');
+const syncButton = document.getElementById('syncButton');
+const stopSyncButton = document.getElementById('stopSyncButton');
+
 const exportUrl = document.getElementById('exportButton').getAttribute('data-export-url');
 const syncUrl = document.getElementById('syncButton').getAttribute('data-sync-url');
 
@@ -5,9 +9,7 @@ let syncIntervalId = null;
 let syncActive = false;
 
 function toggleButtonStates(syncActive) {
-    const exportButton = document.getElementById('exportButton');
-    const syncButton = document.getElementById('syncButton');
-    const stopSyncButton = document.getElementById('stopSyncButton');
+
     if (syncActive) {
         exportButton.disabled = true;
         syncButton.disabled = true;
@@ -20,10 +22,6 @@ function toggleButtonStates(syncActive) {
 }
 
 function toggleButtonColors(syncActive) {
-    const exportButton = document.getElementById('exportButton');
-    const syncButton = document.getElementById('syncButton');
-    const stopSyncButton = document.getElementById('stopSyncButton');
-
     if (syncActive) {
         syncButton.classList.remove('start-active');
         syncButton.classList.add('inactive');
@@ -46,10 +44,6 @@ function toggleButtonColors(syncActive) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const exportButton = document.getElementById('exportButton');
-    const syncButton = document.getElementById('syncButton');
-    const stopSyncButton = document.getElementById('stopSyncButton');
-
     toggleButtonStates(syncActive);
     toggleButtonColors(syncActive);
 

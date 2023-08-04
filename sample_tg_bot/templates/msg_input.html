@@ -41,6 +41,18 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .fixed-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -57,5 +69,11 @@
         <br>
         <input type="submit" value="Отправить">
     </form>
+    <button class="fixed-button" onclick="goBack()">Назад</button>
 </body>
+<script>
+        function goBack() {
+          window.history.back();
+        }
+</script>
 </html>

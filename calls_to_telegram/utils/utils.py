@@ -4,7 +4,6 @@ from dateutil.parser import parse
 from integration_utils.bitrix24.exceptions import BitrixApiError
 from integration_utils.bitrix24.models import BitrixUserToken
 
-import asyncio
 from django.conf import settings
 
 from integration_utils.vendors.telegram import Bot
@@ -87,8 +86,6 @@ def send_calls(but, bot, calls_chat_id, call_id, mode):
 
     msges = 0
     users = get_users(but)
-    if len(call_files.values()) != 0:
-        loop = asyncio.new_event_loop()
     for f in call_files.successes.values():
         call = calls_with_files[int(f['result']['ID'])]
         start = parse(call['CALL_START_DATE'])

@@ -1,8 +1,17 @@
+#finishButton, #syncButton, #stopSyncButton {
+    width: 100%;
+}
+
+#completeForm {
+    position: relative;
+}
+
 body {
     font-family: Arial, sans-serif;
 }
 form {
-    max-width: 400px;
+    max-width: 35vw;
+    max-height: 95vh;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -55,18 +64,12 @@ select option {
 .inactive {
     background-color: #c9b7ab;
 }
-#completeButton, #syncButton, #stopSyncButton {
-    width: 100%;
-}
-.fixed-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px;
+.backwards-button {
+    font-size: 20px;
+    border-radius: 3px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -75,7 +78,7 @@ select option {
     display: flex;
     align-items: baseline;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .default_text_input {
@@ -97,5 +100,12 @@ select option {
     border-radius: 3px;
     margin-bottom: 10px;
     margin-top: 5px;
+}
+
+.button-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
 }
 

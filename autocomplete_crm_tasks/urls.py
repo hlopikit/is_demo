@@ -1,9 +1,13 @@
 from django.urls import path
-from .views.complete_tasks import finish_tasks, initiate_completion
+from .views.finish_tasks_once import finish_tasks_once
+from .views.initiate_auto_finish_loop import initiate_auto_finish_loop
 from .views.set_flag import set_flag
+from .views.get_flag import get_flag
 
 urlpatterns = [
-    # path('complete_tasks/', complete_tasks, name='complete_tasks'),
-    path('complete_tasks/', initiate_completion, name='complete_tasks'),
+    path('finish_tasks/', finish_tasks_once, name='finish_tasks'),
+    path('initiate_auto_finish_loop/', initiate_auto_finish_loop, name='initiate_auto_finish_loop'),
     path('set_flag/', set_flag, name='set_flag'),
+    path('get_flag/', get_flag, name='get_flag'),
+
 ]

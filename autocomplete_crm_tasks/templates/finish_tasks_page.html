@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static "css/complete_task_style.css" %}" />
+</head>
+<body>
+    <form id="completeForm">
+        {% csrf_token %}
+        <h3 style="margin-top: 0px">Укажите максимальный возраст дел</h3>
+        <div class="button-container">
+            <button class="backwards-button" onclick="goBack()">Назад</button>
+        </div>
+        <div class="input-group">
+            <input type="text" class="default_number_input" name="interval_value" id="interval_value" value="0" required>
+            <select name="interval_unit" id="interval_unit" required>
+                <option value="minutes">минут</option>
+                <option value="minutes">часов</option>
+                <option value="days">дней</option>
+                <option value="weeks">недель</option>
+                <option value="years">лет</option>
+            </select>
+        </div>
+        <h4 style="margin-top: 0px">Укажите типы завершаемых дел</h4>
+        <div id="checkboxColumn">
+            <label><input type="checkbox" name="activity_type" value="meeting">Встреча</label><br>
+            <label><input type="checkbox" name="activity_type" value="call">Звонок</label><br>
+            <label><input type="checkbox" name="activity_type" value="to_do">Дело</label><br>
+            <label><input type="checkbox" name="activity_type" value="email">Письмо</label><br>
+            <label><input type="checkbox" name="activity_type" value="task">Задача</label><br>
+            <label><input type="checkbox" name="activity_type" value="other">Пользовательское действие</label><br>
+        </div>
+        <input type="button" id="finishButton" class="start-active" value="Завершить дела однократно">
+        <input type="button" id="syncButton" class="start-active" value="Включить автозавершение дел">
+        <input type="button" id="stopSyncButton" class="inactive" value="Остановить автозавершение дел">
+    </form>
+
+</body>
+    <script type="application/json" id="app-urls">
+        {
+            "finishTasksUrl": "{% url 'finish_tasks' %}",
+            "initiateLoopUrl": "{% url 'initiate_auto_finish_loop' %}",
+            "setFlagUrl": "{% url 'set_flag' %}",
+            "getFlagUrl": "{% url 'get_flag' %}"
+        }
+    </script>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+<script type="module" src="{% static "js/main.js" %}"></script>
+<script src="{% static "js/interval_input_logic.js" %}"></script>
+</html>
