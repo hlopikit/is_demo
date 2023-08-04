@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Демо приложение</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Список сотрудников</h2>
+    <table>
+        <tr>
+            <th>Полное имя</th>
+            <th>Руководители</th>
+        </tr>
+        {% for user_id, user in users.items %}
+            <tr>
+                <td>
+                    <a href="https://b24-tyk53v.bitrix24.ru/company/personal/user/{{ user_id }}/" target="_blank">{{ user.FULL_NAME }}</a>
+                </td>
+                <td>
+                    {% if user.SUPERVISORS|length > 0 %}
+                        {% for supervisor in user.SUPERVISORS %}
+                            <a href="https://b24-tyk53v.bitrix24.ru/company/personal/user/{{ supervisor.0 }}/">{{ supervisor.1 }}</a>{% if not forloop.last %}<br><br> {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        Нет руководителя
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

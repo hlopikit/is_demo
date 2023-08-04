@@ -1,9 +1,9 @@
-def api_method_task_add_with_manager(but, manager, manager_dict, table):
+def api_method_task_add_with_manager(but, manager, manager_dict, table, date):
     """Позволяет поставить задачу пользователю от вышестоящего руководителя."""
 
     task_id = but.call_api_method('tasks.task.add',
                                   {'fields': {
-                                      "TITLE": 'Лучший звонок за день',
+                                      "TITLE": f'Оценить свой лучший звонок за {date}',
                                       "CREATED_BY":
                                           manager_dict[
                                               manager],
