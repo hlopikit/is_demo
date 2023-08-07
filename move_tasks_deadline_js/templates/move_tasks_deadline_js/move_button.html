@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <button
+            id="move_tasks_deadline"
+            title="Передвинуть крайний срок на день вперед"
+            onclick="move_tasks_deadline()"
+    >
+        Не успеваю
+    </button>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="//api.bitrix24.com/api/v1/"></script>
+<script src="{% static 'move_tasks_deadline_js/script.js' %}"></script>
+</html>

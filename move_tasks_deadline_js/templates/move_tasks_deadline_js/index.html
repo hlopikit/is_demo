@@ -7,15 +7,21 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <button
-            id="move_tasks_deadline"
-            title="Передвинуть крайний срок на день вперед"
-            onclick="move_tasks_deadline()"
-    >
-        Не успеваю
-    </button>
+{% if message %}
+    <p>{{ message }}</p>
+{% endif %}
+{% if request.bitrix_user.is_admin %}
+    {% if bound %}
+        <form action="{% url 'move_tasks_deadline_js:unbind_button' %}" method="POST">
+            <button>Отвязать кнопку от окна с задачей</button>
+        </form>
+    {% else %}
+        <form action="{% url 'move_tasks_deadline_js:bind_button' %}" method="POST">
+            <button>Привязать кнопку к окну с задачей</button>
+        </form>
+    {% endif %}
+{% else %}
+    <p>Привязать или отвязать кнопку может только администратор</p>
+{% endif %}
 </body>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-<script src="//api.bitrix24.com/api/v1/"></script>
-<script src="{% static 'move_tasks_deadline_js/script.js' %}"></script>
 </html>
