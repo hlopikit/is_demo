@@ -9,7 +9,10 @@ from ..utils.utils import finish_tasks
 def finish_tasks_once(request):
     if request.method == 'POST':
         types = request.POST.get('activity_type').split(",")
-        res = str(finish_tasks(request=request, types=types))
-        return HttpResponse(res)
+        res = finish_tasks(request=request, types=types)
+        if res:
+            return HttpResponse("Activities finished successfully.")
+        else:
+            return HttpResponse("No activities to finish.")
     return render(request, 'finish_tasks_page.html')
 

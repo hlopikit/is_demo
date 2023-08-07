@@ -1,3 +1,5 @@
+// В файле лежат 4 функции, вызывающие соответствующие функции в view.
+
 export function finishTasks(finishTasksUrl) {
     return new Promise((resolve, reject) => {
         let checkboxValues = Array.from(document.querySelectorAll('input[name="activity_type"]'))
@@ -5,7 +7,6 @@ export function finishTasks(finishTasksUrl) {
             .map(checkbox => checkbox.value);
         let intervalUnit = document.getElementById('interval_unit').value;
         let intervalValue = document.getElementById('interval_value').value;
-        console.log(checkboxValues);
         fetch(finishTasksUrl, {
             method: 'POST',
             headers: {
@@ -20,12 +21,8 @@ export function finishTasks(finishTasksUrl) {
         })
             .then(response => response.text())
             .then(result => {
-                if (result === 'True') {
-                    console.log("Activities finished successfully.")
-                } else {
-                    console.log("No activities to finish.")
-                }
-                resolve()
+                console.log(result);
+                resolve();
             })
             .catch(error => {
                 console.error(error);
@@ -35,31 +32,26 @@ export function finishTasks(finishTasksUrl) {
 }
 
 export function initiateAutoFinishLoop(initiateLoopUrl) {
-    return new Promise((resolve, reject) => {
-        let checkboxValues = Array.from(document.querySelectorAll('input[name="activity_type"]'))
-            .filter(checkbox => checkbox.checked)
-            .map(checkbox => checkbox.value);
-        let intervalUnit = document.getElementById('interval_unit').value;
-        let intervalValue = document.getElementById('interval_value').value;
-        console.log(checkboxValues);
-        fetch(initiateLoopUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            },
-            body: new URLSearchParams({
-                'activity_type': checkboxValues,
-                'interval_unit': intervalUnit,
-                'interval_value': intervalValue,
-            })
+    let checkboxValues = Array.from(document.querySelectorAll('input[name="activity_type"]'))
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.value);
+    let intervalUnit = document.getElementById('interval_unit').value;
+    let intervalValue = document.getElementById('interval_value').value;
+    fetch(initiateLoopUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: new URLSearchParams({
+            'activity_type': checkboxValues,
+            'interval_unit': intervalUnit,
+            'interval_value': intervalValue,
         })
-            .then(() => resolve())
-            .catch(error => {
-                console.error(error);
-                reject(error);
-            });
-        })
+    })
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.error(error));
 }
 
 export function setFlagState(setFlagUrl, state) {
@@ -95,7 +87,6 @@ export function getCurrentFlagState(getFlagUrl) {
             .then(flagState => {
                 let parsedFlagState = flagState === "true";
                 resolve(parsedFlagState)
-                console.log("Current flag state is", parsedFlagState)
             })
             .catch(error => {
                 console.error("Failed to fetch the flag state:", error);

@@ -83,14 +83,18 @@
     </form>
     <button class="fixed-button" onclick="goBack()">Назад</button>
 </body>
-    <script>
-        document.getElementById('exportButton').setAttribute('data-export-url', "{% url 'export_calls' %}");
-        document.getElementById('syncButton').setAttribute('data-sync-url', "{% url 'keep_synced' %}");
+    <script type="application/json" id="app-urls">
+        {
+            "exportCallsUrl": "{% url 'export_calls' %}",
+            "keepSyncedUrl": "{% url 'keep_synced' %}",
+            "setFlagUrl": "{% url 'set_call_sync_flag' %}",
+            "getFlagUrl": "{% url 'get_call_sync_flag' %}"
+        }
     </script>
     <script>
         function goBack() {
           window.history.back();
         }
     </script>
-<script src="{% static "js/sync.js" %}"></script>
+<script type="module"  src="{% static "calls_to_telegram/js/main.js" %}"></script>
 </html>

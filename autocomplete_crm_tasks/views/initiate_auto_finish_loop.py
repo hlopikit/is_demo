@@ -13,6 +13,6 @@ def initiate_auto_finish_loop(request):
         if types != ['']:
             auto_finish_loop = threading.Thread(target=create_auto_finish_loop, args=(request, types), daemon=True)
             auto_finish_loop.start()
-            return HttpResponse("")
+        return HttpResponse("Synchronization started successfully")
 
     return render(request, 'finish_tasks_page.html')

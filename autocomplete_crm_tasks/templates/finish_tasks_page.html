@@ -42,8 +42,8 @@
         {
             "finishTasksUrl": "{% url 'finish_tasks' %}",
             "initiateLoopUrl": "{% url 'initiate_auto_finish_loop' %}",
-            "setFlagUrl": "{% url 'set_flag' %}",
-            "getFlagUrl": "{% url 'get_flag' %}"
+            "setFlagUrl": "{% url 'set_finish_tasks_flag' %}",
+            "getFlagUrl": "{% url 'get_finish_tasks_flag' %}"
         }
     </script>
     <script>
@@ -51,6 +51,6 @@
           window.history.back();
         }
     </script>
-<script type="module" src="{% static "js/main.js" %}"></script>
-<script src="{% static "js/interval_input_logic.js" %}"></script>
+<script type="module" src="{% static "autocomplete_crm_tasks/js/main.js" %}"></script>
+<script src="{% static "autocomplete_crm_tasks/js/interval_input_logic.js" %}"></script>
 </html>

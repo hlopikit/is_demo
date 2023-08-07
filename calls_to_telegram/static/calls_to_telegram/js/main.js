@@ -1,15 +1,15 @@
-import {finishTasks, setFlagState, getCurrentFlagState, initiateAutoFinishLoop} from './bitrix_integration.js';
+import { exportCalls, initiateSyncLoop, getCurrentFlagState, setFlagState } from './bitrix_integration.js';
 
-const finishButton = document.getElementById('finishButton');
+const exportButton = document.getElementById('exportButton');
 const syncButton = document.getElementById('syncButton');
 const stopSyncButton = document.getElementById('stopSyncButton');
 
 const urls = JSON.parse(document.getElementById('app-urls').textContent);
+
 let currentFlagState = undefined;
 
-
 document.addEventListener('DOMContentLoaded', () => {
-    finishButton.disabled = true;
+    exportButton.disabled = true;
     syncButton.disabled = true;
     stopSyncButton.disabled = true;
     getCurrentFlagState(urls.getFlagUrl)
@@ -19,15 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFlagState = response
         });
 
-    finishButton.addEventListener('click', () => {
-        finishButton.disabled = true;
-        finishButton.classList.remove('start-active');
-        finishButton.classList.add('inactive');
-        finishTasks(urls.finishTasksUrl)
-            .then(() => {
-                finishButton.disabled = false;
-                finishButton.classList.remove('inactive');
-                finishButton.classList.add('start-active');
+    exportButton.addEventListener('click', () => {
+        exportButton.disabled = true;
+        exportButton.classList.remove('start-active');
+        exportButton.classList.add('inactive');
+        exportCalls(urls.exportCallsUrl)
+            .then(result => {
+                console.log(result);
+                exportButton.disabled = false;
+                exportButton.classList.remove('inactive');
+                exportButton.classList.add('start-active');
             })
     });
 
@@ -38,16 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setFlagState(urls.setFlagUrl, currentFlagState)
             .then(() => {
                 console.log("Flag set to true.");
-                initiateAutoFinishLoop(urls.initiateLoopUrl)
-                    .then(() => console.log("Synchronization started successfully"))
-                    .catch(error => {
-                        console.error("Activity autocompletion start failed.")
-                    })
-
+                initiateSyncLoop(urls.keepSyncedUrl)
             })
-            .catch(error => {
-                console.error("Flag setting failed.", error)
-            });
+            .catch(error => console.error("Flag setting failed.", error));
     });
 
     stopSyncButton.addEventListener('click', () => {
@@ -61,21 +55,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 function toggleButtonStates(currentFlagState) {
     console.log(currentFlagState)
     if (currentFlagState === true) {
-        finishButton.disabled = true;
+        exportButton.disabled = true;
         syncButton.disabled = true;
         stopSyncButton.disabled = false;
 
     } else {
-        finishButton.disabled = false;
+        exportButton.disabled = false;
         syncButton.disabled = false;
         stopSyncButton.disabled = true;
     }
 }
-
 
 function toggleButtonColors(currentFlagState) {
     if (currentFlagState === true) {
@@ -85,8 +77,8 @@ function toggleButtonColors(currentFlagState) {
         stopSyncButton.classList.remove('inactive');
         stopSyncButton.classList.add('stop-active');
 
-        finishButton.classList.remove('start-active');
-        finishButton.classList.add('inactive')
+        exportButton.classList.remove('start-active');
+        exportButton.classList.add('inactive')
 
     } else {
         syncButton.classList.remove('inactive');
@@ -95,9 +87,7 @@ function toggleButtonColors(currentFlagState) {
         stopSyncButton.classList.remove('stop-active');
         stopSyncButton.classList.add('inactive');
 
-        finishButton.classList.remove('inactive');
-        finishButton.classList.add('start-active');
+        exportButton.classList.remove('inactive');
+        exportButton.classList.add('start-active');
     }
 }
-
-
