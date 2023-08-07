@@ -89,6 +89,11 @@ def employee_grid(request):
             user['PERSONAL_BIRTHDAY'] = (
                 dt.parse(user['PERSONAL_BIRTHDAY']).strftime('%d.%m.%Y'))
 
+        # форматируем дату трудоустройства, если она указана
+        if user['UF_EMPLOYMENT_DATE']:
+            user['UF_EMPLOYMENT_DATE'] = (
+                dt.parse(user['UF_EMPLOYMENT_DATE']).strftime('%d.%m.%Y'))
+
         # добавляем статус
         user['IS_ONLINE'] = STATUS[user['IS_ONLINE']]
 
