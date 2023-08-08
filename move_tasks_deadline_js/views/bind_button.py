@@ -14,7 +14,7 @@ def bind_button(request):
 
     handler_type = request.GET.get("type")
 
-    if request.bitrix_user.is_admin and handler_type in ["js", "admin"]:
+    if request.bitrix_user.is_admin and handler_type in ["js", "admin", "self"]:
         if not is_bound(request.bitrix_user_token, handler_type):
             request.bitrix_user_token.call_api_method("placement.bind", params={
                 "PLACEMENT": "TASK_VIEW_SIDEBAR",

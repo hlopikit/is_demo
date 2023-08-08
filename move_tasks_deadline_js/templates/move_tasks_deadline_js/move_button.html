@@ -16,9 +16,8 @@
     >
         Не успеваю
     </button>
-{% endif %}
-{% if button_type == "admin" %}
-    <form method="post" action="{% url "move_tasks_deadline_js:move_deadline" %}">
+{% else %}
+    <form method="post" action="{% url "move_tasks_deadline_js:move_deadline" %}?type={{ button_type }}">
     <button title="Передвинуть крайний срок на день вперед">
         Не успеваю
     </button>

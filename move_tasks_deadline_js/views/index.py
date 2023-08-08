@@ -9,7 +9,7 @@ def index(request):
     """Страница из списка с приложениями, на которой можно привязать
     хендлер к окну просмотра задачи"""
     bound = {}
-    for handler_type in ["js", "admin"]:
+    for handler_type in ["js", "admin", "self"]:
         bound[handler_type] = is_bound(request.bitrix_user_token, handler_type)
 
     return render(request, 'move_tasks_deadline_js/index.html', {

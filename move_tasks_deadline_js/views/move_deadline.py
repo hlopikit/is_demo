@@ -11,8 +11,13 @@ def move_deadline(request):
     if request.method != "POST":
         raise Http404()
 
+    button_type = request.GET.get("type")
+
+    if button_type not in ["admin", "self"]:
+        raise Http404()
+
     resp = render(request, 'move_tasks_deadline_js/move_button.html', {
-        "button_type": "admin",
+        "button_type": button_type,
         "path_to_script": "move_tasks_deadline_js/admin.js"
     })
 
@@ -24,8 +29,12 @@ def move_deadline(request):
     but = BitrixUser.objects.get(pk=1).bitrix_user_token
     response = but.call_api_method("tasks.task.get", params={
         "taskId": task_id,
-        "select": ["DEADLINE"]
+        "select": ["DEADLINE", "CREATED_BY"]
     })
+
+    if button_type == "self":
+        if int(response["result"]["task"]["createdBy"]) != request.bitrix_user.bitrix_id:
+            return resp
 
     deadline_iso = response["result"]["task"]["deadline"]
 
