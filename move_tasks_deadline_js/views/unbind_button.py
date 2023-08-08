@@ -9,7 +9,7 @@ from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 @main_auth(on_cookies=True)
 def unbind_button(request):
     """Отвязываем хендлер от окна просмотра задачи"""
-    if request.method == "GET":
+    if request.method != "POST":
         raise Http404()
 
     if request.bitrix_user.is_admin:
