@@ -9,7 +9,7 @@ def get_flag(request):
         but = BitrixUserToken.objects.filter(user__is_admin=True, is_active=True).first()
         try:
             flag = but.call_api_method('app.option.get', {})['result']['call_sync_flag']
-        except KeyError:
+        except (KeyError, TypeError):
             flag = "false"
             but.call_api_method('app.option.set', {'options': {'call_sync_flag': flag}})
         return HttpResponse(f"{flag}")
