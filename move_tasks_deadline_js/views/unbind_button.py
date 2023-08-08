@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.conf import settings
 from django.http import Http404
@@ -12,26 +12,13 @@ def unbind_button(request):
     if request.method != "POST":
         raise Http404()
 
-    if request.bitrix_user.is_admin:
-        bound = is_bound(request.bitrix_user_token)
+    handler_type = request.GET.get("type")
 
-        if not bound:
-            message = "Место встраивания не связано с обработчиком"
-        else:
-            response = request.bitrix_user_token.call_api_method("placement.unbind", params={
+    if request.bitrix_user.is_admin and handler_type in ["js", "admin"]:
+        if is_bound(request.bitrix_user_token, handler_type):
+            request.bitrix_user_token.call_api_method("placement.unbind", params={
                 "PLACEMENT": "TASK_VIEW_SIDEBAR",
-                "HANDLER": settings.DOMAIN + reverse('move_tasks_deadline_js:move_button')
+                "HANDLER": settings.DOMAIN + reverse('move_tasks_deadline_js:move_button') + "?type=" + handler_type
             })
 
-            if response:
-                message = "Отвязывание прошло успешно"
-                bound = False
-            else:
-                message = "Что-то пошло не так"
-    else:
-        message = "Только администраторы могут отвязывать."
-
-    return render(request, 'move_tasks_deadline_js/index.html', {
-        "message": message,
-        "bound": bound
-    })
+    return redirect(reverse("move_tasks_deadline_js:index"))

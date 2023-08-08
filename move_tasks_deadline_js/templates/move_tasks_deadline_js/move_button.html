@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<h3>{{ button_type }}</h3>
+{% if button_type == "js" %}
     <button
             id="move_tasks_deadline"
             title="Передвинуть крайний срок на день вперед"
@@ -14,8 +16,18 @@
     >
         Не успеваю
     </button>
+{% endif %}
+{% if button_type == "admin" %}
+    <form method="post" action="{% url "move_tasks_deadline_js:move_deadline" %}">
+    <button title="Передвинуть крайний срок на день вперед">
+        Не успеваю
+    </button>
+    </form>
+{% endif %}
 </body>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+{% if button_type == "js" %}
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+{% endif %}
 <script src="//api.bitrix24.com/api/v1/"></script>
-<script src="{% static 'move_tasks_deadline_js/script.js' %}"></script>
+<script src="{% static path_to_script %}"></script>
 </html>

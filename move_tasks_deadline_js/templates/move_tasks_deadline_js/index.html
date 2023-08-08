@@ -7,19 +7,21 @@
     <meta charset="UTF-8">
 </head>
 <body>
-{% if message %}
-    <p>{{ message }}</p>
-{% endif %}
 {% if request.bitrix_user.is_admin %}
-    {% if bound %}
-        <form action="{% url 'move_tasks_deadline_js:unbind_button' %}" method="POST">
-            <button>Отвязать кнопку от окна с задачей</button>
-        </form>
-    {% else %}
-        <form action="{% url 'move_tasks_deadline_js:bind_button' %}" method="POST">
-            <button>Привязать кнопку к окну с задачей</button>
-        </form>
-    {% endif %}
+    {% for handler_type, is_bound in bound.items %}
+        <h3>{{ handler_type }}</h3>
+        {% if is_bound %}
+            <p>Кнопка привязана</p>
+            <form action="{% url "move_tasks_deadline_js:unbind_button" %}?type={{ handler_type }}" method="post">
+                <button>Отвязать кнопку от окна с задачей</button>
+            </form>
+        {% else %}
+            <p>Кнопка отвязана</p>
+            <form action="{% url "move_tasks_deadline_js:bind_button" %}?type={{ handler_type }}" method="post">
+                <button>Привязать кнопку к окну с задачей</button>
+            </form>
+        {% endif %}
+    {% endfor %}
 {% else %}
     <p>Привязать или отвязать кнопку может только администратор</p>
 {% endif %}

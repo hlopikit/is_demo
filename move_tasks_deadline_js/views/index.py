@@ -8,14 +8,10 @@ from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 def index(request):
     """Страница из списка с приложениями, на которой можно привязать
     хендлер к окну просмотра задачи"""
-    bound = False
-    message = None
-
-    if is_bound(request.bitrix_user_token):
-        bound = True
-        message = "Кнопка уже привязана"
+    bound = {}
+    for handler_type in ["js", "admin"]:
+        bound[handler_type] = is_bound(request.bitrix_user_token, handler_type)
 
     return render(request, 'move_tasks_deadline_js/index.html', {
-        "message": message,
         "bound": bound
     })
