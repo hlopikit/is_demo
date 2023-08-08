@@ -40,6 +40,15 @@ def make_links_from_origin(data, excel_field, b24_field, source_map, prefix):
     return data
 
 
+def load_crm(crm_items, but, type_id):
+    # выгружает элменты crm в битрикс
+    methods = []
+    for item in crm_items:
+        methods.append(('crm.item.batchImport',
+                        {"entityTypeId": type_id, "data": [item]}))
+    but.batch_api_call(methods)
+
+
 def import_data_from_xls(filename, but):
     # Принимает токен и excel файл с несколькоми страницами и загружает их в Битрикс24
     # sheet_names = get_sheet_names(filename)
@@ -55,15 +64,7 @@ def import_data_from_xls(filename, but):
         company_data = excel_file.parse('Компании').to_dict("records")
         company_data = add_origin_prefix(company_data, load_origin_id_prefix)
         object_count["Компании"] = len(company_data)
-        methods = []
-        for company in company_data:
-            # Создаем массив методов которые нам нужно выполнить в Битрикс24
-            # делаем просто 1 вызов = 1 компания
-            methods.append(
-                ('crm.item.batchImport',
-                 {"entityTypeId": '4', "data": [company]}))
-        # Теперь когда мы набрали список методов, то можно их выполнить с помощью batch_api_call
-        but.batch_api_call(methods)
+        load_crm(company_data, but, "4")
 
         companies = but.call_list_method('crm.company.list', {
             "SELECT": ["ORIGIN_ID", "ID"],
@@ -91,35 +92,17 @@ def import_data_from_xls(filename, but):
                                                companies_origin_id_dict,
                                                load_origin_id_prefix)
         object_count["Контакты"] = len(contacts_data)
-        methods = []
-        for contact in contacts_data:
-            methods.append(
-                ('crm.item.batchImport',
-                 {"entityTypeId": '3', "data": [contact]}))
-        but.batch_api_call(methods)
-        # but.call_api_method("crm.item.batchImport",
-        #                     {"entityTypeId": '3', "data": contacts_data})
+        load_crm(company_data, but, "3")
 
     if "Загружаем сделки":
         deals_data = excel_file.parse('Сделки').to_dict("records")
         object_count["Сделки"] = len(deals_data)
-        methods = []
-        for deal in deals_data:
-            methods.append(
-                ('crm.item.batchImport',
-                 {"entityTypeId": '2', "data": [deal]}))
-        but.batch_api_call(methods)
-        # but.call_api_method("crm.item.batchImport",
-        #                     {"entityTypeId": '2', "data": deal_data})
+        load_crm(company_data, but, "2")
+
     if "Загружаем лиды":
         leads_data = excel_file.parse('Лиды').to_dict("records")
         object_count["Лиды"] = len(leads_data)
-        methods = []
-        for lead in leads_data:
-            methods.append(
-                ('crm.item.batchImport',
-                 {"entityTypeId": '1', "data": [lead]}))
-        but.batch_api_call(methods)
+        load_crm(company_data, but, "1")
 
     return object_count
 
