@@ -12,5 +12,6 @@ class BPForm(forms.ModelForm):
         to_field_name='process_id',
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label='Не выбрано',
         label='БП'
     )

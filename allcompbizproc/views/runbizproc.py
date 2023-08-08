@@ -1,4 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from allcompbizproc.forms.select_bp import BPForm
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
@@ -11,11 +13,13 @@ def run_bizproc(request):
     but = request.bitrix_user_token
     companies_id = but.call_list_method('crm.company.list', {'select': ['ID']})
     BizprocModel.find_all_bizprocs(but)
-    form = BPForm()
     if request.method == 'POST':
         form = BPForm(request.POST)
         if form.is_valid():
             cur_bp = form.cleaned_data['bp']
-        for company in companies_id:
-            cur_bp.run_cur_bizproc(but, company['ID'])
+            for company in companies_id:
+                cur_bp.run_cur_bizproc(but, company['ID'])
+            return HttpResponseRedirect(reverse('reload_start'))
+    else:
+        form = BPForm()
     return render(request, 'allcompbizproc.html', context={'form': form})
