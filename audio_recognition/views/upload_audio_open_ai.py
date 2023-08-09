@@ -10,7 +10,7 @@ def upload_audio_open_ai(request):
         audio_file = request.FILES.get('audio_file')
         # сохраняем файл и получем путь
         file_path = save_file(audio_file)
-        # рапознование текста
+        # распознавание текста
         recon_txt = open_ai_get_text(audio_file.name)
         # удалание файла
         remove_file(file_path)

@@ -11,7 +11,7 @@ def upload_audio_tinkoff(request):
         audio_file = request.FILES.get('audio_file')
         # сохраняем файл и получем путь
         file_path = save_file(audio_file)
-        # рапознование текста
+        # распознавание текста
         recon_txt = get_text(audio_file.name)
         # удалание файлов
         remove_file(file_path)
