@@ -65,7 +65,8 @@ select option {
     background-color: #c9b7ab;
 }
 .backwards-button {
-    font-size: 20px;
+    font-weight: bolder;
+    font-size: 16px;
     border-radius: 3px;
     background-color: #007bff;
     color: #fff;

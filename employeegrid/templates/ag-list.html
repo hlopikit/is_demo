@@ -7,56 +7,145 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.js"></script>
 </head>
+<style>
+    img {
+      max-height:100px;
+    }
+</style>
 <body>
+<button style="margin-bottom: 5px; float: right" onclick="document.location='{% url 'reload_start'%}'">Назад</button>
+<div id="employeeGrid" style="height: 100vh; width: 100vw; padding-top: 40px" class="ag-theme-alpine"></div>
 
 <script>
-
     window.result = {{ json_user_list|safe }};
-    let gridOptions = {
-        defaultColDef: {
-            floatingFilter: true,
-            //groupMultiAutoColumn: true,
-            resizable: true,
-            sortable: true,
-            filter: true,
-        },
-        columnDefs: [
-            /* {headerName: "Фото", field: "PERSONAL_PHOTO", rowGroup: false, resizable: true, autoHeight: true, cellDataType: "image",
-                cellRenderer: function(params) {
-                    let imgUrl = params.data.personal_photo;
-                    return `<img src=${imgUrl} alt="img not found" style="height: 100px;">`;},
-            }, */
-            {headerName: "Сотрудник", field: "FULL_NAME", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Статус", field: "IS_ONLINE", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Пол", field: "PERSONAL_GENDER", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Подразделение", field: "DEPARTMENTS", rowGroup: false, resizable: true, autoHeight: true, cellStyle: { 'white-space': 'pre' },},
-            {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Дата трудоустройства", field: "UF_EMPLOYMENT_DATE", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
-            {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
-        ],
-        rowData: window.result,
-        columnTypes: {numberValue: {aggFunc: 'sum'}},
-        sideBar: true,
-        //groupMultiAutoColumn: true,
-        rowGroupPanelShow: "always",
-        onGridReady: function(params) {
-            params.columnApi.autoSizeAllColumns();
+    class CustomFilterComponent {
+        constructor() {
+            this.eGui = document.createElement('div');
+            this.filterActive = false;
         }
+
+        init(params) {
+            this.params = params;
+
+            const departments = Array.from(this.getUniqueDepartmentsFromData());
+
+            let checkboxesHtml = `<div class="ag-virtual-list-container ag-filter-virtual-list-container">
+                ${departments.map(department => {
+                return `
+                        <div class="ag-set-filter-item">
+                            <div class="ag-set-filter-item-checkbox ag-labeled ag-label-align-right ag-checkbox ag-input-field">
+                                <div class="ag-input-field-label ag-label ag-checkbox-label ag-label-ellipsis">
+                                    <input type="checkbox" value="${department}"/>
+                                    ${department}
+                                </div>
+                                <br>
+                            </div>
+                        </div>`
+            }).join('')}</div>`
+
+
+
+            this.eGui.innerHTML = checkboxesHtml;
+
+            this.eGui.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', this.onCheckboxChanged.bind(this));
+            });
+
+            this.filterChangedCallback = params.filterChangedCallback;
+        }
+
+        onCheckboxChanged() {
+            this.selectedDepartments = Array.from(this.eGui.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+            this.filterActive = this.selectedDepartments.length > 0;
+            this.filterChangedCallback();
+        }
+
+        getGui() {
+            return this.eGui;
+        }
+
+        doesFilterPass(params) {
+            if (!this.filterActive) {
+                return true;
+            }
+            console.log(params)
+            this.selectedDepartments = Array.from(this.eGui.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+
+            const userDepartments = params.data.DEPARTMENTS.split('\n');
+            return this.selectedDepartments.some(group => userDepartments.includes(group));
+        }
+
+        isFilterActive() {
+            return this.filterActive;
+        }
+
+        getUniqueDepartmentsFromData() {
+            let uniqueDepartments = new Set();
+            window.result.forEach(user => {
+                user.DEPARTMENTS
+                    .split("\n")
+                    .forEach(department => {
+                        uniqueDepartments.add(department);
+                    })
+            })
+            uniqueDepartments.delete('');
+            return uniqueDepartments;
+        }
+    }
+
+
+
+    let gridOptions = {
+            defaultColDef: {
+                resizable: true,
+                sortable: true,
+                filter: true,
+            },
+            columnDefs: [
+                {headerName: "Фото", field: "PERSONAL_PHOTO", rowGroup: false, resizable: true, autoHeight: true,
+                    cellRenderer: function(params) {
+                        let imgUrl = params.data.PERSONAL_PHOTO;
+                        return `<img src="${imgUrl}" alt="img not found">`;},
+                },
+                {headerName: "Сотрудник", field: "FULL_NAME", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "Статус", field: "IS_ONLINE", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "Пол", field: "PERSONAL_GENDER", rowGroup: false, resizable: true, autoHeight: true,},
+                {
+                    headerName: "Подразделение",
+                    field: "DEPARTMENTS",
+                    rowGroup: false,
+                    resizable: true,
+                    autoHeight: true,
+                    cellStyle: { 'white-space': 'pre' },
+                    filter: CustomFilterComponent,
+                    filterParams: {
+
+                    }
+
+                },
+                {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "Дата трудоустройства", field: "UF_EMPLOYMENT_DATE", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
+                {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
+            ],
+            rowData: window.result,
+            columnTypes: {numberValue: {aggFunc: 'sum'}},
+            sideBar: true,
+            rowGroupPanelShow: "always",
+            onGridReady: function(params) {
+                params.columnApi.autoSizeAllColumns();
+            }
     };
 
-    // set up the grid after the page has finished loading
-    document.addEventListener("DOMContentLoaded", function () {
-        let gridDiv = document.querySelector("#employeeGrid");
-        new agGrid.Grid(gridDiv, gridOptions);
+document.addEventListener("DOMContentLoaded", () => {
+    let gridDiv = document.querySelector("#employeeGrid");
+    new agGrid.Grid(gridDiv, gridOptions);
 
-    });
+});
 
 </script>
 
-<button style="margin-bottom: 5px; float: right" onclick="document.location='{% url 'reload_start'%}'">Назад</button>
-<div id="employeeGrid" style="height: 100vh; width: 100vw; padding-top: 40px" class="ag-theme-alpine"></div>
 
 </body>
 </html>
