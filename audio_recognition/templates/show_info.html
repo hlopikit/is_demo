@@ -47,8 +47,20 @@
             background-color: #45a049;
         }
 
+        input[name="audio_file"] {
+            width: 100%;
+            background-color: inherit;
+            border: 2px solid black ;
+            box-sizing: border-box;
+            color: black;
+        }
+
+        input[name="audio_file"]:hover {
+            background-color: lightgray;
+        }
 
     </style>
+
 {% endblock %}
 {% block header %}
     <div class="header">
@@ -76,7 +88,7 @@
     </form>
 </div>
 
-    <div class="form-wrapper">
+<div class="form-wrapper">
     <form action="{% url 'show_info_open_ai' %}" method="post" class="form">
     <audio controls>
         <source src="{% static 'audio/file_for_test.mp3' %}"  type="audio/mp3">
@@ -84,6 +96,16 @@
         <br>
     <input type="submit" value="Распознать текст (OpenAI)">
     <p>{{ recognized_text_open_ai }}</p>
+    </form>
+</div>
+
+<div class="form-wrapper">
+    <form action="{% url 'upload_audio' %}" method="post"
+          enctype="multipart/form-data" class="form">
+        <input class="upload-file" type="file" name="audio_file" accept=".mp3" required>
+        <br>
+        <input type="submit" value="Загрузить и распознать (OpenAI)">
+        <p>{{ upload_recognized_text_open_ai }}</p>
     </form>
 </div>
 
