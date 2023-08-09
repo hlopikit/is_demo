@@ -20,8 +20,7 @@ def build_request(file_path):
        Поэтому нужна проверка каналов аудио файла, обязательная для нормального вывода текста
     """
     with wave.open(file_path, 'rb') as f:
-        # request.config.num_channels = f.getnchannels()
-        request.config.num_channels = 1
+        request.config.num_channels = f.getnchannels()
 
     return request
 
