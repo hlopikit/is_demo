@@ -9,12 +9,16 @@ from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 def upload_audio(request):
     if request.method == 'POST':
         audio_file = request.FILES.get('audio_file')
+        # формируем путь до файла
         file_path = os.path.join(BASE_DIR, 'audio_recognition', 'samples',
                                  audio_file.name)
+        # сохраняем файл
         with open(file_path, 'wb') as f:
             for chunk in audio_file.chunks():
                 f.write(chunk)
+        # рапохнование текста
         recon_txt = open_ai_get_text(audio_file.name)
+        # удалание файла
         os.remove(file_path)
         return render(request, 'show_info.html',
                       context={'upload_recognized_text_open_ai': recon_txt})
