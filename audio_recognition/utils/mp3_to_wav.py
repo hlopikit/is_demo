@@ -26,4 +26,5 @@ def wav_maker(filename):
 
 
 def get_wav_path(file_path):
+    # возвращает путь с расширением wav
     return file_path[:-3] + 'wav'

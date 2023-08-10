@@ -33,6 +33,7 @@ def recognition_response(response):
 
     ans_str = ''
     for result in response.results:
-        for alternative in result.alternatives:
-            ans_str += alternative.transcript + ' '
+        if result.channel == 0:
+            for alternative in result.alternatives:
+                ans_str += alternative.transcript + ' '
     return ans_str
