@@ -101,6 +101,10 @@ def employee_grid(request):
         user['PERSONAL_GENDER'] = GENDER[user['PERSONAL_GENDER']]
 
     json_user_list = json.dumps(users, cls=DjangoJSONEncoder)
+    json_departments_list = json.dumps(departments, cls=DjangoJSONEncoder)
 
     return render(request, 'ag-list.html',
-                  context={'json_user_list': json_user_list})
+                  context={
+                    'json_user_list': json_user_list,
+                    'json_departments_list': json_departments_list
+                  })

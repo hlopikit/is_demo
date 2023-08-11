@@ -17,132 +17,80 @@
 <div id="employeeGrid" style="height: 100vh; width: 100vw; padding-top: 40px" class="ag-theme-alpine"></div>
 
 <script>
-    window.result = {{ json_user_list|safe }};
-    class CustomFilterComponent {
-        constructor() {
-            this.eGui = document.createElement('div');
-            this.filterActive = false;
-        }
-
-        init(params) {
-            this.params = params;
-
-            const departments = Array.from(this.getUniqueDepartmentsFromData());
-
-            let checkboxesHtml = `<div class="ag-virtual-list-container ag-filter-virtual-list-container">
-                ${departments.map(department => {
-                return `
-                        <div class="ag-set-filter-item">
-                            <div class="ag-set-filter-item-checkbox ag-labeled ag-label-align-right ag-checkbox ag-input-field">
-                                <div class="ag-input-field-label ag-label ag-checkbox-label ag-label-ellipsis">
-                                    <input type="checkbox" value="${department}"/>
-                                    ${department}
-                                </div>
-                                <br>
-                            </div>
-                        </div>`
-            }).join('')}</div>`
-
-
-
-            this.eGui.innerHTML = checkboxesHtml;
-
-            this.eGui.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', this.onCheckboxChanged.bind(this));
-            });
-
-            this.filterChangedCallback = params.filterChangedCallback;
-        }
-
-        onCheckboxChanged() {
-            this.selectedDepartments = Array.from(this.eGui.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
-            this.filterActive = this.selectedDepartments.length > 0;
-            this.filterChangedCallback();
-        }
-
-        getGui() {
-            return this.eGui;
-        }
-
-        doesFilterPass(params) {
-            if (!this.filterActive) {
-                return true;
-            }
-            console.log(params)
-            this.selectedDepartments = Array.from(this.eGui.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
-
-            const userDepartments = params.data.DEPARTMENTS.split('\n');
-            return this.selectedDepartments.some(group => userDepartments.includes(group));
-        }
-
-        isFilterActive() {
-            return this.filterActive;
-        }
-
-        getUniqueDepartmentsFromData() {
-            let uniqueDepartments = new Set();
-            window.result.forEach(user => {
-                user.DEPARTMENTS
-                    .split("\n")
-                    .forEach(department => {
-                        uniqueDepartments.add(department);
-                    })
-            })
-            uniqueDepartments.delete('');
-            return uniqueDepartments;
-        }
-    }
-
-
-
+    const users = {{ json_user_list|safe }};
+    const departments = Object.values({{ json_departments_list|safe }}).map(value => value.NAME);
     let gridOptions = {
-            defaultColDef: {
-                resizable: true,
-                sortable: true,
-                filter: true,
-            },
-            columnDefs: [
-                {headerName: "Фото", field: "PERSONAL_PHOTO", rowGroup: false, resizable: true, autoHeight: true,
-                    cellRenderer: function(params) {
-                        let imgUrl = params.data.PERSONAL_PHOTO;
-                        return `<img src="${imgUrl}" alt="img not found">`;},
-                },
-                {headerName: "Сотрудник", field: "FULL_NAME", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "Статус", field: "IS_ONLINE", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "Пол", field: "PERSONAL_GENDER", rowGroup: false, resizable: true, autoHeight: true,},
-                {
-                    headerName: "Подразделение",
-                    field: "DEPARTMENTS",
-                    rowGroup: false,
+                defaultColDef: {
+                    floatingFilter: true,
                     resizable: true,
-                    autoHeight: true,
-                    cellStyle: { 'white-space': 'pre' },
-                    filter: CustomFilterComponent,
-                    filterParams: {
-
-                    }
-
+                    sortable: true,
+                    filter: true,
                 },
-                {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "Дата трудоустройства", field: "UF_EMPLOYMENT_DATE", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
-                {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
-            ],
-            rowData: window.result,
-            columnTypes: {numberValue: {aggFunc: 'sum'}},
-            sideBar: true,
-            rowGroupPanelShow: "always",
-            onGridReady: function(params) {
-                params.columnApi.autoSizeAllColumns();
+                columnDefs: [
+                    {headerName: "Фото", field: "PERSONAL_PHOTO", rowGroup: false, resizable: true, autoHeight: true,
+                        cellRenderer: function(params) {
+                            let imgUrl = params.data.PERSONAL_PHOTO;
+                            return `<img src="${imgUrl}" alt="img not found">`;},
+                    },
+                    {headerName: "Сотрудник", field: "FULL_NAME", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Статус", field: "IS_ONLINE", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Пол", field: "PERSONAL_GENDER", rowGroup: false, resizable: true, autoHeight: true,},
+                    {
+                        headerName: "Подразделение",
+                        field: "DEPARTMENTS",
+                        rowGroup: false,
+                        resizable: true,
+                        autoHeight: true,
+                        cellStyle: {'white-space': 'pre'},
+                        filter:  'agSetColumnFilter',
+                        filterParams: {
+                            values: departments,
+                            suppressSelectAll: true,
+                            defaultToNothingSelected: true
+
+                        }
+                    },
+
+                    {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Дата трудоустройства", field: "UF_EMPLOYMENT_DATE", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
+                ],
+                rowData: users,
+                columnTypes: {numberValue: {aggFunc: 'sum'}},
+                sideBar: true,
+                rowGroupPanelShow: "always",
+                onGridReady: function(params) {
+                    params.columnApi.autoSizeAllColumns();
+                }
+        };
+    document.addEventListener("DOMContentLoaded", () => {
+        let gridDiv = document.querySelector("#employeeGrid");
+        new agGrid.Grid(gridDiv, gridOptions);
+
+        const myDoesFilterPassFunction = function(params) {
+            this.checkboxLabels = this.eGui.querySelectorAll('.ag-checkbox-label');
+            this.selectedDepartments = [];
+            this.checkboxLabels.forEach(label => {
+                const wrapper = label.nextElementSibling;
+                if (wrapper && wrapper.classList.contains('ag-checked')) {
+                    const labelText = label.textContent.trim();
+                    this.selectedDepartments.push(labelText);
+                }
+            });
+            const userDepartments = params.data.DEPARTMENTS.split('\n');
+            if (this.selectedDepartments.length > 0) {
+                return this.selectedDepartments.every(department => userDepartments.includes(department));
+            } else {
+                return false;
             }
-    };
+        }
 
-document.addEventListener("DOMContentLoaded", () => {
-    let gridDiv = document.querySelector("#employeeGrid");
-    new agGrid.Grid(gridDiv, gridOptions);
+        let departmentsFilter = gridOptions.api.getFilterInstance('DEPARTMENTS');
+        departmentsFilter.doesFilterPass = myDoesFilterPassFunction;
 
-});
+    });
 
 </script>
 
