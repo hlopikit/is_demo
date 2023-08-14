@@ -27,31 +27,29 @@ def finish_tasks(request, types):
     activity_list = []
     for activity_type in types:
         for activity_filter in create_filter_list(activity_type, target_date_str):
-            activity_list += but.call_api_method('crm.activity.list', activity_filter)['result']
+            activity_list += but.call_list_method('crm.activity.list', activity_filter, timeout=600)
 
     # Если список не пуст, завершаем и возвращаем True (для лога).
     # В ином случае возвращаем False.
     if len(activity_list) != 0:
-        batch_activity_finish = []
-        batch_associated_entity_status_change = []
+        activity_batch= []
+        associated_entity_batch = []
         for activity in activity_list:
-            batch_activity_finish.append(('crm.activity.update', {
+            activity_batch.append(('crm.activity.update', {
                 "id": activity['ID'],
                 "fields": {
                     "COMPLETED": "Y"
                 }
             }))
-            # Этот фрагмент отвечает за завершение связанных с делами задач,
-            # если таковые имеются.
             if activity['ASSOCIATED_ENTITY_ID'] != "0":
-                batch_associated_entity_status_change.append(('tasks.task.update', {
+                associated_entity_batch.append(('tasks.task.update', {
                     'taskId': activity['ASSOCIATED_ENTITY_ID'],
                     'fields': {
                         'STATUS': '5'
                     }
                 }))
-        but.batch_api_call(batch_activity_finish)
-        but.batch_api_call(batch_associated_entity_status_change)
+        but.batch_api_call(activity_batch, timeout=10800)
+        but.batch_api_call(associated_entity_batch, timeout=10800)
         return True
 
     else:
