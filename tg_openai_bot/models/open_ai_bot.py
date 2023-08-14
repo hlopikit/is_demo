@@ -20,7 +20,7 @@ class OpenAiBot(AbstractBot):
     USER_CLASS = OpenAiUser
     CHAT_CLASS = OpenAiUserChat
     MESSAGE_CLASS = OpenAiUserMessage
-    CONTEXT = []  # Константа для будущего сохранения диалога
+    CONTEXT = {}
 
     # Хендлер проверяющей команды старб
     def on_start_command(self, message, t_user, t_chat, param):
@@ -28,17 +28,19 @@ class OpenAiBot(AbstractBot):
 
     #  Хендлер команды для запроса к GPT, используем модель gpt-3.5-turbo
     def on_gpt_command(self, message, t_user, t_chat, param):
+        context = OpenAiBot.CONTEXT.setdefault(t_chat.telegram_id, [])
         if not param:
             self.send_message(t_chat.telegram_id, 'Введите запрос')
             return
-        OpenAiBot.CONTEXT.append({'role': 'user', 'content': param})
+        context.append({'role': 'user', 'content': param})
         completion = openai.ChatCompletion.create(
             model=MODEL,
-            messages=OpenAiBot.CONTEXT
+            messages=context
         )
         response_content = completion.choices[0].message.content
         self.send_message(t_chat.telegram_id, response_content)
-        OpenAiBot.CONTEXT.append({'role': 'assistant', 'content': response_content})
+        context.append({'role': 'assistant', 'content': response_content})
+        OpenAiBot.CONTEXT[t_chat.telegram_id] = context
 
     # Хендлер команды помощь
     def on_help_command(self, message, t_user, t_chat, param):

@@ -52,38 +52,53 @@ def employee_grid(request):
         'UF_PHONE_INNER',
     ]
 
+    STATUS = {'Y': 'Онлайн', 'N': 'Не онлайн'}
+    GENDER = {'M': 'Мужской', 'F': 'Женский', '': 'Не указан'}
+
     departments = but.call_api_method('department.get')['result']
     departments_dict = {}
 
-    for element in departments:
-        departments_dict.update({element['ID']: element})
-        departments_dict[element['ID']].pop('ID')
+    for department in departments:
+        departments_dict.update({department['ID']: department})
+        departments_dict[department['ID']].pop('ID')
 
     for user in users:
 
+        # добавляем отсутствующие поля
         for key in user_fields:
-            if key not in user.keys():
-                user.update({key: ""})
-        conj_str = ""
+            user.setdefault(key, "")
+
+        # формируем строку для ФИО
+        fio_str = ""
 
         for key in ['LAST_NAME', 'NAME', 'SECOND_NAME']:
+            fio_str += f"{user[key]} "
 
-            try:
-                conj_str += f"{user[key]} "
-            except:
-                pass
+        user['FULL_NAME'] = fio_str
 
-        user.update({'FULL_NAME': conj_str})
-        user.update({'DEPARTMENTS': ""})
+        # добавлеям названия подразделений
+        user.setdefault('DEPARTMENTS', '')
 
         for department_id in user['UF_DEPARTMENT']:
             department = str(department_id)
             user['DEPARTMENTS'] += departments_dict[department]['NAME']
             user['DEPARTMENTS'] += "\n"
 
-        if user['PERSONAL_BIRTHDAY'] != '':
+        # форматируем дату рождения, если она указана
+        if user['PERSONAL_BIRTHDAY']:
             user['PERSONAL_BIRTHDAY'] = (
                 dt.parse(user['PERSONAL_BIRTHDAY']).strftime('%d.%m.%Y'))
+
+        # форматируем дату трудоустройства, если она указана
+        if user['UF_EMPLOYMENT_DATE']:
+            user['UF_EMPLOYMENT_DATE'] = (
+                dt.parse(user['UF_EMPLOYMENT_DATE']).strftime('%d.%m.%Y'))
+
+        # добавляем статус
+        user['IS_ONLINE'] = STATUS[user['IS_ONLINE']]
+
+        # добавляем пол
+        user['PERSONAL_GENDER'] = GENDER[user['PERSONAL_GENDER']]
 
     json_user_list = json.dumps(users, cls=DjangoJSONEncoder)
 
