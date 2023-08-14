@@ -5,19 +5,26 @@ from pydub import AudioSegment
 from settings import BASE_DIR
 import os
 
-# pathlib используем для прописывания путей к файлам
-import pathlib
-from pathlib import Path
 
 """С помощью библиотеки pydub делаем из mp3 файла wav,
    эта функция понадобиться нам ниже, т.к. тиньков не умеет в распознавание mp3 не в реальном времени
 """
-file_mp3_path = str(os.path.join(BASE_DIR, 'audio_recognition', 'samples', 'file_for_test.mp3'))
-file_wav_path = file_mp3_path[:-3] + 'wav'
 
 
-def wav_maker():
+def wav_maker(filename):
     """С помощью библиотеки pydub делаем из mp3 файла wav,
        эта функция понадобиться нам ниже, т.к. тиньков не умеет в распознавание mp3 не в реальном времени
     """
-    AudioSegment.from_mp3(file_mp3_path).export(file_wav_path, format="wav")
+
+    file_mp3_path = str(os.path.join(BASE_DIR, 'audio_recognition', 'samples',
+                                     filename))
+    file_wav_path = get_wav_path(file_mp3_path)
+
+    AudioSegment.from_mp3(file_mp3_path).export(file_wav_path, format='wav')
+
+    return file_wav_path
+
+
+def get_wav_path(file_path):
+    # возвращает путь с расширением wav
+    return file_path[:-3] + 'wav'
