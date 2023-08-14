@@ -16,11 +16,7 @@ class BizprocModel(models.Model):
                                                  "COMPANY"
                                              ]}})
         for item in res_bizprocs:
-            try:
-                bizproc = BizprocModel.objects.create(process_id=item['ID'], process_name=item['NAME'])
-                bizproc.save()
-            except IntegrityError:
-                pass
+            BizprocModel.objects.update_or_create(process_id=item['ID'], defaults={"process_name": item['NAME']})
 
     def run_cur_bizproc(self, but, company_id):
         but.call_api_method('bizproc.workflow.start', {
