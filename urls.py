@@ -46,5 +46,7 @@ urlpatterns = [
     path('tg_open_ai/', include('tg_openai_bot.urls')),
     path('deal_for_powerbi/', include('deal_for_powerbi.urls')),
     path('autocomplete_crm_tasks/', include('autocomplete_crm_tasks.urls')),
+    path('move_tasks_deadline_js/', include('move_tasks_deadline_js.urls', 'move_tasks_deadline_js')),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

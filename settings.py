@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'best_call_manager',
     'tg_openai_bot',
     'deal_for_powerbi',
-    'autocomplete_crm_tasks'
+    'autocomplete_crm_tasks',
+    'move_tasks_deadline_js'
 ]
 
 MIDDLEWARE = [
