@@ -11,6 +11,9 @@ def companies(request):
     })
     all_companies = {c["ID"]: c for c in all_companies}
 
+    if len(all_companies) == 0:
+        return JsonResponse({})
+
     all_addresses = but.call_list_method("crm.address.list", {
         "order": {"TYPE_ID": "ASC"},
         "select": ["ADDRESS_1", "PROVINCE", "COUNTRY", "ANCHOR_ID"],
@@ -19,10 +22,17 @@ def companies(request):
         }
     })
 
+    if len(all_addresses) == 0:
+        return JsonResponse({})
+
     comps_w_addr = {}
     for a in all_addresses:
-        comp = comps_w_addr.setdefault(a["ANCHOR_ID"], {})
-        comp.setdefault("addr", []).append(a)
-        comp["title"] = all_companies[a["ANCHOR_ID"]]["TITLE"]
+        comp_id = a["ANCHOR_ID"]
+        if not all_companies.get(comp_id):
+            continue
 
-    return JsonResponse(all_companies)
+        comp = comps_w_addr.setdefault(comp_id, {})
+        comp.setdefault("addr", []).append(a)
+        comp["title"] = all_companies[comp_id]["TITLE"]
+
+    return JsonResponse(comps_w_addr)
