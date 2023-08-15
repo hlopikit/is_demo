@@ -54,9 +54,27 @@
                     {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
                     {headerName: "Дата трудоустройства", cellDataType: 'date', rowGroup: false, resizable: true, autoHeight: true,
                         filter: 'agDateColumnFilter',
+                        filterParams: {comparator: (filterLocalDateAtMidnight, cellValue) => {
+                            if (cellValue === undefined) return -1;
+
+                            if (filterLocalDateAtMidnight.getTime() === cellValue.getTime()) {
+                              return 0;
+                            }
+
+                            if (cellValue < filterLocalDateAtMidnight) {
+                              return -1;
+                            }
+
+                            if (cellValue > filterLocalDateAtMidnight) {
+                              return 1;
+                            }
+                            return 0;
+                        }},
                         valueGetter: (params) => {
                             if (!(params.data['UF_EMPLOYMENT_DATE'] === '')) {
-                                return new Date(params.data['UF_EMPLOYMENT_DATE']);
+                                let date = new Date(params.data['UF_EMPLOYMENT_DATE']);
+                                date.setHours(0);
+                                return date;
                             }
                         },
                         valueFormatter: (params) => {
