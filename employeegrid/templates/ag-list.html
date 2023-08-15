@@ -52,7 +52,24 @@
                     },
 
                     {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
-                    {headerName: "Дата трудоустройства", field: "UF_EMPLOYMENT_DATE", rowGroup: false, resizable: true, autoHeight: true,},
+                    {headerName: "Дата трудоустройства", cellDataType: 'date', rowGroup: false, resizable: true, autoHeight: true,
+                        filter: 'agDateColumnFilter'
+                        valueGetter: (params) => {
+                            if (!(params.data['UF_EMPLOYMENT_DATE'] === '')) {
+                                return new Date(params.data['UF_EMPLOYMENT_DATE']);
+                            }
+                        },
+                        valueFormatter: (params) => {
+                            if (params.value === undefined) {
+                                return '';
+                            }
+
+                            const day = String(params.value.getDate()).padStart(2, '0');
+                            const month = String(params.value.getMonth() + 1).padStart(2, '0');
+                            const year = params.value.getUTCFullYear();
+                            return day + '.' + month + '.' + year;
+                        },
+                    },
                     {headerName: "E-mail", field: "EMAIL", rowGroup: false, resizable: true, autoHeight: true,},
                     {headerName: "Личный телефон", field: "PERSONAL_MOBILE", rowGroup: false, resizable: true, autoHeight: true,},
                     {headerName: "Дата рождения", field: "PERSONAL_BIRTHDAY", rowGroup: false, resizable: true, autoHeight: true,},
