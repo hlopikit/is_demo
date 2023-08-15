@@ -53,7 +53,7 @@
 
                     {headerName: "Должность", field: "WORK_POSITION", rowGroup: false, resizable: true, autoHeight: true,},
                     {headerName: "Дата трудоустройства", cellDataType: 'date', rowGroup: false, resizable: true, autoHeight: true,
-                        filter: 'agDateColumnFilter'
+                        filter: 'agDateColumnFilter',
                         valueGetter: (params) => {
                             if (!(params.data['UF_EMPLOYMENT_DATE'] === '')) {
                                 return new Date(params.data['UF_EMPLOYMENT_DATE']);
