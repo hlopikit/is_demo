@@ -14,7 +14,7 @@ def get_now_date():
 
 
 def parse_date(date_str):
-    """Позволяет распарсить дату в удобочитаемом формате."""
+    """Позволяет распарсить дату в удобочитаемом формате"""
 
     date_obj = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
     formatted_date = date_obj.strftime("%d %b %Y, %H:%M:%S")

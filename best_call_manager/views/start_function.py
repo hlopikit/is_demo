@@ -12,21 +12,18 @@ def start_find_all_call(request):
     и поставить пользователям задачу на выбор лучшего звонка за каждый день
     когда они были совершены, также пользователям в комментарии к задаче
     отправляется таблица с удобочитаемыми данными, чтобы пользователь смог
-    проанализировать информацию и сделать выбор."""
+    проанализировать информацию и сделать выбор"""
 
-    if request.method == 'POST':
+    if request.method == "POST":
         but = request.bitrix_user_token
-        update(but)
         now_date = get_now_date()
         try:
             app_date = get_app_date(but)
 
-            # if app_date != now_date:
-            #     return render(request, "best_call_manager_temp.html")
-            # else:
-            #     calls = get_new_calls(but, app_date)
-
-            calls = get_new_calls(but, app_date)
+            if app_date == now_date:
+                return render(request, "best_call_manager_temp.html")
+            else:
+                calls = get_new_calls(but, app_date, now_date)
 
         except (TypeError, KeyError):
             calls = get_old_calls(but, now_date)

@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 def add_row(table, counter, row):
-    """Позволяет добавить в таблицу строчку с нужными данными."""
+    """Позволяет добавить в таблицу строчку с нужными данными"""
 
     table.add_row([f'{counter}',
                    row.loc['CALL_ID'],
@@ -30,7 +30,7 @@ def add_row_to_df(df, call):
 
 
 def get_html_row(call, calls, counter):
-    """Создает строчку с данными о лучшем звонке менеджера."""
+    """Создает строчку с данными о лучшем звонке менеджера"""
 
     row = f"""<tr>
                     <td>    {counter}   </td>
@@ -47,7 +47,7 @@ def get_html_row(call, calls, counter):
 
 
 def get_html_table(rows):
-    """Создает таблицу с данными о лучших звонках менеджеров."""
+    """Создает таблицу с данными о лучших звонках менеджеров"""
 
     html_table = f"""<table>
                     <tr>
