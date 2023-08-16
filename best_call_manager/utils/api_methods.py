@@ -23,7 +23,7 @@ def get_new_calls(but, date):
 
     calls = but.call_list_method("voximplant.statistic.get",
                                  {"FILTER": {
-                                     ">=CALL_START_DATE": date
+                                     "<=CALL_START_DATE": date
                                  }})
     return calls
 
@@ -38,17 +38,75 @@ def get_old_calls(but, date):
     return calls
 
 
-def get_tasks(but):
+def get_app_calls(but, calls_id):
+    app_calls = but.call_list_method("voximplant.statistic.get", {
+        "filter": {"ID": calls_id},
+        "select": ["ID", "PHONE_NUMBER", "CALL_DURATION", "RECORD_FILE_ID",
+                   "CALL_START_DATE", "CALL_TYPE"]
+    })
+    return app_calls
+
+
+def get_app_tasks_id(but):
     """Позволяет получить все задачи, связанные с текущим приложением"""
 
-    tasks = but.call_list_method("app.option.get",
-                                 {"option": "tasks"})
-    return tasks
+    tasks_id = but.call_list_method("app.option.get",
+                                    {"option": "tasks"})
+    return tasks_id
 
 
-def add_tasks(but, date, tasks):
+def set_app_tasks_id(but, tasks_id):
     """Позволяет добавить задачи в опции текущего приложения"""
 
     but.call_api_method("app.option.set", {
-        "options": {"DATE_FROM_APP_BEST_CALL_MANAGER": date,
-                    "tasks": tasks}})
+        "options": {"tasks": tasks_id}})
+
+
+def set_app_date(but, date):
+    but.call_api_method("app.option.set", {
+        "options": {"DATE_FROM_APP_BEST_CALL_MANAGER": date}})
+
+
+def get_app_date(but):
+    options = but.call_api_method("app.option.get")
+    app_date = options["result"]["DATE_FROM_APP_BEST_CALL_MANAGER"]
+    return app_date
+
+
+def get_app_group(but):
+    group = but.call_api_method("sonet_group.get", {
+        "FILTER": {"NAME": "Лучший звонок за день"}})
+    return group
+
+
+def create_app_group(but):
+    group_id = but.call_api_method("sonet_group.create", {
+        "NAME": "Лучший звонок за день", "VISIBLE": "Y",
+        "OPENED": "Y"})["result"]
+    return group_id
+
+
+def get_app_tasks(but, app_tasks_id):
+    app_tasks = but.call_list_method("tasks.task.list", {
+        "filter": {"ID": app_tasks_id},
+        "select": ["ID", "TITLE", "STATUS", "RESPONSIBLE_ID",
+                   "CREATED_DATE"]})["tasks"]
+    return app_tasks
+
+
+def get_task_res(but, task_id):
+    task_res = but.call_api_method("tasks.task.result.list", {
+        "taskId": task_id})["result"][-1]
+    return task_res
+
+
+def add_post(but, message, dest):
+    but.call_list_method("log.blogpost.add",
+                         {"POST_TITLE": f"Новые лучшие звонки",
+                          "POST_MESSAGE": message,
+                          "DEST": dest})
+
+
+def update(but):
+    but.call_api_method("app.option.set", {
+        "options": {"tasks": None}})

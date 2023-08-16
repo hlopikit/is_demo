@@ -14,29 +14,31 @@ def start_find_all_call(request):
     отправляется таблица с удобочитаемыми данными, чтобы пользователь смог
     проанализировать информацию и сделать выбор."""
 
-    but = request.bitrix_user_token
-
     if request.method == 'POST':
+        but = request.bitrix_user_token
+        update(but)
         now_date = get_now_date()
         try:
-            resp = but.call_api_method('app.option.get')
-            app_date = resp['result']['DATE_FROM_APP_BEST_CALL_MANAGER']
+            app_date = get_app_date(but)
 
-            if app_date == now_date:
-                return render(request, "best_call_manager_temp.html")
-            else:
-                calls = get_new_calls(but, app_date)
+            # if app_date != now_date:
+            #     return render(request, "best_call_manager_temp.html")
+            # else:
+            #     calls = get_new_calls(but, app_date)
+
+            calls = get_new_calls(but, app_date)
 
         except (TypeError, KeyError):
             calls = get_old_calls(but, now_date)
 
         task_id_list = setting_goals(but, calls)
-        tasks = get_tasks(but)
-        if tasks:
-            tasks += task_id_list
+        app_tasks_id = get_app_tasks_id(but)
+        if app_tasks_id:
+            app_tasks_id.extend(task_id_list)
         else:
-            tasks = task_id_list
+            app_tasks_id = task_id_list
 
-        add_tasks(but, now_date, tasks)
+        set_app_tasks_id(but, app_tasks_id)
+        set_app_date(but, now_date)
 
     return render(request, "best_call_manager_temp.html")

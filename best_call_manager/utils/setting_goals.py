@@ -1,7 +1,6 @@
 from prettytable import PrettyTable
-from best_call_manager.utils.add_row import add_row, add_row_in_df
-from best_call_manager.utils.api_methods import add_task, \
-    api_method_task_add_with_manager, api_method_task_add_without_manager
+from best_call_manager.utils.table_creation import add_row, add_row_to_df
+from best_call_manager.utils.api_methods import add_task
 from best_call_manager.utils.datetime_utils import parse_date_in_dmy
 from usermanager.utils.search_manager import search_manager
 import pandas as pd
@@ -24,7 +23,7 @@ def setting_goals(but, calls):
                  "START_DATE", "START_DATETIME", "DURATION", "CALL_TYPE"])
 
     for call in calls:
-        add_row_in_df(call_info_df, call)
+        add_row_to_df(call_info_df, call)
 
     call_info_df.sort_values(by="START_DATETIME", inplace=True)
     call_info_df = call_info_df.groupby(["MANAGER_ID", "START_DATE"])
