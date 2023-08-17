@@ -20,8 +20,16 @@ def import_company_google(request):
             os.remove('table.csv')
 
             but = request.bitrix_user_token
-            but.call_api_method("crm.item.batchImport", {"entityTypeId": 4,
-                                                         "data": data})
+
+            batch_size = 20
+            batch = []
+            for company in data:
+                batch.append(company)
+                if len(batch) % batch_size == 0:
+                    but.call_api_method("crm.item.batchImport", {"entityTypeId": 4, "data": batch})
+                    batch = []
+            but.call_api_method("crm.item.batchImport", {"entityTypeId": 4, "data": batch})
+
             result = "Компании успешно добавлены!"
         except Exception as Ex:
             result = "Неверная ссылка"
