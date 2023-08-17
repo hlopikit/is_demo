@@ -22,15 +22,8 @@ def import_company_google(request):
             but = request.bitrix_user_token
 
             methods = []
-            batch_size = 20
-            batch = []
             for company in data:
-                batch.append(company)
-                if len(batch) % batch_size == 0:
-                    methods.append(("crm.item.batchImport", {"entityTypeId": 4, "data": batch}))
-                    batch = []
-            methods.append(("crm.item.batchImport", {"entityTypeId": 4, "data": batch}))
-
+                methods.append(("crm.company.add", {"fields": company}))
             but.batch_api_call(methods)
 
             result = "Компании успешно добавлены!"
