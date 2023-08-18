@@ -92,17 +92,17 @@ def import_data_from_xls(filename, but):
                                                companies_origin_id_dict,
                                                load_origin_id_prefix)
         object_count["Контакты"] = len(contacts_data)
-        load_crm(company_data, but, "3")
+        load_crm(contacts_data, but, "3")
 
     if "Загружаем сделки":
         deals_data = excel_file.parse('Сделки').to_dict("records")
         object_count["Сделки"] = len(deals_data)
-        load_crm(company_data, but, "2")
+        load_crm(deals_data, but, "2")
 
     if "Загружаем лиды":
         leads_data = excel_file.parse('Лиды').to_dict("records")
         object_count["Лиды"] = len(leads_data)
-        load_crm(company_data, but, "1")
+        load_crm(leads_data, but, "1")
 
     return object_count
 
