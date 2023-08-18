@@ -14,7 +14,7 @@ function init(){
             let companies = JSON.parse(this.responseText);
 
             for (const comp of Object.values(companies)) {
-                let object = ymaps.geocode(`${comp['addr'][0]['PROVINCE']}, ${comp['addr'][0]['ADDRESS_1']}`)
+                let object = ymaps.geocode(`${comp['addr'][0]['PROVINCE']}, ${comp['addr'][0]['CITY']}, ${comp['addr'][0]['ADDRESS_1']}`)
                 object.then(function (res) {
                     let coor = res.geoObjects.properties._data.metaDataProperty.GeocoderResponseMetaData.Point.coordinates
                     myMap.geoObjects.add(new ymaps.Placemark([coor[1], coor[0]], {balloonContent: `<strong>${comp['title']}</strong>` + '\n' + `${comp['addr'][0]['PROVINCE']}, ${comp['addr'][0]['ADDRESS_1']}`}, ));

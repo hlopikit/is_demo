@@ -16,7 +16,7 @@ def companies(request):
 
     all_addresses = but.call_list_method("crm.address.list", {
         "order": {"TYPE_ID": "ASC"},
-        "select": ["ADDRESS_1", "PROVINCE", "COUNTRY", "ANCHOR_ID"],
+        "select": ["ADDRESS_1", "CITY", "PROVINCE", "COUNTRY", "ANCHOR_ID"],
         "filter": {
             "ANCHOR_TYPE_ID": "4"
         }
