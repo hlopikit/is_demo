@@ -91,6 +91,9 @@ def import_data_from_xls(filename, but):
                                                'COMPANY_ID',
                                                companies_origin_id_dict,
                                                load_origin_id_prefix)
+        for c in contacts_data:
+            c["PHONE"] = [{"VALUE": str(c["PHONE"]), "VALUE_TYPE": "WORK"}]
+
         object_count["Контакты"] = len(contacts_data)
         load_crm(contacts_data, but, "3")
 
