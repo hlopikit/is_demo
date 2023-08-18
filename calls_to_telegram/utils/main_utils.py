@@ -11,10 +11,10 @@ def keep_call_info_synced(but, bot_token, calls_chat_id):
     while True:
         try:
             last_call_id = but.call_api_method('app.option.get')['result']['last_call_id']
+            first_call_id = str(int(last_call_id) + 2)
         except TypeError:
             # если вдруг в базе нет последнего id, берем последний звонок
-            last_call_id = but.call_list_method('voximplant.statistic.get', {'SORT': 'ID', 'ORDER': 'DESC'}, limit=1)[0]['ID']
-        first_call_id = str(int(last_call_id) + 2)
+            first_call_id = but.call_list_method('voximplant.statistic.get', {'SORT': 'ID', 'ORDER': 'DESC'}, limit=1)[0]['ID']
         last_call_id = send_calls(but, bot, calls_chat_id, first_call_id)
         if last_call_id is not None:
             but.call_api_method('app.option.set', {'options': {'last_call_id': last_call_id}})
