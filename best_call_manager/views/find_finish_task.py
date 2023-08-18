@@ -1,9 +1,7 @@
 import html
-
 from django.shortcuts import render
-
-from best_call_manager.utils.row_in_table import row_in_table
-from best_call_manager.utils.table_for_post import table_for_post
+from best_call_manager.utils.table_creation import get_html_row, get_html_table
+from best_call_manager.utils.api_methods import *
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 
 
@@ -14,59 +12,43 @@ def find_finish_task(request):
     задач находит нужный звонок и делает пост с таблицей лучших звонков
     каждого менеджера."""
 
-    but = request.bitrix_user_token
-    if request.method == 'POST':
-        group = but.call_api_method('sonet_group.get', {
-            "FILTER": {"NAME": "Лучший звонок за день"}})
-        group_id = None
-        if group['result']:
-            group_id = group['result'][0]['ID']
+    if request.method == "POST":
+        but = request.bitrix_user_token
+        group = get_app_group(but)
+        if group["result"]:
+            group_id = group["result"][0]["ID"]
         else:
-            group_id = but.call_api_method('sonet_group.create', {
-                "NAME": "Лучший звонок за день", "VISIBLE": "Y",
-                "OPENED": "Y"})['result']
+            group_id = create_app_group(but)
 
-        all_tasks = but.call_list_method('tasks.task.list', {
-            "filter": {"TITLE": "Оценить свой лучший звонок за"},
-            "select": ["ID", "TITLE", "STATUS", "RESPONSIBLE_ID",
-                       "CREATED_DATE"]})['tasks']
+        app_tasks_id = get_app_tasks_id(but)
+        app_tasks = get_app_tasks(but, app_tasks_id)
 
-        get_tasks = but.call_list_method('app.option.get', {"option": 'tasks'})
+        progress_tasks_id = app_tasks_id if app_tasks_id else []
+        completed_tasks = dict()
 
-        tasks_progress = get_tasks if get_tasks else []
-        tasks = list()
+        for app_task in app_tasks:
+            if app_task["status"] == '5':
+                progress_tasks_id.remove(app_task["id"])
+                completed_tasks[app_task["id"]] = app_task
 
-        for task in all_tasks:
-            if task['status'] == '5':
-                if task['id'] in tasks_progress:
-                    tasks_progress.remove(task['id'])
-                    tasks.append(task)
-            else:
-                if task['id'] not in tasks_progress:
-                    tasks_progress.append(task['id'])
+        if not completed_tasks:
+            return render(request, 'best_call_manager_temp.html')
 
-        but.call_list_method('app.option.set',
-                             {"options": {'tasks': tasks_progress}})
+        set_app_tasks_id(but, progress_tasks_id)
 
         calls = dict()
-        if tasks:
-            for task in tasks:
-                result = but.call_api_method("tasks.task.result.list", {
-                    "taskId": task['id']})['result'][0]
-                calls[result["text"]] = [task['responsible']['name']]
+        for task_id, task in completed_tasks.items():
+            task_res = get_task_res(but, task_id)
+            calls[task_res["text"]] = task["responsible"]["name"]
 
-            all_calls = but.call_list_method('voximplant.statistic.get')
-            fields = ''
-            counter = 1
-            for call in all_calls:
-                if call['ID'] in calls:
-                    field = row_in_table(call, calls, counter)
-                    fields += field
-                    counter += 1
-            table = table_for_post(fields)
-            but.call_list_method('log.blogpost.add',
-                                 {"POST_TITLE": f'Новые лучшие звонки',
-                                  "POST_MESSAGE": f"{html.unescape(table)}",
-                                  "DEST": [f'SG{group_id}']})
+        app_calls = get_app_calls(but, list(calls.keys()))
 
-    return render(request, 'best_call_manager_temp.html', locals())
+        rows = ""
+        for counter, app_call in enumerate(app_calls, 1):
+            row = get_html_row(app_call, calls, counter)
+            rows += row
+
+        html_table = get_html_table(rows)
+        add_post(but, f"{html.unescape(html_table)}", [f"SG{group_id}"])
+
+    return render(request, "best_call_manager_temp.html")

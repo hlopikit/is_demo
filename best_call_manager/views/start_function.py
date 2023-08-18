@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
-from best_call_manager.utils.now_date import now_date
+from best_call_manager.utils.datetime_utils import get_now_date
 from best_call_manager.utils.setting_goals import setting_goals
+from best_call_manager.utils.api_methods import *
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 
 
@@ -11,52 +12,30 @@ def start_find_all_call(request):
     и поставить пользователям задачу на выбор лучшего звонка за каждый день
     когда они были совершены, также пользователям в комментарии к задаче
     отправляется таблица с удобочитаемыми данными, чтобы пользователь смог
-    проанализировать информацию и сделать выбор."""
+    проанализировать информацию и сделать выбор"""
 
-    but = request.bitrix_user_token
-
-    if request.method == 'POST':
+    if request.method == "POST":
+        but = request.bitrix_user_token
+        now_date = get_now_date()
         try:
-            resp = but.call_api_method('app.option.get')
-            time = now_date()
-            options = resp['result']['DATE_FROM_APP_BEST_CALL_MANAGER']
+            app_date = get_app_date(but)
 
-            if options == time:
-                pass
+            if app_date == now_date:
+                return render(request, "best_call_manager_temp.html")
             else:
-                res = but.call_list_method('voximplant.statistic.get',
-                                           {"FILTER": {
-                                               ">CALL_START_DATE":
-                                                   f"{options}",
-                                           }})
+                calls = get_new_calls(but, app_date, now_date)
 
-                task_id_list = setting_goals(but, res)
-                get_tasks = but.call_list_method('app.option.get',
-                                                 {"option": 'tasks'})
-                if get_tasks:
-                    get_tasks += task_id_list
-                else:
-                    get_tasks = task_id_list
+        except (TypeError, KeyError):
+            calls = get_old_calls(but, now_date)
 
-                but.call_api_method('app.option.set', {
-                    "options": {'DATE_FROM_APP_BEST_CALL_MANAGER': time,
-                                'tasks': get_tasks}})
-        except:
-            time = now_date()
-            res = but.call_list_method('voximplant.statistic.get', {"FILTER": {
-                "<CALL_START_DATE": f"{time}",
-            }})
+        task_id_list = setting_goals(but, calls)
+        app_tasks_id = get_app_tasks_id(but)
+        if app_tasks_id:
+            app_tasks_id.extend(task_id_list)
+        else:
+            app_tasks_id = task_id_list
 
-            task_id_list = setting_goals(but, res)
-            get_tasks = but.call_list_method('app.option.get',
-                                             {"option": 'tasks'})
-            if get_tasks:
-                get_tasks += task_id_list
-            else:
-                get_tasks = task_id_list
+        set_app_tasks_id(but, app_tasks_id)
+        set_app_date(but, now_date)
 
-            but.call_api_method('app.option.set', {
-                "options": {'DATE_FROM_APP_BEST_CALL_MANAGER': time,
-                            'tasks': get_tasks}})
-
-    return render(request, 'best_call_manager_temp.html', locals())
+    return render(request, "best_call_manager_temp.html")
