@@ -49,7 +49,7 @@ class CallInfo(models.Model):
         for result in response.results:
             for alternative in result.alternatives:
                 ans_str += alternative.transcript
-            return ans_str
+        return ans_str
 
 
     def telephony_externalcall_register(self, but):
