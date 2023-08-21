@@ -1,4 +1,11 @@
+import os.path
 import time
+from datetime import datetime
+
+import requests
+
+from callsuploader.models.models import CallInfo
+from django.conf import settings
 
 from openpyxl import load_workbook
 import pandas as pd
@@ -58,7 +65,8 @@ def import_data_from_xls(filename, but):
     object_count = {"Лиды": None,
                     "Сделки": None,
                     "Контакты": None,
-                    "Компании": None}
+                    "Компании": None,
+                    "Звонки": None}
 
     if "Загружаем компании":  # Всегда True
         company_data = excel_file.parse('Компании').to_dict("records")
@@ -106,6 +114,35 @@ def import_data_from_xls(filename, but):
         leads_data = excel_file.parse('Лиды').to_dict("records")
         object_count["Лиды"] = len(leads_data)
         load_crm(leads_data, but, "1")
+
+    if "Загружаем звонки":
+        calls_data = excel_file.parse('Звонки').to_dict('records')
+        object_count["Звонки"] = len(calls_data)
+        for c in calls_data:
+            call = CallInfo(
+                user_phone=c["user_phone"],
+                user_id=int(c["user_id"]),
+                phone_number=c["phone_number"],
+                call_date=c["call_date"],
+                type=int(c["type"]),
+                add_to_chat=int(c["add_to_chat"])
+            )
+            call.save()
+
+            drive_id = c["file"].split("/")[-2]
+            url = "https://drive.google.com/uc?id=" + drive_id + "&export=download"
+            r = requests.get(url, allow_redirects=True)
+
+            file_path = os.path.join(call.inner_media_path, str(call.id) + '.mp3')
+            with open(os.path.join(settings.MEDIA_ROOT, file_path), 'wb') as file:
+                file.write(r.content)
+
+            call.file.name = file_path
+            call.save()
+
+            call.telephony_externalcall_register(but)
+            call.telephony_externalcall_finish(but)
+            call.wav_maker_n_messages(but)
 
     return object_count
 
