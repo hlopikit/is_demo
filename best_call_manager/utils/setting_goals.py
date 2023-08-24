@@ -35,14 +35,23 @@ def setting_goals(but, calls):
                          "Тип звонка"]
 
     task_id_list = list()
+    possible_calls = {}
 
     for group, call_df in call_info_df:
         call_df.reset_index(drop=True, inplace=True)
         table.clear_rows()
+
+        calls_for_task = []
+
         for index, row in call_df.iterrows():
             add_row(table, index.__hash__() + 1, row)
+
+            calls_for_task.append(row["CALL_ID"])
+
         task_id = add_task(but, group[0], manager_dict[group[0]], table,
                            parse_date_in_dmy(group[1]))
         task_id_list.append(task_id)
 
-    return task_id_list
+        possible_calls[task_id] = calls_for_task
+
+    return task_id_list, possible_calls

@@ -28,14 +28,22 @@ def start_find_all_call(request):
         except (TypeError, KeyError):
             calls = get_old_calls(but, now_date)
 
-        task_id_list = setting_goals(but, calls)
+        task_id_list, possible_calls = setting_goals(but, calls)
+
+        app_possible_calls = but.call_api_method("app.option.get", {"option": "possible_calls"})["result"]
+        if app_possible_calls and type(app_possible_calls) is dict:
+            app_possible_calls.update(possible_calls)
+        else:
+            app_possible_calls = possible_calls
+
         app_tasks_id = get_app_tasks_id(but)
-        if app_tasks_id:
+        if app_tasks_id and app_tasks_id[0] != '':
             app_tasks_id.extend(task_id_list)
         else:
             app_tasks_id = task_id_list
 
         set_app_tasks_id(but, app_tasks_id)
+        but.call_api_method("app.option.set", {"options": {"possible_calls": app_possible_calls}})
         set_app_date(but, now_date)
 
     return render(request, "best_call_manager_temp.html")
