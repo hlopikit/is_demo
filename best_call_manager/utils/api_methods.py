@@ -105,7 +105,7 @@ def get_app_tasks(but, app_tasks_id):
     app_tasks = but.call_list_method("tasks.task.list", {
         "filter": {"ID": app_tasks_id},
         "select": ["ID", "TITLE", "STATUS", "RESPONSIBLE_ID",
-                   "CREATED_DATE"]})["tasks"]
+                   "CREATED_DATE", "CREATED_BY"]})["tasks"]
     return app_tasks
 
 
@@ -113,7 +113,7 @@ def get_task_res(but, task_id):
     """Позволяет получить с портала результат задачи по указанному ID"""
 
     task_res = but.call_api_method("tasks.task.result.list", {
-        "taskId": task_id})["result"][-1]
+        "taskId": task_id})["result"][0]
     return task_res
 
 

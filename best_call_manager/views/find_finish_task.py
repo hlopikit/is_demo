@@ -21,6 +21,9 @@ def find_finish_task(request):
             group_id = create_app_group(but)
 
         app_tasks_id = get_app_tasks_id(but)
+        if not app_tasks_id or app_tasks_id[0] == '':
+            return render(request, 'best_call_manager_temp.html')
+
         app_tasks = get_app_tasks(but, app_tasks_id)
 
         progress_tasks_id = app_tasks_id if app_tasks_id else []
@@ -34,12 +37,47 @@ def find_finish_task(request):
         if not completed_tasks:
             return render(request, 'best_call_manager_temp.html')
 
-        set_app_tasks_id(but, progress_tasks_id)
+        possible_calls = but.call_api_method("app.option.get", {"option": "possible_calls"})["result"]
 
         calls = dict()
         for task_id, task in completed_tasks.items():
-            task_res = get_task_res(but, task_id)
+            try:
+                task_res = get_task_res(but, task_id)
+            except IndexError:
+                progress_tasks_id.append(task_id)
+
+                but.call_api_method("tasks.task.renew", {"taskId": task_id})
+                but.call_api_method("task.commentitem.add", {
+                    "TASKID": task_id,
+                    "FIELDS": {
+                        "AUTHOR_ID": task["createdBy"],
+                        "POST_MESSAGE": "Оставьте комментарий помеченный как результат"
+                    }
+                })
+
+                continue
+
+            if type(possible_calls) is dict and possible_calls.get(task_id):
+                if not (task_res["text"] in possible_calls[task_id]):
+                    progress_tasks_id.append(task_id)
+
+                    but.call_api_method("tasks.task.renew", {"taskId": task_id})
+                    but.call_api_method("task.commentitem.add", {
+                        "TASKID": task_id,
+                        "FIELDS": {
+                            "AUTHOR_ID": task["createdBy"],
+                            "POST_MESSAGE": "Укажите корректный id звонка"
+                        }
+                    })
+
+                    continue
+                else:
+                    del possible_calls[task_id]
+
             calls[task_res["text"]] = task["responsible"]["name"]
+
+        set_app_tasks_id(but, progress_tasks_id)
+        but.call_api_method("app.option.set", {"options": {"possible_calls": possible_calls}})
 
         app_calls = get_app_calls(but, list(calls.keys()))
 
