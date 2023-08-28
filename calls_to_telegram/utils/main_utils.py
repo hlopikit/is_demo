@@ -12,7 +12,7 @@ def keep_call_info_synced(but, bot_token, calls_chat_id):
         try:
             last_call_id = but.call_api_method('app.option.get')['result']['last_call_id']
             first_call_id = str(int(last_call_id) + 2)
-        except TypeError:
+        except (TypeError, ValueError):
             # если вдруг в базе нет последнего id, берем последний звонок
             first_call_id = but.call_list_method('voximplant.statistic.get', {'SORT': 'ID', 'ORDER': 'DESC'}, limit=1)[0]['ID']
         last_call_id = send_calls(but, bot, calls_chat_id, first_call_id)
@@ -27,7 +27,7 @@ def keep_call_info_synced(but, bot_token, calls_chat_id):
 
 def export_calls_to_telegram(but, bot_token, calls_chat_id):
     bot = Bot(token=bot_token)
-    first_call_id = '0'
+    first_call_id = '2'
 
     last_call_id = send_calls(but, bot, calls_chat_id, first_call_id)
     if last_call_id is not None:
@@ -41,7 +41,7 @@ def send_calls(but, bot, calls_chat_id, first_call_id):
     # отсылаем все подряд, начиная со звонка, имеющего call_id
     # проходимся по всем звонкам в заданном параметром mode диапазоне и добавляем их в запрос по id
     calls_with_files, len_calls = get_calls_with_files(but, first_call_id)
-    last_call_id = str(len_calls * 2 + int(first_call_id))
+    last_call_id = str((len_calls - 1) * 2 + int(first_call_id))
     if not calls_with_files:
         return None
 
