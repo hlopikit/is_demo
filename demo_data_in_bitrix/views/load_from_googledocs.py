@@ -5,7 +5,7 @@ import requests
 from django.conf import settings
 from django.shortcuts import render
 
-from demo_data_in_bitrix.utils.utils import import_data_from_xls
+from demo_data_in_bitrix.utils.main_utils import DataImporter
 from integration_utils.bitrix24.bitrix_user_auth.main_auth import main_auth
 
 from integration_utils.its_utils.app_get_params import get_params_from_sources
@@ -29,6 +29,10 @@ def load_from_googledocs(request, link):
     filename = os.path.join(settings.BASE_DIR, 'temp.xlsx')
     with open(filename, "wb") as f:
         f.write(res.content)
-    object_count = import_data_from_xls(filename, but)
+    importer = DataImporter(filename, but)
+    method_list = [getattr(DataImporter, method) for method in dir(DataImporter)
+                   if callable(getattr(DataImporter, method))
+                   and method.startswith('_') is False]
+    importer(method_list)
 
     return render(request, 'demodata.html', locals())
