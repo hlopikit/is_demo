@@ -1,3 +1,6 @@
+
+DEBUG = False
+
 def add_task(but, manager_id, supervisor_id, table, date):
     """Позволяет поставить задачу пользователю от вышестоящего руководителя"""
 
@@ -19,17 +22,22 @@ def add_task(but, manager_id, supervisor_id, table, date):
 
 
 def get_new_calls(but, date, now_date):
-    """Поозволяет получить все новые звонки с портала"""
+    if not DEBUG:
+        """Поозволяет получить все новые звонки с портала"""
 
-    calls = but.call_list_method("voximplant.statistic.get",
-                                 {"FILTER": {
-                                     "<CALL_START_DATE": now_date,
-                                     ">=CALL_START_DATE": date
-                                 }})
-    return calls
+        calls = but.call_list_method("voximplant.statistic.get",
+                                     {"FILTER": {
+                                         "<CALL_START_DATE": now_date,
+                                         ">=CALL_START_DATE": date
+                                     }})
+        return calls
+    else:
+        return get_old_calls(but, now_date)
+
 
 
 def get_old_calls(but, date):
+
     """Поозволяет получить все звонки с портала"""
 
     calls = but.call_list_method("voximplant.statistic.get",

@@ -44,7 +44,7 @@ def setting_goals(but, calls):
         calls_for_task = []
 
         for index, row in call_df.iterrows():
-            add_row(table, index.__hash__() + 1, row)
+            add_row(table, index + 1, row)
 
             calls_for_task.append(row["CALL_ID"])
 

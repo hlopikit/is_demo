@@ -19,8 +19,8 @@ def start_find_all_call(request):
         now_date = get_now_date()
         try:
             app_date = get_app_date(but)
-
-            if app_date == now_date:
+            # XOR logic gate
+            if (app_date == now_date) != DEBUG:
                 return render(request, "best_call_manager_temp.html")
             else:
                 calls = get_new_calls(but, app_date, now_date)
