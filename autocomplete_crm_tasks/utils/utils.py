@@ -108,7 +108,7 @@ def create_filter_list(activity_type, target_date_str):
         case "to_do":
             template_copy['filter'].update({
                 'TYPE_ID': '6',
-                'PROVIDER_ID': ['CRM_TASKS_TASK', 'CRM_TODO']
+                'PROVIDER_ID': ['CRM_TODO']
             })
             activity_filter_list.append(template_copy)
         case "email":
