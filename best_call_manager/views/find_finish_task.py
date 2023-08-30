@@ -81,6 +81,9 @@ def find_finish_task(request):
 
         app_calls = get_app_calls(but, list(calls.keys()))
 
+        if not app_calls:
+            return render(request, "best_call_manager_temp.html")
+
         rows = ""
         for counter, app_call in enumerate(app_calls, 1):
             row = get_html_row(app_call, calls, counter)
