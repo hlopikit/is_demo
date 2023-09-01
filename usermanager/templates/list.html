@@ -43,12 +43,12 @@
         {% for user_id, user in users.items %}
             <tr>
                 <td>
-                    <a href="https://b24-tyk53v.bitrix24.ru/company/personal/user/{{ user_id }}/" target="_blank">{{ user.FULL_NAME }}</a>
+                    <a href="https://{{ portal }}/company/personal/user/{{ user_id }}/" target="_blank">{{ user.FULL_NAME }}</a>
                 </td>
                 <td>
                     {% if user.SUPERVISORS|length > 0 %}
                         {% for supervisor in user.SUPERVISORS %}
-                            <a href="https://b24-tyk53v.bitrix24.ru/company/personal/user/{{ supervisor.0 }}/">{{ supervisor.1 }}</a>{% if not forloop.last %}<br><br> {% endif %}
+                            <a href="https://{{ portal }}/company/personal/user/{{ supervisor.0 }}/" target="_blank">{{ supervisor.1 }}</a>{% if not forloop.last %}<br><br> {% endif %}
                         {% endfor %}
                     {% else %}
                         Нет руководителя
