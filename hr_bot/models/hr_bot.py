@@ -22,10 +22,10 @@ class HrBot(AbstractBot):
     
     """
 
-    def on_start_command(self, message, t_user, t_chat, param):
+    def on_start_command(self, message, t_user, t_chat, param, t_thread):
         self.send_message(t_chat.telegram_id, "Команда start принята")
 
-    def on_start_workday_command(self, message, t_user, t_chat, param):
+    def on_start_workday_command(self, message, t_user, t_chat, param, t_thread):
         if not t_user.workday_started:
             t_user.workday_started = timezone.now()
             t_user.workday_chat = t_chat
@@ -38,7 +38,7 @@ class HrBot(AbstractBot):
                               "Рабочий день уже начат в {}".format(t_user.workday_started))
 
 
-    def on_stop_workday_command(self, message, t_user, t_chat, param):
+    def on_stop_workday_command(self, message, t_user, t_chat, param, t_thread):
         if t_user.checkpoint and t_user.checkpoint + timezone.timedelta(minutes=3) > timezone.now():
             # Если между чекпоинтом и концом дня прошло всего 3 минуты, то не просим еще раз писать
             t_user.checkpoint = None
@@ -52,7 +52,7 @@ class HrBot(AbstractBot):
         else:
             self.on_status_command(message=message, t_user=t_user, t_chat=t_chat, param=param)
 
-    def on_checkpoint_command(self, message, t_user, t_chat, param):
+    def on_checkpoint_command(self, message, t_user, t_chat, param, t_thread):
         if not param:
             self.send_message(t_chat.telegram_id, "После команды checkpoint через пробел нужно описать что вы сделали за предыдущий интервал"
                                                   "\n пример:"
@@ -74,7 +74,7 @@ class HrBot(AbstractBot):
         t_user.save()
         self.send_message(t_chat.telegram_id, "Запись сделана")
 
-    def on_status_command(self, message, t_user, t_chat, param):
+    def on_status_command(self, message, t_user, t_chat, param, t_thread):
         lines = ['Сегодняшний день']
         for cp in HrCheckpoint.objects.filter(to_time__gte=timezone.now().date(), user=t_user):
             lines.append("{:%Y/%m/%d %H:%M:%S}-{:%H:%M:%S} {}".format(timezone.localtime(cp.from_time), timezone.localtime(cp.to_time), cp.text))
